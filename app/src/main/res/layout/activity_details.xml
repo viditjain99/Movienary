@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView android:layout_width="fill_parent"
+    android:id="@+id/scrollView"
+    android:layout_height="fill_parent"
+    android:background="#ffffff"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:id="@+id/relativeLayout">
+
+        <ProgressBar
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/progressBar"
+            android:visibility="gone"
+            android:layout_centerInParent="true"/>
+        <ImageView
+            android:id="@+id/backdropImageView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="#000000"
+            android:id="@+id/titleTextView"
+            android:layout_below="@id/backdropImageView"
+            android:textAppearance="@style/Base.TextAppearance.AppCompat.Large"
+            android:padding="10dp"/>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/overviewTextView"
+            android:textColor="#000000"
+            android:layout_below="@id/titleTextView"
+            android:padding="10dp"
+            android:paddingTop="16dp" />
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/ratingLayout"
+            android:layout_below="@id/overviewTextView"
+            android:paddingLeft="5dp"
+            android:orientation="horizontal"
+            android:gravity="center_vertical">
+            <ImageView
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:id="@+id/starImageView" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/ratingTextView"
+                android:textSize="20dp"
+                android:textColor="#808080"
+                android:layout_toRightOf="@id/starImageView"/>
+
+        </LinearLayout>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/runTimeTextView"
+            android:padding="10dp"
+            android:textSize="15dp"
+            android:textColor="#808080"
+            android:layout_below="@+id/releaseDateTextView"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/genreTextView"
+            android:padding="10dp"
+            android:textSize="15dp"
+            android:textColor="#808080"
+            android:layout_below="@+id/runTimeTextView"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/castTextView"
+            android:textAppearance="@style/Base.TextAppearance.AppCompat.Large"
+            android:text="Cast"
+            android:textColor="#000000"
+            android:layout_below="@id/genreTextView"
+            android:padding="10dp"/>
+
+        <android.support.v7.widget.RecyclerView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:id="@+id/castRecyclerView"
+            android:layout_below="@+id/castTextView" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/releaseDateTextView"
+            android:padding="10dp"
+            android:textSize="15dp"
+            android:textColor="#808080"
+            android:layout_below="@id/ratingLayout"/>
+
+    </RelativeLayout>
+
+</ScrollView>
