@@ -1,112 +1,208 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView android:layout_width="fill_parent"
+
+<android.support.design.widget.CoordinatorLayout android:layout_width="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/scrollView"
-    android:layout_height="fill_parent"
+    android:layout_height="match_parent"
+    app:layout_behavior="@string/appbar_scrolling_view_behavior"
     android:background="#ffffff"
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical">
 
-    <RelativeLayout
+    <android.support.design.widget.AppBarLayout
+        android:id="@+id/appbar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:id="@+id/relativeLayout">
+        android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
+        android:fitsSystemWindows="true">
 
-        <ProgressBar
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/progressBar"
-            android:visibility="gone"
-            android:layout_centerInParent="true"/>
-        <ImageView
-            android:id="@+id/backdropImageView"
+        <android.support.design.widget.CollapsingToolbarLayout
+            android:id="@+id/collapsingToolbar"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
+            android:layout_height="match_parent"
+            app:layout_scrollFlags="scroll|exitUntilCollapsed"
+            android:fitsSystemWindows="true"
+            app:expandedTitleMarginEnd="64dp"
+            app:expandedTitleMarginStart="48dp"
+            app:contentScrim="@android:color/transparent"
+            app:statusBarScrim="@android:color/transparent">
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textColor="#000000"
-            android:id="@+id/titleTextView"
-            android:layout_below="@id/backdropImageView"
-            android:textAppearance="@style/Base.TextAppearance.AppCompat.Large"
-            android:padding="10dp"/>
-
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:id="@+id/overviewTextView"
-            android:textColor="#000000"
-            android:layout_below="@id/titleTextView"
-            android:padding="10dp"
-            android:paddingTop="16dp" />
-
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/ratingLayout"
-            android:layout_below="@id/overviewTextView"
-            android:paddingLeft="5dp"
-            android:orientation="horizontal"
-            android:gravity="center_vertical">
             <ImageView
-                android:layout_width="40dp"
-                android:layout_height="40dp"
-                android:id="@+id/starImageView" />
+                android:id="@+id/backdropImageView"
+                android:layout_width="match_parent"
+                app:layout_scrollFlags="scroll|enterAlways|enterAlwaysCollapsed"
+                android:layout_height="match_parent"
+                android:scaleType="centerCrop"
+                android:fitsSystemWindows="true"
+                android:minHeight="100dp"
+                app:layout_collapseMode="parallax"/>
+
+            <android.support.v7.widget.Toolbar
+                android:id="@+id/toolbar"
+                android:layout_width="match_parent"
+                android:layout_height="?attr/actionBarSize"
+                app:layout_scrollFlags="scroll|enterAlways"
+                app:layout_collapseMode="pin"/>
+
+        </android.support.design.widget.CollapsingToolbarLayout>
+
+    </android.support.design.widget.AppBarLayout>
+
+    <android.support.v4.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior">
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:id="@+id/relativeLayout">
+
+            <ProgressBar
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/progressBar"
+                android:visibility="gone"
+                android:layout_centerInParent="true"/>
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:id="@+id/ratingTextView"
-                android:textSize="20dp"
+                android:textColor="#000000"
+                android:id="@+id/titleTextView"
+                android:textAppearance="@style/Base.TextAppearance.AppCompat.Large"
+                android:padding="10dp"/>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/overviewTextView"
+                android:textColor="#000000"
+                android:layout_below="@id/titleTextView"
+                android:padding="10dp"
+                android:paddingTop="16dp" />
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/ratingLayout"
+                android:layout_below="@id/overviewTextView"
+                android:paddingLeft="5dp"
+                android:orientation="horizontal"
+                android:gravity="center_vertical">
+                <ImageView
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:id="@+id/starImageView" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/ratingTextView"
+                    android:textSize="20dp"
+                    android:textColor="#808080"
+                    android:layout_toRightOf="@id/starImageView"/>
+
+            </LinearLayout>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/runTimeTextView"
+                android:padding="10dp"
+                android:textSize="15dp"
                 android:textColor="#808080"
-                android:layout_toRightOf="@id/starImageView"/>
+                android:layout_below="@+id/releaseDateTextView"/>
 
-        </LinearLayout>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/genreTextView"
+                android:padding="10dp"
+                android:textSize="15dp"
+                android:textColor="#808080"
+                android:layout_below="@+id/runTimeTextView"/>
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/runTimeTextView"
-            android:padding="10dp"
-            android:textSize="15dp"
-            android:textColor="#808080"
-            android:layout_below="@+id/releaseDateTextView"/>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/castTextView"
+                android:textAppearance="@style/Base.TextAppearance.AppCompat.Large"
+                android:text="Cast"
+                android:textColor="#000000"
+                android:layout_below="@id/genreTextView"
+                android:padding="10dp"/>
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/genreTextView"
-            android:padding="10dp"
-            android:textSize="15dp"
-            android:textColor="#808080"
-            android:layout_below="@+id/runTimeTextView"/>
+            <android.support.v7.widget.RecyclerView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:id="@+id/castRecyclerView"
+                android:layout_below="@+id/castTextView"
+                app:layout_behavior="@string/appbar_scrolling_view_behavior" />
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/castTextView"
-            android:textAppearance="@style/Base.TextAppearance.AppCompat.Large"
-            android:text="Cast"
-            android:textColor="#000000"
-            android:layout_below="@id/genreTextView"
-            android:padding="10dp"/>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/releaseDateTextView"
+                android:padding="10dp"
+                android:textSize="15dp"
+                android:textColor="#808080"
+                android:layout_below="@id/ratingLayout"/>
 
-        <android.support.v7.widget.RecyclerView
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:id="@+id/castRecyclerView"
-            android:layout_below="@+id/castTextView" />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/reviewsTextView"
+                android:padding="10dp"
+                android:textAppearance="@style/Base.TextAppearance.AppCompat.Large"
+                android:text="Reviews"
+                android:textColor="#000000"
+                android:layout_below="@id/castRecyclerView"/>
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/releaseDateTextView"
-            android:padding="10dp"
-            android:textSize="15dp"
-            android:textColor="#808080"
-            android:layout_below="@id/ratingLayout"/>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/reviewsTextView"
+                android:orientation="vertical"
+                android:id="@+id/reviewsLinearLayout">
 
-    </RelativeLayout>
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/authorTextView"
+                    android:text="author"
+                    android:textColor="#000000"
+                    android:textStyle="bold"
+                    android:textSize="15dp"
+                    android:padding="10dp"/>
 
-</ScrollView>
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/reviewBodyTextView"
+                    android:text="body"
+                    android:textColor="#000000"
+                    android:textSize="13dp"
+                    android:paddingLeft="10dp"
+                    android:paddingRight="10dp"
+                    android:paddingBottom="10dp"/>
+            </LinearLayout>
+
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Read All Reviews"
+                android:textStyle="bold"
+                android:layout_below="@+id/reviewsLinearLayout"
+                android:gravity="center"
+                android:layout_centerHorizontal="true"
+                android:onClick="readAllReviews"
+                android:textColor="#000000"
+                android:id="@+id/readAllReviewsButton"
+                android:background="@android:color/transparent"/>
+
+        </RelativeLayout>
+
+    </android.support.v4.widget.NestedScrollView>
+
+</android.support.design.widget.CoordinatorLayout>

@@ -9,9 +9,11 @@ import android.support.v4.graphics.drawable.RoundedBitmapDrawable;
 import android.support.v4.graphics.drawable.RoundedBitmapDrawableFactory;
 import android.support.v7.widget.RecyclerView;
 import android.text.Html;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import com.makeramen.roundedimageview.RoundedTransformationBuilder;
 import com.squareup.picasso.Callback;
@@ -22,13 +24,13 @@ import java.util.ArrayList;
 
 public class CastAdapter extends RecyclerView.Adapter<CastViewHolder>
 {
-    ArrayList<Cast> castList;
+    ArrayList<Cast> actorsList;
     Context context;
     CastClickListener listener;
-    CastAdapter(Context context,ArrayList<Cast> castList,CastClickListener listener)
+    CastAdapter(Context context,ArrayList<Cast> actorsList,CastClickListener listener)
     {
         this.context=context;
-        this.castList=castList;
+        this.actorsList=actorsList;
         this.listener=listener;
     }
 
@@ -43,7 +45,7 @@ public class CastAdapter extends RecyclerView.Adapter<CastViewHolder>
     @Override
     public void onBindViewHolder(@NonNull final CastViewHolder castViewHolder, int i)
     {
-        Cast cast=castList.get(i);
+        Cast cast=actorsList.get(i);
         String s="<b>"+cast.actorName+"</b>";
         castViewHolder.name.setText(Html.fromHtml(s));
         Transformation transformation = new RoundedTransformationBuilder().borderColor(Color.BLACK).borderWidthDp(0).cornerRadiusDp(0).oval(true).build();
@@ -58,6 +60,6 @@ public class CastAdapter extends RecyclerView.Adapter<CastViewHolder>
 
     @Override
     public int getItemCount() {
-        return castList.size();
+        return actorsList.size();
     }
 }

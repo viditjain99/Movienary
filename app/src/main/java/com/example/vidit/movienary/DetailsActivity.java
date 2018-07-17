@@ -1,23 +1,33 @@
 package com.example.vidit.movienary;
 
 import android.content.Intent;
+import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.constraint.solver.GoalRow;
+import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.Html;
 import android.util.Log;
 import android.view.View;
+import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
+import android.widget.Toolbar;
 
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
+import java.util.zip.GZIPOutputStream;
+
+import javax.net.ssl.HttpsURLConnection;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -25,20 +35,40 @@ import retrofit2.Response;
 
 public class DetailsActivity extends AppCompatActivity
 {
-    TextView titleTextView,overviewTextView,ratingTextView,runTimeTextView,genreTextView,castTextView,releaseDateTextView;
+    TextView titleTextView,overviewTextView,ratingTextView,runTimeTextView,genreTextView,castTextView,releaseDateTextView,reviewsTextView,authorTextView,bodyTextView;
     ImageView backdropImageView,starImageView;
     Intent intent,intent1;
     RecyclerView castRecyclerView;
     CastAdapter adapter;
     ArrayList<Cast> actorsList=new ArrayList<>();
+    ArrayList<Review> reviewsList=new ArrayList<>();
     ProgressBar progressBar;
+    Button readAllReviewsButton;
+    android.support.v7.widget.Toolbar toolbar;
+    CollapsingToolbarLayout collapsingToolbarLayout;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_details);
         getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LAYOUT_STABLE | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN);
         titleTextView = findViewById(R.id.titleTextView);
+
+        toolbar=findViewById(R.id.toolbar);
+        collapsingToolbarLayout=findViewById(R.id.collapsingToolbar);
+        toolbar.setNavigationIcon(R.drawable.back);
+        setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setDisplayShowTitleEnabled(true);
+        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                finish();
+            }
+        });
+
         overviewTextView = findViewById(R.id.overviewTextView);
+        reviewsTextView=findViewById(R.id.reviewsTextView);
+        readAllReviewsButton=findViewById(R.id.readAllReviewsButton);
         ratingTextView = findViewById(R.id.ratingTextView);
         backdropImageView = findViewById(R.id.backdropImageView);
         progressBar=findViewById(R.id.progressBar);
@@ -47,8 +77,9 @@ public class DetailsActivity extends AppCompatActivity
         runTimeTextView=findViewById(R.id.runTimeTextView);
         castRecyclerView=findViewById(R.id.castRecyclerView);
         castTextView=findViewById(R.id.castTextView);
+        authorTextView=findViewById(R.id.authorTextView);
+        bodyTextView=findViewById(R.id.reviewBodyTextView);
         releaseDateTextView=findViewById(R.id.releaseDateTextView);
-
 
         adapter=new CastAdapter(DetailsActivity.this, actorsList, new CastClickListener() {
             @Override
@@ -62,7 +93,9 @@ public class DetailsActivity extends AppCompatActivity
         });
         LinearLayoutManager layoutManager=new LinearLayoutManager(DetailsActivity.this,LinearLayoutManager.HORIZONTAL,false);
         castRecyclerView.setLayoutManager(layoutManager);
+        //castRecyclerView.setNestedScrollingEnabled(false);
         castRecyclerView.setAdapter(adapter);
+
 
         intent = getIntent();
 
@@ -75,6 +108,8 @@ public class DetailsActivity extends AppCompatActivity
         String overview = details.get(5);
         final String releaseDate = details.get(6);
 
+        collapsingToolbarLayout.setTitle(movieName);
+        collapsingToolbarLayout.setExpandedTitleColor(getResources().getColor(android.R.color.transparent));
         titleTextView.setVisibility(View.GONE);
         backdropImageView.setVisibility(View.GONE);
         overviewTextView.setVisibility(View.GONE);
@@ -86,13 +121,25 @@ public class DetailsActivity extends AppCompatActivity
         progressBar.setVisibility(View.VISIBLE);
         castRecyclerView.setVisibility(View.GONE);
         releaseDateTextView.setVisibility(View.GONE);
+        reviewsTextView.setVisibility(View.GONE);
+        authorTextView.setVisibility(View.GONE);
+        bodyTextView.setVisibility(View.GONE);
+        readAllReviewsButton.setVisibility(View.GONE);
         titleTextView.setText(movieName);
 
         Picasso.get().load("http://image.tmdb.org/t/p/original//" + backdropPath).resize(1100, 618).into(backdropImageView);
         overviewTextView.setText(overview);
         Picasso.get().load("https://cdn2.iconfinder.com/data/icons/modifiers-add-on-1-flat/48/Mod_Add-On_1-35-512.png").into(starImageView);
-        String r="<b>"+rating+"</b>";
-        ratingTextView.setText(Html.fromHtml(r));
+        if(Float.parseFloat(rating)==0)
+        {
+            String r="<b>"+"N/A"+"</b>";
+            ratingTextView.setText(Html.fromHtml(r));
+        }
+        else
+        {
+            String r="<b>"+rating+"</b>";
+            ratingTextView.setText(Html.fromHtml(r));
+        }
         releaseDateTextView.setText("Release Date: "+releaseDate);
 
         Call<SingleMovie> call=ApiClient.getMoviesService().getDetails(id);
@@ -137,23 +184,81 @@ public class DetailsActivity extends AppCompatActivity
                 ArrayList<Cast> castList=castResponse.cast;
                 actorsList.clear();
                 actorsList.addAll(castList);
+                castRecyclerView.setVisibility(View.VISIBLE);
+            }
+
+            @Override
+            public void onFailure(Call<CastResponse> call1, Throwable t) {
+            }
+        });
+
+        Call<ReviewResponse> call2=ApiClient.getMoviesService().getReviews(id);
+        call2.enqueue(new Callback<ReviewResponse>() {
+            @Override
+            public void onResponse(Call<ReviewResponse> call2, Response<ReviewResponse> response)
+            {
+                ReviewResponse reviewResponse=response.body();
+                ArrayList<Review> reviews=reviewResponse.results;
+                reviewsList.clear();
+                reviewsList.addAll(reviews);
+                reviewsTextView.setText(reviewsTextView.getText()+" "+"("+reviewsList.size()+")");
+                if(reviewsList.size()==0)
+                {
+                    authorTextView.setText("No Reviews Available");
+                    bodyTextView.setText("");
+                    readAllReviewsButton.setEnabled(false);
+                    readAllReviewsButton.setTextColor(Color.parseColor("#d3d3d3"));
+                }
+                else if(reviewsList.size()==1)
+                {
+                    authorTextView.setText(reviewsList.get(0).author);
+                    bodyTextView.setText(reviewsList.get(0).content);
+                    readAllReviewsButton.setEnabled(false);
+                    readAllReviewsButton.setTextColor(Color.parseColor("#d3d3d3"));
+                }
+                else
+                {
+                    authorTextView.setText(reviewsList.get(0).author);
+                    bodyTextView.setText(reviewsList.get(0).content);
+                }
                 titleTextView.setVisibility(View.VISIBLE);
                 backdropImageView.setVisibility(View.VISIBLE);
                 overviewTextView.setVisibility(View.VISIBLE);
                 starImageView.setVisibility(View.VISIBLE);
                 ratingTextView.setVisibility(View.VISIBLE);
                 runTimeTextView.setVisibility(View.VISIBLE);
+                readAllReviewsButton.setVisibility(View.VISIBLE);
                 genreTextView.setVisibility(View.VISIBLE);
                 castTextView.setVisibility(View.VISIBLE);
-                castRecyclerView.setVisibility(View.VISIBLE);
                 releaseDateTextView.setVisibility(View.VISIBLE);
+                authorTextView.setVisibility(View.VISIBLE);
+                bodyTextView.setVisibility(View.VISIBLE);
+                reviewsTextView.setVisibility(View.VISIBLE);
                 progressBar.setVisibility(View.GONE);
             }
 
             @Override
-            public void onFailure(Call<CastResponse> call1, Throwable t) {
+            public void onFailure(Call<ReviewResponse> call2, Throwable t) {
 
             }
         });
+    }
+    public void readAllReviews(View view)
+    {
+        int id=view.getId();
+        if(id==R.id.readAllReviewsButton)
+        {
+            ArrayList<String> authors=new ArrayList<>();
+            ArrayList<String> content=new ArrayList<>();
+            for(int i=0;i<reviewsList.size();i++)
+            {
+                authors.add(reviewsList.get(i).author);
+                content.add(reviewsList.get(i).content);
+            }
+            Intent intent=new Intent(DetailsActivity.this,ReviewsActivity.class);
+            intent.putExtra("authors",authors);
+            intent.putExtra("content",content);
+            startActivity(intent);
+        }
     }
 }
