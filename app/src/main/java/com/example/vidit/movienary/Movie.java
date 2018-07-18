@@ -16,4 +16,8 @@ public class Movie
     String overview;
     @SerializedName("release_date")
     String releaseDate;
+    @SerializedName("media_type")
+    String mediaType;
+    @SerializedName("name")
+    String actorName;
 }

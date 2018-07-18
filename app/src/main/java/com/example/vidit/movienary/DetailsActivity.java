@@ -99,14 +99,14 @@ public class DetailsActivity extends AppCompatActivity
 
         intent = getIntent();
 
-        ArrayList<String> details = intent.getStringArrayListExtra(MainActivity.DETAILS_KEY);
-        String movieName = details.get(0);
-        String posterPath = details.get(1);
-        String rating = details.get(2);
-        String id = details.get(3);
-        String backdropPath = details.get(4);
-        String overview = details.get(5);
-        final String releaseDate = details.get(6);
+        Bundle bundle=intent.getExtras();
+        String movieName = bundle.getString("MovieName");
+        String posterPath = bundle.getString("PosterPath");
+        String rating = bundle.getString("Rating");
+        String id = bundle.getString("Id");
+        String backdropPath = bundle.getString("BackdropPath");
+        String overview = bundle.getString("Overview");
+        final String releaseDate = bundle.getString("ReleaseDate");
 
         collapsingToolbarLayout.setTitle(movieName);
         collapsingToolbarLayout.setExpandedTitleColor(getResources().getColor(android.R.color.transparent));
