@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <item
+        android:id="@+id/navigation_popular"
+        android:icon="@drawable/popular"
+        android:title="Popular"
+        app:showAsAction="always|withText"
+        android:checked="false"
+        android:iconTint="@color/color_grey_700"/>
+
+    <item
+        android:id="@+id/navigation_top_rated"
+        android:icon="@drawable/toprated"
+        android:title="Top Rated"
+        app:showAsAction="always|withText"
+        android:checked="false"
+        android:iconTint="@color/color_grey_700"/>
+
+    <item
+        android:id="@+id/navigation_now_showing"
+        android:icon="@drawable/nowshowing"
+        android:title="Now Showing"
+        app:showAsAction="always|withText"
+        android:checked="false"
+        android:iconTint="@color/color_grey_700"/>
+
+    <item
+        android:id="@+id/navigation_upcoming"
+        android:icon="@drawable/upcoming"
+        android:title="Upcoming"
+        app:showAsAction="always|withText"
+        android:checked="false"
+        android:iconTint="@color/color_grey_700"/>
+
+</menu>

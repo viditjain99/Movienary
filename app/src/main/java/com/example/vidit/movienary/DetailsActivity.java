@@ -22,6 +22,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.Toolbar;
 
+import com.airbnb.lottie.LottieAnimationView;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
@@ -35,14 +36,16 @@ import retrofit2.Response;
 
 public class DetailsActivity extends AppCompatActivity
 {
-    TextView titleTextView,overviewTextView,ratingTextView,runTimeTextView,genreTextView,castTextView,releaseDateTextView,reviewsTextView,authorTextView,bodyTextView;
+    TextView titleTextView,overviewTextView,ratingTextView,runTimeTextView,genreTextView,castTextView,releaseDateTextView,reviewsTextView,authorTextView,bodyTextView,similarMoviesTextView;
     ImageView backdropImageView,starImageView;
     Intent intent,intent1;
-    RecyclerView castRecyclerView;
+    RecyclerView castRecyclerView,similarMoviesRecyclerView;
     CastAdapter adapter;
+    MovieAdapter movieAdapter;
     ArrayList<Cast> actorsList=new ArrayList<>();
     ArrayList<Review> reviewsList=new ArrayList<>();
-    ProgressBar progressBar;
+    ArrayList<Movie> similarMoviesList=new ArrayList<>();
+    LottieAnimationView loading;
     Button readAllReviewsButton;
     android.support.v7.widget.Toolbar toolbar;
     CollapsingToolbarLayout collapsingToolbarLayout;
@@ -71,7 +74,7 @@ public class DetailsActivity extends AppCompatActivity
         readAllReviewsButton=findViewById(R.id.readAllReviewsButton);
         ratingTextView = findViewById(R.id.ratingTextView);
         backdropImageView = findViewById(R.id.backdropImageView);
-        progressBar=findViewById(R.id.progressBar);
+        loading=findViewById(R.id.loading);
         genreTextView=findViewById(R.id.genreTextView);
         starImageView = findViewById(R.id.starImageView);
         runTimeTextView=findViewById(R.id.runTimeTextView);
@@ -80,6 +83,8 @@ public class DetailsActivity extends AppCompatActivity
         authorTextView=findViewById(R.id.authorTextView);
         bodyTextView=findViewById(R.id.reviewBodyTextView);
         releaseDateTextView=findViewById(R.id.releaseDateTextView);
+        similarMoviesTextView=findViewById(R.id.similarMoviesTextView);
+        similarMoviesRecyclerView=findViewById(R.id.similarMoviesRecyclerView);
 
         adapter=new CastAdapter(DetailsActivity.this, actorsList, new CastClickListener() {
             @Override
@@ -93,8 +98,28 @@ public class DetailsActivity extends AppCompatActivity
         });
         LinearLayoutManager layoutManager=new LinearLayoutManager(DetailsActivity.this,LinearLayoutManager.HORIZONTAL,false);
         castRecyclerView.setLayoutManager(layoutManager);
-        //castRecyclerView.setNestedScrollingEnabled(false);
         castRecyclerView.setAdapter(adapter);
+
+        movieAdapter=new MovieAdapter(DetailsActivity.this, similarMoviesList, new MovieClickListener() {
+            @Override
+            public void onMovieClick(View view, int position) {
+                Movie movie=similarMoviesList.get(position);
+                Bundle bundle=new Bundle();
+                bundle.putString("MovieName",movie.movieName);
+                bundle.putString("PosterPath",movie.posterPath);
+                bundle.putString("Rating",movie.rating);
+                bundle.putString("Id",movie.id);
+                bundle.putString("BackdropPath",movie.backdropPath);
+                bundle.putString("Overview",movie.overview);
+                bundle.putString("ReleaseDate",movie.releaseDate);
+                Intent intent=new Intent(DetailsActivity.this,DetailsActivity.class);
+                intent.putExtras(bundle);
+                startActivity(intent);
+            }
+        });
+        LinearLayoutManager layoutManager1=new LinearLayoutManager(DetailsActivity.this,LinearLayoutManager.HORIZONTAL,false);
+        similarMoviesRecyclerView.setLayoutManager(layoutManager1);
+        similarMoviesRecyclerView.setAdapter(movieAdapter);
 
 
         intent = getIntent();
@@ -104,7 +129,7 @@ public class DetailsActivity extends AppCompatActivity
         String posterPath = bundle.getString("PosterPath");
         String rating = bundle.getString("Rating");
         String id = bundle.getString("Id");
-        String backdropPath = bundle.getString("BackdropPath");
+        final String backdropPath = bundle.getString("BackdropPath");
         String overview = bundle.getString("Overview");
         final String releaseDate = bundle.getString("ReleaseDate");
 
@@ -118,14 +143,29 @@ public class DetailsActivity extends AppCompatActivity
         runTimeTextView.setVisibility(View.GONE);
         genreTextView.setVisibility(View.GONE);
         castTextView.setVisibility(View.GONE);
-        progressBar.setVisibility(View.VISIBLE);
+        loading.setVisibility(View.VISIBLE);
         castRecyclerView.setVisibility(View.GONE);
         releaseDateTextView.setVisibility(View.GONE);
         reviewsTextView.setVisibility(View.GONE);
         authorTextView.setVisibility(View.GONE);
         bodyTextView.setVisibility(View.GONE);
         readAllReviewsButton.setVisibility(View.GONE);
+        similarMoviesTextView.setVisibility(View.GONE);
+        similarMoviesRecyclerView.setVisibility(View.GONE);
         titleTextView.setText(movieName);
+
+        backdropImageView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                int id=view.getId();
+                if(id==R.id.backdropImageView)
+                {
+                    Intent intent=new Intent(DetailsActivity.this,ImageActivity.class);
+                    intent.putExtra("BackdropPath",backdropPath);
+                    startActivity(intent);
+                }
+            }
+        });
 
         Picasso.get().load("http://image.tmdb.org/t/p/original//" + backdropPath).resize(1100, 618).into(backdropImageView);
         overviewTextView.setText(overview);
@@ -192,6 +232,23 @@ public class DetailsActivity extends AppCompatActivity
             }
         });
 
+        Call<MovieResponse> call3=ApiClient.getMoviesService().getSimilarMovies(id);
+        call3.enqueue(new Callback<MovieResponse>() {
+            @Override
+            public void onResponse(Call<MovieResponse> call3, Response<MovieResponse> response)
+            {
+                MovieResponse movieResponse=response.body();
+                ArrayList<Movie> movies=movieResponse.results;
+                similarMoviesList.clear();
+                similarMoviesList.addAll(movies);
+            }
+
+            @Override
+            public void onFailure(Call<MovieResponse> call3, Throwable t) {
+
+            }
+        });
+
         Call<ReviewResponse> call2=ApiClient.getMoviesService().getReviews(id);
         call2.enqueue(new Callback<ReviewResponse>() {
             @Override
@@ -234,7 +291,9 @@ public class DetailsActivity extends AppCompatActivity
                 authorTextView.setVisibility(View.VISIBLE);
                 bodyTextView.setVisibility(View.VISIBLE);
                 reviewsTextView.setVisibility(View.VISIBLE);
-                progressBar.setVisibility(View.GONE);
+                similarMoviesTextView.setVisibility(View.VISIBLE);
+                similarMoviesRecyclerView.setVisibility(View.VISIBLE);
+                loading.setVisibility(View.GONE);
             }
 
             @Override

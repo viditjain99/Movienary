@@ -29,5 +29,8 @@ public interface MoviesService
     Call<ReviewResponse> getReviews(@Path("id") String id);
 
     @GET("3/search/multi?api_key=c8e098971d85941867217bb907834115&language=en-US")
-    Call<MovieResponse> getSearchResults(@Query("query") String query,@Query("page") int page);
+    Call<MovieResponse> getSearchResults(@Query("query") String query);
+
+    @GET("3/movie/{id}/similar?api_key=c8e098971d85941867217bb907834115&language=en-US&page=1")
+    Call<MovieResponse> getSimilarMovies(@Path("id") String id);
 }

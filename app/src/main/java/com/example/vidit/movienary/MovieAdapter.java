@@ -35,7 +35,7 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieViewHolder> {
     {
         Movie movie=movies.get(i);
         movieViewHolder.name.setText(movie.movieName);
-        Picasso.get().load("http://image.tmdb.org/t/p/w500//"+movie.posterPath).into(movieViewHolder.image);
+        Picasso.get().load("http://image.tmdb.org/t/p/w500/"+movie.posterPath).into(movieViewHolder.image);
         if(Float.parseFloat(movie.rating)==0)
         {
             movieViewHolder.rating.setText("N/A");
