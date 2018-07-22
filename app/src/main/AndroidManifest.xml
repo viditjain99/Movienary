@@ -19,16 +19,21 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity android:name=".SearchActivity"
+            android:theme="@style/NoActionBar"/>
         <activity
             android:name=".DetailsActivity"
             android:theme="@style/NoActionBar" />
         <activity
             android:name=".ReviewsActivity"
             android:theme="@style/NoActionBar" />
-        <activity android:name=".SearchActivity" />
         <activity
             android:name=".ImageActivity"
             android:theme="@style/NoActionBar" />
+        <activity android:name=".TvShowsActivity"
+            android:theme="@style/NoActionBar"/>
+        <activity android:name=".TvShowDetailsActivity"
+            android:theme="@style/NoActionBar"/>
     </application>
 
 </manifest>

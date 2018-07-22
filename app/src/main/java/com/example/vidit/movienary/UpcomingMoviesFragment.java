@@ -36,6 +36,7 @@ public class UpcomingMoviesFragment extends Fragment {
     MovieAdapter adapter;
     UpcomingMoviesFragmentCallBack listener;
     int page=1;
+    int totalPages;
     public UpcomingMoviesFragment() {
 
     }
@@ -99,6 +100,7 @@ public class UpcomingMoviesFragment extends Fragment {
             public void onResponse(Call<MovieResponse> call, Response<MovieResponse> response) {
                 MovieResponse movieResponse=response.body();
                 ArrayList<Movie> moviesList=movieResponse.results;
+                totalPages=movieResponse.totalPages;
                 upcomingMoviesList.clear();
                 upcomingMoviesList.addAll(moviesList);
                 loading.setVisibility(View.GONE);

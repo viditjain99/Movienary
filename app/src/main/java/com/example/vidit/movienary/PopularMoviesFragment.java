@@ -6,11 +6,17 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
+import android.support.v4.view.MenuItemCompat;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.SearchView;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
@@ -27,7 +33,7 @@ import retrofit2.Response;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class PopularMoviesFragment extends Fragment {
+public class PopularMoviesFragment extends Fragment{
 
     MyRecyclerView popularRecyclerView;
     LottieAnimationView loading;
@@ -37,6 +43,7 @@ public class PopularMoviesFragment extends Fragment {
     MovieAdapter adapter;
     PopularMoviesFragmentCallBack listener;
     int page=1;
+    int totalPages;
     public PopularMoviesFragment() {
 
     }
@@ -57,7 +64,7 @@ public class PopularMoviesFragment extends Fragment {
                              Bundle savedInstanceState) {
         View output=inflater.inflate(R.layout.fragment_popular_movies,container,false);
         popularRecyclerView=output.findViewById(R.id.popularRecyclerView);
-        //progressBar=output.findViewById(R.id.progressBar);
+        popularMoviesList.clear();
         loading=output.findViewById(R.id.loading);
         searchButton=output.findViewById(R.id.searchButton);
         searchButton.setOnClickListener(new View.OnClickListener() {
@@ -70,7 +77,6 @@ public class PopularMoviesFragment extends Fragment {
         });
         popularRecyclerView.setVisibility(View.GONE);
         searchButton.setVisibility(View.GONE);
-        //progressBar.setVisibility(View.VISIBLE);
         loading.setVisibility(View.VISIBLE);
 
         adapter=new MovieAdapter(getContext(), popularMoviesList, new MovieClickListener() {
@@ -93,20 +99,17 @@ public class PopularMoviesFragment extends Fragment {
 
     public void fetchPopularMovies(int page)
     {
-        //progressBar.setVisibility(View.VISIBLE);
         loading.setVisibility(View.VISIBLE);
         popularRecyclerView.setVisibility(View.GONE);
         Call<MovieResponse> call=ApiClient.getMoviesService().getPopularMovies(page);
-        page++;
         call.enqueue(new Callback<MovieResponse>() {
             @Override
             public void onResponse(Call<MovieResponse> call, Response<MovieResponse> response) {
                 MovieResponse movieResponse=response.body();
                 ArrayList<Movie> moviesList=movieResponse.results;
-                popularMoviesList.clear();
+                totalPages=movieResponse.totalPages;
                 popularMoviesList.addAll(moviesList);
                 loading.setVisibility(View.GONE);
-                //progressBar.setVisibility(View.GONE);
                 popularRecyclerView.setVisibility(View.VISIBLE);
                 searchButton.setVisibility(View.VISIBLE);
                 popularRecyclerView.loadComplete();

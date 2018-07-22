@@ -1,5 +1,4 @@
 <?xml version="1.0" encoding="utf-8"?>
-
 <android.support.design.widget.CoordinatorLayout android:layout_width="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/scrollView"
@@ -94,6 +93,7 @@
                 android:paddingLeft="5dp"
                 android:orientation="horizontal"
                 android:gravity="center_vertical">
+
                 <ImageView
                     android:layout_width="40dp"
                     android:layout_height="40dp"
@@ -112,20 +112,11 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:id="@+id/runTimeTextView"
-                android:padding="10dp"
-                android:textSize="15dp"
-                android:textColor="#808080"
-                android:layout_below="@+id/releaseDateTextView"/>
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
                 android:id="@+id/genreTextView"
                 android:padding="10dp"
                 android:textSize="15dp"
                 android:textColor="#808080"
-                android:layout_below="@+id/runTimeTextView"/>
+                android:layout_below="@+id/ratingLayout"/>
 
             <TextView
                 android:layout_width="wrap_content"
@@ -134,7 +125,7 @@
                 android:textAppearance="@style/Base.TextAppearance.AppCompat.Large"
                 android:text="Cast"
                 android:textColor="#000000"
-                android:layout_below="@id/genreTextView"
+                android:layout_below="@id/firstAirDateTextView"
                 android:padding="10dp"/>
 
             <android.support.v7.widget.RecyclerView
@@ -147,28 +138,11 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:id="@+id/similarMoviesTextView"
-                android:text="Similar Movies"
-                android:textAppearance="@style/Base.TextAppearance.AppCompat.Large"
-                android:textColor="#000000"
-                android:layout_below="@+id/castRecyclerView"
-                android:padding="10dp"/>
-
-            <android.support.v7.widget.RecyclerView
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:id="@+id/similarMoviesRecyclerView"
-                android:layout_below="@+id/similarMoviesTextView"
-                app:layout_behavior="@string/appbar_scrolling_view_behavior" />
-
-            <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/releaseDateTextView"
-            android:padding="10dp"
-            android:textSize="15dp"
-            android:textColor="#808080"
-            android:layout_below="@id/ratingLayout"/>
+                android:id="@+id/firstAirDateTextView"
+                android:padding="10dp"
+                android:textSize="15dp"
+                android:textColor="#808080"
+                android:layout_below="@id/genreTextView"/>
 
             <TextView
                 android:layout_width="wrap_content"
@@ -178,7 +152,7 @@
                 android:textAppearance="@style/Base.TextAppearance.AppCompat.Large"
                 android:text="Reviews"
                 android:textColor="#000000"
-                android:layout_below="@id/similarMoviesRecyclerView"/>
+                android:layout_below="@id/castRecyclerView"/>
 
             <LinearLayout
                 android:layout_width="match_parent"

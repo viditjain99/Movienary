@@ -36,6 +36,7 @@ public class NowShowingMoviesFragment extends Fragment {
     MovieAdapter adapter;
     NowShowingMoviesFragmentCallBack listener;
     int page=1;
+    int totalPages;
     public NowShowingMoviesFragment() {
 
     }
@@ -100,6 +101,7 @@ public class NowShowingMoviesFragment extends Fragment {
             public void onResponse(Call<MovieResponse> call, Response<MovieResponse> response) {
                 MovieResponse movieResponse=response.body();
                 ArrayList<Movie> moviesList=movieResponse.results;
+                totalPages=movieResponse.totalPages;
                 nowShowingMoviesList.clear();
                 nowShowingMoviesList.addAll(moviesList);
                 loading.setVisibility(View.GONE);

@@ -37,6 +37,7 @@ public class TopRatedMoviesFragment extends Fragment {
     MovieAdapter adapter;
     TopRatedMoviesFragmentCallBack listener;
     int page=1;
+    int totalPages;
     public TopRatedMoviesFragment() {
 
     }
@@ -100,6 +101,7 @@ public class TopRatedMoviesFragment extends Fragment {
             public void onResponse(Call<MovieResponse> call, Response<MovieResponse> response) {
                 MovieResponse movieResponse=response.body();
                 ArrayList<Movie> moviesList=movieResponse.results;
+                totalPages=movieResponse.totalPages;
                 topRatedMoviesList.clear();
                 topRatedMoviesList.addAll(moviesList);
                 loading.setVisibility(View.GONE);

@@ -3,12 +3,12 @@
     android:layout_height="match_parent"
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:id="@+id/layout">
-
-    <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/tvLayout">
+    <ScrollView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="?android:attr/windowBackground">
+        android:background="?android:attr/windowBackground"
+        xmlns:android="http://schemas.android.com/apk/res/android">
 
         <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
             xmlns:app="http://schemas.android.com/apk/res-auto"
@@ -18,10 +18,10 @@
             android:orientation="vertical">
 
             <com.hereshem.lib.recycler.MyRecyclerView
-                android:id="@+id/popularRecyclerView"
+                android:id="@+id/airingTodayTvRecyclerView"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:orientation="horizontal" />
+                android:orientation="horizontal"/>
 
         </RelativeLayout>
 
@@ -30,7 +30,7 @@
     <com.airbnb.lottie.LottieAnimationView
         android:layout_width="120dp"
         android:layout_height="120dp"
-        android:id="@+id/loading"
+        android:id="@+id/tvLoading"
         app:lottie_autoPlay="true"
         app:lottie_fileName="movie_loading.json"
         app:lottie_loop="true"

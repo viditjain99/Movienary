@@ -33,16 +33,8 @@ public class SearchAdapter extends RecyclerView.Adapter<SearchViewHolder>
     {
         Movie result=searchResults.get(i);
         String mediaType=result.mediaType;
-        if(mediaType.equals("movie"))
-        {
-            searchViewHolder.text.setText(result.movieName);
-            Picasso.get().load("http://image.tmdb.org/t/p/w500//"+result.posterPath).into(searchViewHolder.image);
-        }
-        else if(mediaType.equals("person"))
-        {
-            searchViewHolder.text.setText(result.actorName);
-            Picasso.get().load("http://image.tmdb.org/t/p/w500//"+result.backdropPath).into(searchViewHolder.image);
-        }
+        searchViewHolder.text.setText(result.movieName);
+        Picasso.get().load("http://image.tmdb.org/t/p/w500//"+result.posterPath).into(searchViewHolder.image);
     }
 
     @Override
