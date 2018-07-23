@@ -1,22 +1,106 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.v7.widget.CardView xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
-    android:padding="16dp">
+    app:cardElevation="2dp"
+    android:layout_margin="4dp"
+    app:cardCornerRadius="4dp"
+    app:cardBackgroundColor="#ffffff"
+    android:layout_gravity="start"
+    xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <ImageView
-        android:layout_width="100dp"
-        android:layout_height="100dp"
-        android:id="@+id/searchResultImageView"
-        android:layout_gravity="center_horizontal"/>
+    <android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/searchResultTextView"
-        android:layout_gravity="center_horizontal"/>
+        <ImageView
+            android:id="@+id/searchResultsPosterImageView"
+            android:layout_width="144dp"
+            android:layout_height="match_parent"
+            android:adjustViewBounds="true"
+            android:scaleType="centerCrop"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.0" />
 
+        <TextView
+            android:id="@+id/searchResultsNameTextView"
+            android:layout_width="241dp"
+            android:layout_height="wrap_content"
+            android:padding="5dp"
+            android:text="name"
+            android:textAppearance="@style/TextAppearance.AppCompat.Large"
+            android:textColor="#000000"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toEndOf="@+id/searchResultsPosterImageView"
+            app:layout_constraintTop_toTopOf="parent" />
 
-</LinearLayout>
+        <TextView
+            android:id="@+id/searchResultsTypeTextView"
+            android:layout_width="168dp"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="8dp"
+            android:layout_marginRight="8dp"
+            android:padding="5dp"
+            android:text="type"
+            android:textColor="#000000"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toEndOf="@+id/searchResultsPosterImageView"
+            app:layout_constraintTop_toBottomOf="@+id/searchResultsNameTextView" />
+
+        <ImageView
+            android:id="@+id/starImageView"
+            android:layout_width="23dp"
+            android:layout_height="21dp"
+            android:layout_marginBottom="8dp"
+            android:layout_marginLeft="168dp"
+            android:layout_marginStart="168dp"
+            android:layout_marginTop="8dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="@+id/searchResultsTypeTextView"
+            app:layout_constraintTop_toBottomOf="@+id/searchResultsOverviewTextView"
+            app:layout_constraintVertical_bias="1.0"
+            app:srcCompat="@drawable/ic_action_name" />
+
+        <TextView
+            android:id="@+id/searchResultsRatingTextView"
+            android:layout_width="43dp"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="8dp"
+            android:layout_marginEnd="8dp"
+            android:layout_marginRight="8dp"
+            android:layout_marginTop="20dp"
+            android:gravity="center_vertical"
+            android:text="rating"
+            android:textColor="#808080"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toEndOf="@+id/starImageView"
+            app:layout_constraintTop_toBottomOf="@+id/searchResultsTypeTextView"
+            app:layout_constraintVertical_bias="0.979" />
+
+        <TextView
+            android:id="@+id/searchResultsOverviewTextView"
+            android:layout_width="231dp"
+            android:layout_height="105dp"
+            android:textColor="#000000"
+            android:padding="5dp"
+            android:text="overview"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="@+id/searchResultsTypeTextView"
+            app:layout_constraintTop_toBottomOf="@+id/searchResultsTypeTextView"
+            app:layout_constraintVertical_bias="0.0" />
+    </android.support.constraint.ConstraintLayout>
+
+</android.support.v7.widget.CardView>

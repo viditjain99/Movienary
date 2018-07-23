@@ -12,10 +12,15 @@ import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.SearchView;
 import android.support.v7.widget.Toolbar;
+import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.inputmethod.EditorInfo;
+import android.widget.EditText;
+import android.widget.TextView;
 
 import com.airbnb.lottie.LottieAnimationView;
 
@@ -29,6 +34,7 @@ public class TvShowsActivity extends AppCompatActivity implements PopularTvShows
     AiringTodayTvShowsFragment airingTodayTvShowsFragment;
     LottieAnimationView loading;
     Toolbar toolbar;
+    MenuItem searchItem;
     private MenuItem menuItem;
     private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
             = new BottomNavigationView.OnNavigationItemSelectedListener() {
@@ -85,6 +91,7 @@ public class TvShowsActivity extends AppCompatActivity implements PopularTvShows
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawer.addDrawerListener(toggle);
         toggle.syncState();
+        //searchEditText=findViewById(R.id.searchEditText);
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
@@ -99,6 +106,7 @@ public class TvShowsActivity extends AppCompatActivity implements PopularTvShows
         transaction.commit();
         loading.setVisibility(View.GONE);
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
+        //searchEditText.setOnKeyListener(TvShowsActivity.this);
     }
 
     @Override
@@ -128,9 +136,29 @@ public class TvShowsActivity extends AppCompatActivity implements PopularTvShows
     }
 
     @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        return true;
+    public boolean onCreateOptionsMenu(Menu menu)
+    {
+        getMenuInflater().inflate(R.menu.search_menu,menu);
+        searchItem=menu.findItem(R.id.action_search);
+        SearchView searchView = (SearchView) searchItem.getActionView();
+        searchView.setQueryHint("Search for Movies and TV Shows");
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                Intent intent=new Intent(TvShowsActivity.this,SearchActivity.class);
+                intent.putExtra("Query",query);
+                startActivity(intent);
+                return false;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                String query=newText;
+                return true;
+            }
+        });
+
+        return super.onCreateOptionsMenu(menu);
     }
 
     @Override

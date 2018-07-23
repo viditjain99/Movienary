@@ -75,9 +75,9 @@ public class TvShowDetailsActivity extends AppCompatActivity
             @Override
             public void onActorClick(View view, int position) {
                 Cast cast=actorsList.get(position);
-                String name=cast.actorName;
-                String url="https://www.google.co.in/search?q="+name+"&oq=robert&aqs=chrome.1.69i57j0l5.2474j0j4&sourceid=chrome&ie=UTF-8";
-                intent1=new Intent(Intent.ACTION_VIEW, Uri.parse(url));
+                String id=cast.id;
+                intent1=new Intent(TvShowDetailsActivity.this,ActorDetailsActivity.class);
+                intent1.putExtra("Id",id);
                 startActivity(intent1);
             }
         });

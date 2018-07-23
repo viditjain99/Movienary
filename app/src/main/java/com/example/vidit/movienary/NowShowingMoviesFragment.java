@@ -31,7 +31,7 @@ public class NowShowingMoviesFragment extends Fragment {
 
     MyRecyclerView nowShowingRecyclerView;
     ArrayList<Movie> nowShowingMoviesList=new ArrayList<>();
-    FloatingActionButton searchButton;
+    //FloatingActionButton searchButton;
     LottieAnimationView loading;
     MovieAdapter adapter;
     NowShowingMoviesFragmentCallBack listener;
@@ -58,15 +58,15 @@ public class NowShowingMoviesFragment extends Fragment {
         View output=inflater.inflate(R.layout.fragment_now_showing_movies,container,false);
         nowShowingRecyclerView=output.findViewById(R.id.nowShowingRecyclerView);
        loading=output.findViewById(R.id.loading);
-        searchButton=output.findViewById(R.id.searchButton);
-        searchButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view)
-            {
-                Intent intent=new Intent(getActivity(),SearchActivity.class);
-                startActivity(intent);
-            }
-        });
+        //searchButton=output.findViewById(R.id.searchButton);
+//        searchButton.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view)
+//            {
+//                Intent intent=new Intent(getActivity(),SearchActivity.class);
+//                startActivity(intent);
+//            }
+//        });
 
         adapter=new MovieAdapter(getContext(), nowShowingMoviesList, new MovieClickListener() {
             @Override
@@ -80,7 +80,7 @@ public class NowShowingMoviesFragment extends Fragment {
             }
         });
         nowShowingRecyclerView.setVisibility(View.GONE);
-        searchButton.setVisibility(View.GONE);
+        //searchButton.setVisibility(View.GONE);
         loading.setVisibility(View.VISIBLE);
         nowShowingRecyclerView.setAdapter(adapter);
 
@@ -106,7 +106,7 @@ public class NowShowingMoviesFragment extends Fragment {
                 nowShowingMoviesList.addAll(moviesList);
                 loading.setVisibility(View.GONE);
                 nowShowingRecyclerView.setVisibility(View.VISIBLE);
-                searchButton.setVisibility(View.VISIBLE);
+                //searchButton.setVisibility(View.VISIBLE);
                 nowShowingRecyclerView.loadComplete();
             }
 

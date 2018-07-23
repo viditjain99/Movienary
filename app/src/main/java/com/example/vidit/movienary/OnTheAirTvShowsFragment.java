@@ -24,7 +24,7 @@ public class OnTheAirTvShowsFragment extends Fragment
     MyRecyclerView onTheAirTvRecyclerView;
     LottieAnimationView tvLoading;
     ArrayList<Tv> onTheAirTvShowsList=new ArrayList<>();
-    FloatingActionButton searchButton;
+    //FloatingActionButton searchButton;
     TvAdapter adapter;
     OnTheAirTvShowsFragmentCallBack listener;
     int page=1;
@@ -50,17 +50,17 @@ public class OnTheAirTvShowsFragment extends Fragment
         View output=inflater.inflate(R.layout.fragment_on_the_air_tvshows,container,false);
         onTheAirTvRecyclerView=output.findViewById(R.id.onTheAirTvRecyclerView);
         tvLoading=output.findViewById(R.id.tvLoading);
-        searchButton=output.findViewById(R.id.searchButton);
-        searchButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view)
-            {
-                Intent intent=new Intent(getActivity(),SearchActivity.class);
-                startActivity(intent);
-            }
-        });
+        //searchButton=output.findViewById(R.id.searchButton);
+//        searchButton.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view)
+//            {
+//                Intent intent=new Intent(getActivity(),SearchActivity.class);
+//                startActivity(intent);
+//            }
+//        });
         onTheAirTvRecyclerView.setVisibility(View.GONE);
-        searchButton.setVisibility(View.GONE);
+        //searchButton.setVisibility(View.GONE);
         tvLoading.setVisibility(View.VISIBLE);
 
         adapter=new TvAdapter(getContext(), onTheAirTvShowsList, new TvClickListener() {
@@ -97,7 +97,7 @@ public class OnTheAirTvShowsFragment extends Fragment
                 onTheAirTvShowsList.addAll(tvShowsList);
                 tvLoading.setVisibility(View.GONE);
                 onTheAirTvRecyclerView.setVisibility(View.VISIBLE);
-                searchButton.setVisibility(View.VISIBLE);
+                //searchButton.setVisibility(View.VISIBLE);
                 onTheAirTvRecyclerView.loadComplete();
             }
 

@@ -32,7 +32,7 @@ public class TopRatedMoviesFragment extends Fragment {
 
     MyRecyclerView topRatedRecyclerView;
     ArrayList<Movie> topRatedMoviesList=new ArrayList<>();
-    FloatingActionButton searchButton;
+    //FloatingActionButton searchButton;
     LottieAnimationView loading;
     MovieAdapter adapter;
     TopRatedMoviesFragmentCallBack listener;
@@ -59,17 +59,17 @@ public class TopRatedMoviesFragment extends Fragment {
         View output=inflater.inflate(R.layout.fragment_top_rated_movies,container,false);
         topRatedRecyclerView=output.findViewById(R.id.topRatedRecyclerView);
         loading=output.findViewById(R.id.loading);
-        searchButton=output.findViewById(R.id.searchButton);
-        searchButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view)
-            {
-                Intent intent=new Intent(getActivity(),SearchActivity.class);
-                startActivity(intent);
-            }
-        });
+        //searchButton=output.findViewById(R.id.searchButton);
+//        searchButton.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view)
+//            {
+//                Intent intent=new Intent(getActivity(),SearchActivity.class);
+//                startActivity(intent);
+//            }
+//        });
         topRatedRecyclerView.setVisibility(View.GONE);
-        searchButton.setVisibility(View.GONE);
+        //searchButton.setVisibility(View.GONE);
         loading.setVisibility(View.VISIBLE);
 
         adapter=new MovieAdapter(getContext(), topRatedMoviesList, new MovieClickListener() {
@@ -106,7 +106,7 @@ public class TopRatedMoviesFragment extends Fragment {
                 topRatedMoviesList.addAll(moviesList);
                 loading.setVisibility(View.GONE);
                 topRatedRecyclerView.setVisibility(View.VISIBLE);
-                searchButton.setVisibility(View.VISIBLE);
+                //searchButton.setVisibility(View.VISIBLE);
                 topRatedRecyclerView.loadComplete();
             }
 

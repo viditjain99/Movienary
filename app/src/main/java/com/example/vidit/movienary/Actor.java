@@ -2,11 +2,13 @@ package com.example.vidit.movienary;
 
 import com.google.gson.annotations.SerializedName;
 
-public class Cast
+public class Actor
 {
-    @SerializedName("name")
-    String actorName;
+    String birthday;
+    String name;
+    String biography;
+    @SerializedName("place_of_birth")
+    String placeOfBirth;
     @SerializedName("profile_path")
     String profilePath;
-    String id;
 }

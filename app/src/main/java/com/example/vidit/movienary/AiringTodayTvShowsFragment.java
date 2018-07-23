@@ -24,7 +24,7 @@ public class AiringTodayTvShowsFragment extends Fragment
     MyRecyclerView airingTodayTvRecyclerView;
     LottieAnimationView tvLoading;
     ArrayList<Tv> airingTodayTvShowsList=new ArrayList<>();
-    FloatingActionButton searchButton;
+    //FloatingActionButton searchButton;
     TvAdapter adapter;
     AiringTodayTvShowsFragmentCallBack listener;
     int page=1;
@@ -50,17 +50,15 @@ public class AiringTodayTvShowsFragment extends Fragment
         View output=inflater.inflate(R.layout.fragment_airing_today_tvshows,container,false);
         airingTodayTvRecyclerView=output.findViewById(R.id.airingTodayTvRecyclerView);
         tvLoading=output.findViewById(R.id.tvLoading);
-        searchButton=output.findViewById(R.id.searchButton);
-        searchButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view)
-            {
-                Intent intent=new Intent(getActivity(),SearchActivity.class);
-                startActivity(intent);
-            }
-        });
+        //searchButton=output.findViewById(R.id.searchButton);
+//        searchButton.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view)
+//            {
+//            }
+//        });
         airingTodayTvRecyclerView.setVisibility(View.GONE);
-        searchButton.setVisibility(View.GONE);
+        //searchButton.setVisibility(View.GONE);
         tvLoading.setVisibility(View.VISIBLE);
 
         adapter=new TvAdapter(getContext(), airingTodayTvShowsList, new TvClickListener() {
@@ -97,7 +95,7 @@ public class AiringTodayTvShowsFragment extends Fragment
                 airingTodayTvShowsList.addAll(tvShowsList);
                 tvLoading.setVisibility(View.GONE);
                 airingTodayTvRecyclerView.setVisibility(View.VISIBLE);
-                searchButton.setVisibility(View.VISIBLE);
+                //searchButton.setVisibility(View.VISIBLE);
                 airingTodayTvRecyclerView.loadComplete();
             }
 

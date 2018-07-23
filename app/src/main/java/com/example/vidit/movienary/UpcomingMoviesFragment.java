@@ -31,7 +31,7 @@ public class UpcomingMoviesFragment extends Fragment {
 
     MyRecyclerView upcomingRecyclerView;
     ArrayList<Movie> upcomingMoviesList=new ArrayList<>();
-    FloatingActionButton searchButton;
+    //FloatingActionButton searchButton;
     LottieAnimationView loading;
     MovieAdapter adapter;
     UpcomingMoviesFragmentCallBack listener;
@@ -58,17 +58,17 @@ public class UpcomingMoviesFragment extends Fragment {
         View output=inflater.inflate(R.layout.fragment_upcoming_movies,container,false);
         upcomingRecyclerView=output.findViewById(R.id.upcomingRecyclerView);
         loading=output.findViewById(R.id.loading);
-        searchButton=output.findViewById(R.id.searchButton);
-        searchButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view)
-            {
-                Intent intent=new Intent(getActivity(),SearchActivity.class);
-                startActivity(intent);
-            }
-        });
+        //searchButton=output.findViewById(R.id.searchButton);
+//        searchButton.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view)
+//            {
+//                Intent intent=new Intent(getActivity(),SearchActivity.class);
+//                startActivity(intent);
+//            }
+//        });
         upcomingRecyclerView.setVisibility(View.GONE);
-        searchButton.setVisibility(View.GONE);
+        //searchButton.setVisibility(View.GONE);
         loading.setVisibility(View.VISIBLE);
 
         adapter=new MovieAdapter(getContext(), upcomingMoviesList, new MovieClickListener() {
@@ -105,7 +105,7 @@ public class UpcomingMoviesFragment extends Fragment {
                 upcomingMoviesList.addAll(moviesList);
                 loading.setVisibility(View.GONE);
                 upcomingRecyclerView.setVisibility(View.VISIBLE);
-                searchButton.setVisibility(View.VISIBLE);
+                //searchButton.setVisibility(View.VISIBLE);
                 upcomingRecyclerView.loadComplete();
             }
 

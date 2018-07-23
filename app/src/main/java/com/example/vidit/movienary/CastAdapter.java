@@ -48,8 +48,8 @@ public class CastAdapter extends RecyclerView.Adapter<CastViewHolder>
         Cast cast=actorsList.get(i);
         String s="<b>"+cast.actorName+"</b>";
         castViewHolder.name.setText(Html.fromHtml(s));
-        Transformation transformation = new RoundedTransformationBuilder().borderColor(Color.BLACK).borderWidthDp(0).cornerRadiusDp(0).oval(true).build();
-        Picasso.get().load("http://image.tmdb.org/t/p/w185/"+cast.profilePath).transform(transformation).into(castViewHolder.image);
+        //Transformation transformation = new RoundedTransformationBuilder().borderColor(Color.BLACK).borderWidthDp(0).cornerRadiusDp(0).oval(true).build();
+        Picasso.get().load("http://image.tmdb.org/t/p/w185/"+cast.profilePath).into(castViewHolder.image);
         castViewHolder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

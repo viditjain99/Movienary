@@ -8,12 +8,16 @@ import android.widget.TextView;
 
 public class SearchViewHolder extends RecyclerView.ViewHolder
 {
-    ImageView image;
-    TextView text;
+    ImageView image,star;
+    TextView name,rating,type,overview;
     public SearchViewHolder(@NonNull View itemView)
     {
         super(itemView);
-        image=itemView.findViewById(R.id.searchResultImageView);
-        text=itemView.findViewById(R.id.searchResultTextView);
+        image=itemView.findViewById(R.id.searchResultsPosterImageView);
+        star=itemView.findViewById(R.id.starImageView);
+        name=itemView.findViewById(R.id.searchResultsNameTextView);
+        rating=itemView.findViewById(R.id.searchResultsRatingTextView);
+        type=itemView.findViewById(R.id.searchResultsTypeTextView);
+        overview=itemView.findViewById(R.id.searchResultsOverviewTextView);
     }
 }

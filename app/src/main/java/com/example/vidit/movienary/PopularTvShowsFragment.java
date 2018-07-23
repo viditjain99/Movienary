@@ -24,7 +24,7 @@ public class PopularTvShowsFragment extends Fragment
     MyRecyclerView popularTvRecyclerView;
     LottieAnimationView tvLoading;
     ArrayList<Tv> popularTvShowsList=new ArrayList<>();
-    FloatingActionButton searchButton;
+    //FloatingActionButton searchButton;
     TvAdapter adapter;
     PopularTvShowsFragmentCallBack listener;
     int page=1;
@@ -50,17 +50,17 @@ public class PopularTvShowsFragment extends Fragment
         View output=inflater.inflate(R.layout.fragment_popular_tvshows,container,false);
         popularTvRecyclerView=output.findViewById(R.id.popularTvRecyclerView);
         tvLoading=output.findViewById(R.id.tvLoading);
-        searchButton=output.findViewById(R.id.searchButton);
-        searchButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view)
-            {
-                Intent intent=new Intent(getActivity(),SearchActivity.class);
-                startActivity(intent);
-            }
-        });
+        //searchButton=output.findViewById(R.id.searchButton);
+//        searchButton.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view)
+//            {
+//                Intent intent=new Intent(getActivity(),SearchActivity.class);
+//                startActivity(intent);
+//            }
+//        });
         popularTvRecyclerView.setVisibility(View.GONE);
-        searchButton.setVisibility(View.GONE);
+        //searchButton.setVisibility(View.GONE);
         tvLoading.setVisibility(View.VISIBLE);
 
         adapter=new TvAdapter(getContext(), popularTvShowsList, new TvClickListener() {
@@ -97,7 +97,7 @@ public class PopularTvShowsFragment extends Fragment
                 popularTvShowsList.addAll(tvShowsList);
                 tvLoading.setVisibility(View.GONE);
                 popularTvRecyclerView.setVisibility(View.VISIBLE);
-                searchButton.setVisibility(View.VISIBLE);
+                //searchButton.setVisibility(View.VISIBLE);
                 popularTvRecyclerView.loadComplete();
             }
 

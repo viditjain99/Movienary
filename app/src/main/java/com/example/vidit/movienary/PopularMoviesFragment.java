@@ -38,8 +38,7 @@ public class PopularMoviesFragment extends Fragment{
     MyRecyclerView popularRecyclerView;
     LottieAnimationView loading;
     ArrayList<Movie> popularMoviesList=new ArrayList<>();
-    FloatingActionButton searchButton;
-    ProgressBar progressBar;
+    //FloatingActionButton searchButton;
     MovieAdapter adapter;
     PopularMoviesFragmentCallBack listener;
     int page=1;
@@ -66,17 +65,17 @@ public class PopularMoviesFragment extends Fragment{
         popularRecyclerView=output.findViewById(R.id.popularRecyclerView);
         popularMoviesList.clear();
         loading=output.findViewById(R.id.loading);
-        searchButton=output.findViewById(R.id.searchButton);
-        searchButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view)
-            {
-                Intent intent=new Intent(getActivity(),SearchActivity.class);
-                startActivity(intent);
-            }
-        });
+        //searchButton=output.findViewById(R.id.searchButton);
+//        searchButton.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view)
+//            {
+//                Intent intent=new Intent(getActivity(),SearchActivity.class);
+//                startActivity(intent);
+//            }
+//        });
         popularRecyclerView.setVisibility(View.GONE);
-        searchButton.setVisibility(View.GONE);
+        //searchButton.setVisibility(View.GONE);
         loading.setVisibility(View.VISIBLE);
 
         adapter=new MovieAdapter(getContext(), popularMoviesList, new MovieClickListener() {
@@ -111,7 +110,7 @@ public class PopularMoviesFragment extends Fragment{
                 popularMoviesList.addAll(moviesList);
                 loading.setVisibility(View.GONE);
                 popularRecyclerView.setVisibility(View.VISIBLE);
-                searchButton.setVisibility(View.VISIBLE);
+                //searchButton.setVisibility(View.VISIBLE);
                 popularRecyclerView.loadComplete();
             }
 

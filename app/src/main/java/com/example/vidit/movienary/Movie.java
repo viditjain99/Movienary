@@ -19,5 +19,5 @@ public class Movie
     @SerializedName("media_type")
     String mediaType;
     @SerializedName("name")
-    String actorName;
+    String tvShowName;
 }

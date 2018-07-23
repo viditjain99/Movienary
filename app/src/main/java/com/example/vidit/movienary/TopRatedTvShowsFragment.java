@@ -24,7 +24,7 @@ public class TopRatedTvShowsFragment extends Fragment
     MyRecyclerView topRatedTvRecyclerView;
     LottieAnimationView tvLoading;
     ArrayList<Tv> topRatedTvShowsList=new ArrayList<>();
-    FloatingActionButton searchButton;
+    //FloatingActionButton searchButton;
     TvAdapter adapter;
     TopRatedTvShowsFragmentCallBack listener;
     int page=1;
@@ -50,17 +50,17 @@ public class TopRatedTvShowsFragment extends Fragment
         View output=inflater.inflate(R.layout.fragment_top_rated_tvshows,container,false);
         topRatedTvRecyclerView=output.findViewById(R.id.topRatedTvRecyclerView);
         tvLoading=output.findViewById(R.id.tvLoading);
-        searchButton=output.findViewById(R.id.searchButton);
-        searchButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view)
-            {
-                Intent intent=new Intent(getActivity(),SearchActivity.class);
-                startActivity(intent);
-            }
-        });
+        //searchButton=output.findViewById(R.id.searchButton);
+//        searchButton.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view)
+//            {
+//                Intent intent=new Intent(getActivity(),SearchActivity.class);
+//                startActivity(intent);
+//            }
+//        });
         topRatedTvRecyclerView.setVisibility(View.GONE);
-        searchButton.setVisibility(View.GONE);
+        //searchButton.setVisibility(View.GONE);
         tvLoading.setVisibility(View.VISIBLE);
 
         adapter=new TvAdapter(getContext(), topRatedTvShowsList, new TvClickListener() {
@@ -97,7 +97,7 @@ public class TopRatedTvShowsFragment extends Fragment
                 topRatedTvShowsList.addAll(tvShowsList);
                 tvLoading.setVisibility(View.GONE);
                 topRatedTvRecyclerView.setVisibility(View.VISIBLE);
-                searchButton.setVisibility(View.VISIBLE);
+                //searchButton.setVisibility(View.VISIBLE);
                 topRatedTvRecyclerView.loadComplete();
             }
 

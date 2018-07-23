@@ -34,6 +34,8 @@
             android:theme="@style/NoActionBar"/>
         <activity android:name=".TvShowDetailsActivity"
             android:theme="@style/NoActionBar"/>
+        <activity android:name=".ActorDetailsActivity"
+            android:theme="@style/NoActionBar"/>
     </application>
 
 </manifest>

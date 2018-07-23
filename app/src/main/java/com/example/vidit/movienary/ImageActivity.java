@@ -9,20 +9,25 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Gravity;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.ImageView;
 
+import com.airbnb.lottie.LottieAnimationView;
 import com.squareup.picasso.Picasso;
 
 public class ImageActivity extends AppCompatActivity
 {
     ImageView fullImageView;
     Toolbar toolbar;
+    LottieAnimationView loading;
     @Override
     public void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_image);
         getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LAYOUT_STABLE | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN);
+        loading=findViewById(R.id.imageLoading);
+        loading.setVisibility(View.VISIBLE);
         toolbar=findViewById(R.id.toolbar);
         toolbar.setNavigationIcon(R.drawable.back);
         setSupportActionBar(toolbar);
@@ -40,6 +45,6 @@ public class ImageActivity extends AppCompatActivity
         actionBar.setBackgroundDrawable(new ColorDrawable(Color.BLACK));
         Intent intent=getIntent();
         String backdropPath=intent.getStringExtra("BackdropPath");
-        Picasso.get().load("http://image.tmdb.org/t/p/original//" + backdropPath).into(fullImageView);
+        Picasso.get().load("http://image.tmdb.org/t/p/original/" + backdropPath).into(fullImageView);
     }
 }
