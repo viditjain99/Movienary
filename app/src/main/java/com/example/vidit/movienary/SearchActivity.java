@@ -8,6 +8,7 @@ import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.airbnb.lottie.LottieAnimationView;
@@ -24,6 +25,7 @@ public class SearchActivity extends AppCompatActivity
     ArrayList<Movie> searchResults=new ArrayList<>();
     LottieAnimationView loading;
     MyRecyclerView searchResultsRecyclerView;
+    TextView noResultsFoundTextView;
     SearchAdapter adapter;
     Toolbar toolbar;
     @Override
@@ -34,6 +36,8 @@ public class SearchActivity extends AppCompatActivity
         loading=findViewById(R.id.loading);
         loading.setVisibility(View.VISIBLE);
         searchResultsRecyclerView=findViewById(R.id.searchResultsRecyclerView);
+        noResultsFoundTextView=findViewById(R.id.noResultsFoundTextView);
+        noResultsFoundTextView.setVisibility(View.GONE);
         toolbar=findViewById(R.id.toolbar);
         toolbar.setNavigationIcon(R.drawable.back);
         //toolbar.setTitle("");
@@ -47,7 +51,44 @@ public class SearchActivity extends AppCompatActivity
             }
         });
         searchResultsRecyclerView.setVisibility(View.GONE);
-        adapter=new SearchAdapter(searchResults,SearchActivity.this);
+        adapter=new SearchAdapter(searchResults, SearchActivity.this, new SearchResultClickListener() {
+            @Override
+            public void onResultClick(View view,int position) {
+                Movie result=searchResults.get(position);
+                if(result.mediaType.equals("movie"))
+                {
+                    Intent intent=new Intent(SearchActivity.this,DetailsActivity.class);
+                    Bundle bundle=new Bundle();
+                    bundle.putString("MovieName",result.movieName);
+                    bundle.putString("PosterPath",result.posterPath);
+                    bundle.putString("Rating",result.rating);
+                    bundle.putString("Id",result.id);
+                    bundle.putString("BackdropPath",result.backdropPath);
+                    bundle.putString("Overview",result.overview);
+                    bundle.putString("ReleaseDate",result.releaseDate);
+                    intent.putExtras(bundle);
+                    startActivity(intent);
+                }
+                else if(result.mediaType.equals("tv"))
+                {
+                    Intent intent=new Intent(SearchActivity.this,TvShowDetailsActivity.class);
+                    Bundle bundle=new Bundle();
+                    bundle.putString("TvShowName",result.tvShowName);
+                    bundle.putString("PosterPath",result.posterPath);
+                    bundle.putString("Rating",result.rating);
+                    bundle.putString("Id",result.id);
+                    bundle.putString("BackdropPath",result.backdropPath);
+                    bundle.putString("Overview",result.overview);
+                    bundle.putString("FirstAirDate",result.firstAirDate);
+                    intent.putExtras(bundle);
+                    startActivity(intent);
+                }
+                else
+                {
+
+                }
+            }
+        });
         LinearLayoutManager layoutManager=new LinearLayoutManager(SearchActivity.this,LinearLayoutManager.VERTICAL,false);
         searchResultsRecyclerView.setAdapter(adapter);
         searchResultsRecyclerView.setLayoutManager(layoutManager);
@@ -61,6 +102,13 @@ public class SearchActivity extends AppCompatActivity
             {
                 MovieResponse movieResponse=response.body();
                 ArrayList<Movie> results=movieResponse.results;
+                if(results.size()==0)
+                {
+                    searchResultsRecyclerView.setVisibility(View.GONE);
+                    loading.setVisibility(View.GONE);
+                    noResultsFoundTextView.setVisibility(View.VISIBLE);
+                    return;
+                }
                 searchResults.addAll(results);
                 searchResultsRecyclerView.setVisibility(View.VISIBLE);
                 //Toast.makeText(SearchActivity.this,searchResults.get(0).posterPath,Toast.LENGTH_LONG).show();

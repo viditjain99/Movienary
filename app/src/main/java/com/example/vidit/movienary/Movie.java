@@ -20,4 +20,7 @@ public class Movie
     String mediaType;
     @SerializedName("name")
     String tvShowName;
+    @SerializedName("first_air_date")
+    String firstAirDate;
+    boolean favourite=false;
 }

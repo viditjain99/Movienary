@@ -225,7 +225,6 @@ public class DetailsActivity extends AppCompatActivity
                 ArrayList<Cast> castList=castResponse.cast;
                 actorsList.clear();
                 actorsList.addAll(castList);
-                castRecyclerView.setVisibility(View.VISIBLE);
             }
 
             @Override
@@ -288,6 +287,7 @@ public class DetailsActivity extends AppCompatActivity
                 readAllReviewsButton.setVisibility(View.VISIBLE);
                 genreTextView.setVisibility(View.VISIBLE);
                 castTextView.setVisibility(View.VISIBLE);
+                castRecyclerView.setVisibility(View.VISIBLE);
                 releaseDateTextView.setVisibility(View.VISIBLE);
                 authorTextView.setVisibility(View.VISIBLE);
                 bodyTextView.setVisibility(View.VISIBLE);

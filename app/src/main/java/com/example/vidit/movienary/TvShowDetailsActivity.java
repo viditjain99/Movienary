@@ -25,14 +25,16 @@ import retrofit2.Response;
 
 public class TvShowDetailsActivity extends AppCompatActivity
 {
-    TextView titleTextView,ratingTextView,genreTextView,castTextView,firstAirDateTextView,authorTextView,reviewsTextView;
+    TextView titleTextView,ratingTextView,genreTextView,castTextView,firstAirDateTextView,authorTextView,reviewsTextView,similarTvShowsTextView;
     ExpandableTextView overviewTextView,bodyTextView ;
     ImageView backdropImageView,starImageView;
-    RecyclerView castRecyclerView;
+    RecyclerView castRecyclerView,similarTvShowsRecyclerView;
     CastAdapter adapter;
+    TvAdapter tvAdapter;
     Intent intent1,intent;
     ArrayList<Cast> actorsList=new ArrayList<>();
     ArrayList<Review> reviewsList=new ArrayList<>();
+    ArrayList<Tv> similarTvShowsList=new ArrayList<>();
     LottieAnimationView loading;
     Button readAllReviewsButton;
     android.support.v7.widget.Toolbar toolbar;
@@ -71,6 +73,8 @@ public class TvShowDetailsActivity extends AppCompatActivity
         authorTextView=findViewById(R.id.authorTextView);
         bodyTextView=findViewById(R.id.reviewBodyTextView);
         firstAirDateTextView=findViewById(R.id.firstAirDateTextView);
+        similarTvShowsRecyclerView=findViewById(R.id.similarTvShowsRecyclerView);
+        similarTvShowsTextView=findViewById(R.id.similarTvShowsTextView);
 
         adapter=new CastAdapter(TvShowDetailsActivity.this, actorsList, new CastClickListener() {
             @Override
@@ -85,6 +89,27 @@ public class TvShowDetailsActivity extends AppCompatActivity
         LinearLayoutManager layoutManager=new LinearLayoutManager(TvShowDetailsActivity.this,LinearLayoutManager.HORIZONTAL,false);
         castRecyclerView.setLayoutManager(layoutManager);
         castRecyclerView.setAdapter(adapter);
+
+        tvAdapter=new TvAdapter(TvShowDetailsActivity.this, similarTvShowsList, new TvClickListener() {
+            @Override
+            public void onTvClick(View view, int position) {
+                Tv tvShow=similarTvShowsList.get(position);
+                Bundle bundle=new Bundle();
+                bundle.putString("TvShowName",tvShow.tvShowName);
+                bundle.putString("PosterPath",tvShow.posterPath);
+                bundle.putString("Rating",tvShow.rating);
+                bundle.putString("Id",tvShow.id);
+                bundle.putString("BackdropPath",tvShow.backdropPath);
+                bundle.putString("Overview",tvShow.overview);
+                bundle.putString("FirstAirDate",tvShow.firstAirDate);
+                Intent intent=new Intent(TvShowDetailsActivity.this,TvShowDetailsActivity.class);
+                intent.putExtras(bundle);
+                startActivity(intent);
+            }
+        });
+        LinearLayoutManager layoutManager1=new LinearLayoutManager(TvShowDetailsActivity.this,LinearLayoutManager.HORIZONTAL,false);
+        similarTvShowsRecyclerView.setLayoutManager(layoutManager1);
+        similarTvShowsRecyclerView.setAdapter(tvAdapter);
 
         intent=getIntent();
 
@@ -113,6 +138,8 @@ public class TvShowDetailsActivity extends AppCompatActivity
         authorTextView.setVisibility(View.GONE);
         bodyTextView.setVisibility(View.GONE);
         readAllReviewsButton.setVisibility(View.GONE);
+        similarTvShowsRecyclerView.setVisibility(View.GONE);
+        similarTvShowsTextView.setVisibility(View.GONE);
         titleTextView.setText(tvShowName);
 
         backdropImageView.setOnClickListener(new View.OnClickListener() {
@@ -188,6 +215,22 @@ public class TvShowDetailsActivity extends AppCompatActivity
             }
         });
 
+        Call<TvResponse> call3=ApiClient.getTvService().getSimilarTvShows(id);
+        call3.enqueue(new Callback<TvResponse>() {
+            @Override
+            public void onResponse(Call<TvResponse> call, Response<TvResponse> response) {
+                TvResponse tvResponse=response.body();
+                ArrayList<Tv> tvShows=tvResponse.results;
+                similarTvShowsList.clear();
+                similarTvShowsList.addAll(tvShows);
+            }
+
+            @Override
+            public void onFailure(Call<TvResponse> call, Throwable t) {
+
+            }
+        });
+
         Call<ReviewResponse> call2=ApiClient.getTvService().getReviews(id);
         call2.enqueue(new Callback<ReviewResponse>() {
             @Override
@@ -229,6 +272,8 @@ public class TvShowDetailsActivity extends AppCompatActivity
                 authorTextView.setVisibility(View.VISIBLE);
                 bodyTextView.setVisibility(View.VISIBLE);
                 reviewsTextView.setVisibility(View.VISIBLE);
+                similarTvShowsRecyclerView.setVisibility(View.VISIBLE);
+                similarTvShowsTextView.setVisibility(View.VISIBLE);
                 loading.setVisibility(View.GONE);
             }
 

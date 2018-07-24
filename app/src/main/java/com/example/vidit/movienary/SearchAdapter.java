@@ -16,10 +16,13 @@ public class SearchAdapter extends RecyclerView.Adapter<SearchViewHolder>
 {
     ArrayList<Movie> searchResults;
     Context context;
-    SearchAdapter(ArrayList<Movie> searchResults,Context context)
+    SearchResultClickListener listener;
+    SearchAdapter(ArrayList<Movie> searchResults,Context context,SearchResultClickListener listener)
     {
         this.searchResults=searchResults;
         this.context=context;
+        this.listener=listener;
+
     }
     @NonNull
     @Override
@@ -70,6 +73,12 @@ public class SearchAdapter extends RecyclerView.Adapter<SearchViewHolder>
             searchViewHolder.rating.setText(result.rating);
         }
         Picasso.get().load("https://cdn2.iconfinder.com/data/icons/modifiers-add-on-1-flat/48/Mod_Add-On_1-35-512.png").into(searchViewHolder.star);
+        searchViewHolder.itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                listener.onResultClick(view,searchViewHolder.getAdapterPosition());
+            }
+        });
     }
 
     @Override

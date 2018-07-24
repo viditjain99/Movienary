@@ -23,7 +23,8 @@ import retrofit2.Response;
 public class ActorDetailsActivity extends AppCompatActivity
 {
     Intent intent;
-    TextView actorNameTextView,biographyTextView,ageTextView,birthPlaceTextView,biography,movieCreditsTextView,tvShowCredits;
+    TextView actorNameTextView,ageTextView,birthPlaceTextView,biography,movieCreditsTextView,tvShowCredits;
+    ExpandableTextView biographyTextView;
     ImageView profileImageView;
     android.support.v7.widget.Toolbar toolbar;
     CollapsingToolbarLayout collapsingToolbarLayout;

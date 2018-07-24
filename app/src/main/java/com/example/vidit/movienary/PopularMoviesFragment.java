@@ -9,6 +9,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.view.MenuItemCompat;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.SearchView;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -43,6 +44,7 @@ public class PopularMoviesFragment extends Fragment{
     PopularMoviesFragmentCallBack listener;
     int page=1;
     int totalPages;
+    EndlessRecyclerViewScrollListener scrollListener;
     public PopularMoviesFragment() {
 
     }
@@ -92,15 +94,27 @@ public class PopularMoviesFragment extends Fragment{
         popularRecyclerView.setAdapter(adapter);
         GridLayoutManager layoutManager=new GridLayoutManager(getContext(),2,GridLayoutManager.VERTICAL,false);
         popularRecyclerView.setLayoutManager(layoutManager);
+//        scrollListener=new EndlessRecyclerViewScrollListener(layoutManager) {
+//            @Override
+//            public void onLoadMore(int page, int totalItemsCount, RecyclerView view) {
+//                fetchPopularMovies(page);
+//                adapter.notifyItemRangeInserted(0,totalItemsCount);
+//            }
+//        };
+//        popularRecyclerView.addOnScrollListener(scrollListener);
         fetchPopularMovies(page);
         return output;
     }
 
     public void fetchPopularMovies(int page)
     {
-        loading.setVisibility(View.VISIBLE);
-        popularRecyclerView.setVisibility(View.GONE);
+        //if(page==1)
+        {
+            loading.setVisibility(View.VISIBLE);
+            popularRecyclerView.setVisibility(View.GONE);
+        }
         Call<MovieResponse> call=ApiClient.getMoviesService().getPopularMovies(page);
+        //page++;
         call.enqueue(new Callback<MovieResponse>() {
             @Override
             public void onResponse(Call<MovieResponse> call, Response<MovieResponse> response) {

@@ -24,4 +24,7 @@ public interface TvService
 
     @GET("3/tv/{id}/reviews?api_key=c8e098971d85941867217bb907834115")
     Call<ReviewResponse> getReviews(@Path("id") String id);
+
+    @GET("3/tv/{id}/similar?api_key=c8e098971d85941867217bb907834115&language=en-US&page=1")
+    Call<TvResponse> getSimilarTvShows(@Path("id") String id);
 }

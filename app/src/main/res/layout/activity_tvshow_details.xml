@@ -122,6 +122,15 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:id="@+id/firstAirDateTextView"
+                android:padding="10dp"
+                android:textSize="15dp"
+                android:textColor="#808080"
+                android:layout_below="@id/genreTextView"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
                 android:id="@+id/castTextView"
                 android:textAppearance="@style/Base.TextAppearance.AppCompat.Large"
                 android:text="Cast"
@@ -139,11 +148,19 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:id="@+id/firstAirDateTextView"
-                android:padding="10dp"
-                android:textSize="15dp"
-                android:textColor="#808080"
-                android:layout_below="@id/genreTextView"/>
+                android:id="@+id/similarTvShowsTextView"
+                android:text="Similar TV Shows"
+                android:textAppearance="@style/Base.TextAppearance.AppCompat.Large"
+                android:textColor="#000000"
+                android:layout_below="@+id/castRecyclerView"
+                android:padding="10dp"/>
+
+            <android.support.v7.widget.RecyclerView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:id="@+id/similarTvShowsRecyclerView"
+                android:layout_below="@+id/similarTvShowsTextView"
+                app:layout_behavior="@string/appbar_scrolling_view_behavior" />
 
             <TextView
                 android:layout_width="wrap_content"
@@ -153,7 +170,7 @@
                 android:textAppearance="@style/Base.TextAppearance.AppCompat.Large"
                 android:text="Reviews"
                 android:textColor="#000000"
-                android:layout_below="@id/castRecyclerView"/>
+                android:layout_below="@id/similarTvShowsRecyclerView"/>
 
             <LinearLayout
                 android:layout_width="match_parent"
