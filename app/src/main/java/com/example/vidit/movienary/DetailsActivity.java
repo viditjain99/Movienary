@@ -36,7 +36,8 @@ import retrofit2.Response;
 
 public class DetailsActivity extends AppCompatActivity
 {
-    TextView titleTextView,overviewTextView,ratingTextView,runTimeTextView,genreTextView,castTextView,releaseDateTextView,reviewsTextView,authorTextView,bodyTextView,similarMoviesTextView;
+    TextView titleTextView,ratingTextView,runTimeTextView,genreTextView,castTextView,reviewsTextView,releaseDateTextView,authorTextView,similarMoviesTextView;
+    ExpandableTextView overviewTextView,bodyTextView;
     ImageView backdropImageView,starImageView;
     Intent intent,intent1;
     RecyclerView castRecyclerView,similarMoviesRecyclerView;

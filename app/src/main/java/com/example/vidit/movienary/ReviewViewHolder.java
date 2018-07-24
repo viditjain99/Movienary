@@ -8,7 +8,7 @@ import android.widget.TextView;
 public class ReviewViewHolder extends RecyclerView.ViewHolder
 {
     TextView author;
-    TextView body;
+    ExpandableTextView body;
 
     public ReviewViewHolder(@NonNull View itemView) {
         super(itemView);

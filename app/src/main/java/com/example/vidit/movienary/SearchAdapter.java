@@ -52,7 +52,7 @@ public class SearchAdapter extends RecyclerView.Adapter<SearchViewHolder>
             mediaType="Person";
             searchViewHolder.name.setText(result.tvShowName);
             searchViewHolder.type.setText(mediaType);
-            searchViewHolder.image.setBackgroundColor(Color.GRAY);
+            searchViewHolder.image.setBackgroundResource(R.drawable.user);
             searchViewHolder.overview.setVisibility(View.GONE);
             searchViewHolder.star.setVisibility(View.GONE);
             searchViewHolder.rating.setVisibility(View.GONE);

@@ -25,7 +25,8 @@ import retrofit2.Response;
 
 public class TvShowDetailsActivity extends AppCompatActivity
 {
-    TextView titleTextView,overviewTextView,ratingTextView,genreTextView,castTextView,firstAirDateTextView,reviewsTextView,authorTextView,bodyTextView;
+    TextView titleTextView,ratingTextView,genreTextView,castTextView,firstAirDateTextView,authorTextView,reviewsTextView;
+    ExpandableTextView overviewTextView,bodyTextView ;
     ImageView backdropImageView,starImageView;
     RecyclerView castRecyclerView;
     CastAdapter adapter;

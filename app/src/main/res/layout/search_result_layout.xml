@@ -28,7 +28,7 @@
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintVertical_bias="0.0" />
 
-        <TextView
+        <com.example.vidit.movienary.SearchResultsNameExTextView
             android:id="@+id/searchResultsNameTextView"
             android:layout_width="241dp"
             android:layout_height="wrap_content"
@@ -38,6 +38,7 @@
             android:textColor="#000000"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.0"
+            android:textSize="20dp"
             app:layout_constraintStart_toEndOf="@+id/searchResultsPosterImageView"
             app:layout_constraintTop_toTopOf="parent" />
 
@@ -58,7 +59,7 @@
         <ImageView
             android:id="@+id/starImageView"
             android:layout_width="23dp"
-            android:layout_height="21dp"
+            android:layout_height="23dp"
             android:layout_marginBottom="8dp"
             android:layout_marginLeft="168dp"
             android:layout_marginStart="168dp"
@@ -88,10 +89,10 @@
             app:layout_constraintTop_toBottomOf="@+id/searchResultsTypeTextView"
             app:layout_constraintVertical_bias="0.979" />
 
-        <TextView
+        <com.example.vidit.movienary.SearchResultsTextView
             android:id="@+id/searchResultsOverviewTextView"
-            android:layout_width="231dp"
-            android:layout_height="105dp"
+            android:layout_width="245dp"
+            android:layout_height="wrap_content"
             android:textColor="#000000"
             android:padding="5dp"
             android:text="overview"

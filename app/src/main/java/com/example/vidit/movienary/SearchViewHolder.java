@@ -9,7 +9,9 @@ import android.widget.TextView;
 public class SearchViewHolder extends RecyclerView.ViewHolder
 {
     ImageView image,star;
-    TextView name,rating,type,overview;
+    TextView rating,type;
+    SearchResultsTextView overview;
+    SearchResultsNameExTextView name;
     public SearchViewHolder(@NonNull View itemView)
     {
         super(itemView);

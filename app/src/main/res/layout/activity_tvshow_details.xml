@@ -73,10 +73,11 @@
                 android:layout_height="wrap_content"
                 android:textColor="#000000"
                 android:id="@+id/titleTextView"
+                android:textStyle="bold"
                 android:textAppearance="@style/Base.TextAppearance.AppCompat.Large"
                 android:padding="10dp"/>
 
-            <TextView
+            <com.example.vidit.movienary.ExpandableTextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:id="@+id/overviewTextView"
@@ -171,7 +172,7 @@
                     android:textSize="15dp"
                     android:padding="10dp"/>
 
-                <TextView
+                <com.example.vidit.movienary.ExpandableTextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:id="@+id/reviewBodyTextView"
