@@ -29,7 +29,7 @@
             android:theme="@style/NoActionBar" />
         <activity
             android:name=".ImageActivity"
-            android:theme="@style/NoActionBar" />
+            android:theme="@style/ImageTheme" />
         <activity android:name=".TvShowsActivity"
             android:theme="@style/NoActionBar"/>
         <activity android:name=".TvShowDetailsActivity"
