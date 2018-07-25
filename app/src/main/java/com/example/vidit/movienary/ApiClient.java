@@ -9,6 +9,7 @@ public class ApiClient
     private static MoviesService service;
     private static TvService tvService;
     private static ActorsService actorsService;
+    private static VideoService videoService;
     static Retrofit getInstance()
     {
         if(retrofit==null)
@@ -41,5 +42,13 @@ public class ApiClient
             actorsService=getInstance().create(ActorsService.class);
         }
         return actorsService;
+    }
+    static VideoService getVideoService()
+    {
+        if(videoService==null)
+        {
+            videoService=getInstance().create(VideoService.class);
+        }
+        return videoService;
     }
 }

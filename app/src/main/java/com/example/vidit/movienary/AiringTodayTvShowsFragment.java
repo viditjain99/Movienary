@@ -9,6 +9,7 @@ import android.support.v7.widget.GridLayoutManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 
 import com.airbnb.lottie.LottieAnimationView;
 import com.hereshem.lib.recycler.MyRecyclerView;
@@ -27,8 +28,9 @@ public class AiringTodayTvShowsFragment extends Fragment
     //FloatingActionButton searchButton;
     TvAdapter adapter;
     AiringTodayTvShowsFragmentCallBack listener;
-    int page=1;
+    int currentPage=1;
     int totalPages;
+    Button nextButton,prevButton;
     public AiringTodayTvShowsFragment() {
 
     }
@@ -41,7 +43,6 @@ public class AiringTodayTvShowsFragment extends Fragment
         {
             listener=(AiringTodayTvShowsFragmentCallBack) context;
         }
-        page=1;
     }
 
     @Override
@@ -50,6 +51,9 @@ public class AiringTodayTvShowsFragment extends Fragment
         View output=inflater.inflate(R.layout.fragment_airing_today_tvshows,container,false);
         airingTodayTvRecyclerView=output.findViewById(R.id.airingTodayTvRecyclerView);
         tvLoading=output.findViewById(R.id.tvLoading);
+        nextButton=output.findViewById(R.id.nextButton);
+        prevButton=output.findViewById(R.id.prevButton);
+        airingTodayTvShowsList.clear();
         //searchButton=output.findViewById(R.id.searchButton);
 //        searchButton.setOnClickListener(new View.OnClickListener() {
 //            @Override
@@ -57,9 +61,7 @@ public class AiringTodayTvShowsFragment extends Fragment
 //            {
 //            }
 //        });
-        airingTodayTvRecyclerView.setVisibility(View.GONE);
         //searchButton.setVisibility(View.GONE);
-        tvLoading.setVisibility(View.VISIBLE);
 
         adapter=new TvAdapter(getContext(), airingTodayTvShowsList, new TvClickListener() {
             @Override
@@ -75,16 +77,90 @@ public class AiringTodayTvShowsFragment extends Fragment
         airingTodayTvRecyclerView.setAdapter(adapter);
         GridLayoutManager layoutManager=new GridLayoutManager(getContext(),2,GridLayoutManager.VERTICAL,false);
         airingTodayTvRecyclerView.setLayoutManager(layoutManager);
-        fetchPopularTvShows(page);
+        fetchAiringTodayTvShows(currentPage);
+        if(currentPage<totalPages)
+        {
+            nextButton.setEnabled(true);
+        }
+        if(currentPage==totalPages)
+        {
+            nextButton.setEnabled(false);
+        }
+        if(currentPage==1)
+        {
+            prevButton.setEnabled(false);
+        }
+        if(currentPage>1)
+        {
+            prevButton.setEnabled(true);
+        }
+        nextButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view)
+            {
+                int id=view.getId();
+                if(id==R.id.nextButton)
+                {
+                    currentPage++;
+                    fetchAiringTodayTvShows(currentPage);
+                    adapter.notifyDataSetChanged();
+                    if(currentPage<totalPages)
+                    {
+                        nextButton.setEnabled(true);
+                    }
+                    if(currentPage==totalPages)
+                    {
+                        nextButton.setEnabled(false);
+                    }
+                    if(currentPage==1)
+                    {
+                        prevButton.setEnabled(false);
+                    }
+                    if(currentPage>1)
+                    {
+                        prevButton.setEnabled(true);
+                    }
+                }
+            }
+        });
+        prevButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                int id=view.getId();
+                if(id==R.id.prevButton)
+                {
+                    currentPage--;
+                    fetchAiringTodayTvShows(currentPage);
+                    adapter.notifyDataSetChanged();
+                    if(currentPage<totalPages)
+                    {
+                        nextButton.setEnabled(true);
+                    }
+                    if(currentPage==totalPages)
+                    {
+                        nextButton.setEnabled(false);
+                    }
+                    if(currentPage==1)
+                    {
+                        prevButton.setEnabled(false);
+                    }
+                    if(currentPage>1)
+                    {
+                        prevButton.setEnabled(true);
+                    }
+                }
+            }
+        });
         return output;
     }
 
-    public void fetchPopularTvShows(int page)
+    public void fetchAiringTodayTvShows(int page)
     {
-        tvLoading.setVisibility(View.VISIBLE);
         airingTodayTvRecyclerView.setVisibility(View.GONE);
-        Call<TvResponse> call=ApiClient.getTvService().getPopularTvShows(page);
-        page++;
+        nextButton.setVisibility(View.GONE);
+        prevButton.setVisibility(View.GONE);
+        tvLoading.setVisibility(View.VISIBLE);
+        Call<TvResponse> call=ApiClient.getTvService().getAiringTodayTvShows(page);
         call.enqueue(new Callback<TvResponse>() {
             @Override
             public void onResponse(Call<TvResponse> call, Response<TvResponse> response) {
@@ -95,6 +171,8 @@ public class AiringTodayTvShowsFragment extends Fragment
                 airingTodayTvShowsList.addAll(tvShowsList);
                 tvLoading.setVisibility(View.GONE);
                 airingTodayTvRecyclerView.setVisibility(View.VISIBLE);
+                nextButton.setVisibility(View.VISIBLE);
+                prevButton.setVisibility(View.VISIBLE);
                 //searchButton.setVisibility(View.VISIBLE);
                 airingTodayTvRecyclerView.loadComplete();
             }

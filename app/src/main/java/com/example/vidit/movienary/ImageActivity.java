@@ -45,6 +45,6 @@ public class ImageActivity extends AppCompatActivity
         actionBar.setBackgroundDrawable(new ColorDrawable(Color.BLACK));
         Intent intent=getIntent();
         String backdropPath=intent.getStringExtra("BackdropPath");
-        Picasso.get().load("http://image.tmdb.org/t/p/original/" + backdropPath).into(fullImageView);
+        Picasso.get().load("http://image.tmdb.org/t/p/w780/" + backdropPath).into(fullImageView);
     }
 }

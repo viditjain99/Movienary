@@ -36,16 +36,18 @@ import retrofit2.Response;
 
 public class DetailsActivity extends AppCompatActivity
 {
-    TextView titleTextView,ratingTextView,runTimeTextView,genreTextView,castTextView,reviewsTextView,releaseDateTextView,authorTextView,similarMoviesTextView;
+    TextView titleTextView,ratingTextView,runTimeTextView,genreTextView,castTextView,reviewsTextView,releaseDateTextView,authorTextView,similarMoviesTextView,videoTextView;
     ExpandableTextView overviewTextView,bodyTextView;
     ImageView backdropImageView,starImageView;
     Intent intent,intent1;
-    RecyclerView castRecyclerView,similarMoviesRecyclerView;
+    RecyclerView castRecyclerView,similarMoviesRecyclerView,videoRecyclerView;
     CastAdapter adapter;
+    VideoAdapter videoAdapter;
     MovieAdapter movieAdapter;
     ArrayList<Cast> actorsList=new ArrayList<>();
     ArrayList<Review> reviewsList=new ArrayList<>();
     ArrayList<Movie> similarMoviesList=new ArrayList<>();
+    ArrayList<Video> videoArrayList=new ArrayList<>();
     LottieAnimationView loading;
     Button readAllReviewsButton;
     android.support.v7.widget.Toolbar toolbar;
@@ -86,6 +88,8 @@ public class DetailsActivity extends AppCompatActivity
         releaseDateTextView=findViewById(R.id.releaseDateTextView);
         similarMoviesTextView=findViewById(R.id.similarMoviesTextView);
         similarMoviesRecyclerView=findViewById(R.id.similarMoviesRecyclerView);
+        videoRecyclerView=findViewById(R.id.videoRecyclerView);
+        videoTextView=findViewById(R.id.videoTextView);
 
         adapter=new CastAdapter(DetailsActivity.this, actorsList, new CastClickListener() {
             @Override
@@ -122,6 +126,18 @@ public class DetailsActivity extends AppCompatActivity
         similarMoviesRecyclerView.setLayoutManager(layoutManager1);
         similarMoviesRecyclerView.setAdapter(movieAdapter);
 
+        videoAdapter=new VideoAdapter(DetailsActivity.this, videoArrayList, new VideoClickListener() {
+            @Override
+            public void onVideoClick(View view, int position) {
+                Video video=videoArrayList.get(position);
+                Intent intent=new Intent(Intent.ACTION_VIEW,Uri.parse("http://www.youtube.com/watch?v="+video.key));
+                startActivity(intent);
+            }
+        });
+        LinearLayoutManager layoutManager2=new LinearLayoutManager(DetailsActivity.this,LinearLayoutManager.HORIZONTAL,false);
+        videoRecyclerView.setLayoutManager(layoutManager2);
+        videoRecyclerView.setAdapter(videoAdapter);
+
 
         intent = getIntent();
 
@@ -153,6 +169,8 @@ public class DetailsActivity extends AppCompatActivity
         readAllReviewsButton.setVisibility(View.GONE);
         similarMoviesTextView.setVisibility(View.GONE);
         similarMoviesRecyclerView.setVisibility(View.GONE);
+        videoRecyclerView.setVisibility(View.GONE);
+        videoTextView.setVisibility(View.GONE);
         titleTextView.setText(movieName);
 
         backdropImageView.setOnClickListener(new View.OnClickListener() {
@@ -213,6 +231,21 @@ public class DetailsActivity extends AppCompatActivity
 
             @Override
             public void onFailure(Call<SingleMovie> call, Throwable t) {
+
+            }
+        });
+
+        Call<VideoResponse> call4=ApiClient.getVideoService().getVideos(id);
+        call4.enqueue(new Callback<VideoResponse>() {
+            @Override
+            public void onResponse(Call<VideoResponse> call, Response<VideoResponse> response) {
+                VideoResponse videoResponse=response.body();
+                ArrayList<Video> videos=videoResponse.results;
+                videoArrayList.addAll(videos);
+            }
+
+            @Override
+            public void onFailure(Call<VideoResponse> call, Throwable t) {
 
             }
         });
@@ -294,6 +327,8 @@ public class DetailsActivity extends AppCompatActivity
                 reviewsTextView.setVisibility(View.VISIBLE);
                 similarMoviesTextView.setVisibility(View.VISIBLE);
                 similarMoviesRecyclerView.setVisibility(View.VISIBLE);
+                videoRecyclerView.setVisibility(View.VISIBLE);
+                videoTextView.setVisibility(View.VISIBLE);
                 loading.setVisibility(View.GONE);
             }
 

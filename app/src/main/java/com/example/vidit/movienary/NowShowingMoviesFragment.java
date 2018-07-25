@@ -10,6 +10,7 @@ import android.support.v7.widget.GridLayoutManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
@@ -35,8 +36,9 @@ public class NowShowingMoviesFragment extends Fragment {
     LottieAnimationView loading;
     MovieAdapter adapter;
     NowShowingMoviesFragmentCallBack listener;
-    int page=1;
+    int currentPage=1;
     int totalPages;
+    Button nextButton,prevButton;
     public NowShowingMoviesFragment() {
 
     }
@@ -49,7 +51,6 @@ public class NowShowingMoviesFragment extends Fragment {
         {
             listener=(NowShowingMoviesFragmentCallBack) context;
         }
-        page=1;
     }
 
     @Override
@@ -57,7 +58,9 @@ public class NowShowingMoviesFragment extends Fragment {
                              Bundle savedInstanceState) {
         View output=inflater.inflate(R.layout.fragment_now_showing_movies,container,false);
         nowShowingRecyclerView=output.findViewById(R.id.nowShowingRecyclerView);
-       loading=output.findViewById(R.id.loading);
+        loading=output.findViewById(R.id.loading);
+        nextButton=output.findViewById(R.id.nextButton);
+        prevButton=output.findViewById(R.id.prevButton);
         //searchButton=output.findViewById(R.id.searchButton);
 //        searchButton.setOnClickListener(new View.OnClickListener() {
 //            @Override
@@ -79,23 +82,95 @@ public class NowShowingMoviesFragment extends Fragment {
                 }
             }
         });
-        nowShowingRecyclerView.setVisibility(View.GONE);
-        //searchButton.setVisibility(View.GONE);
-        loading.setVisibility(View.VISIBLE);
         nowShowingRecyclerView.setAdapter(adapter);
+        //searchButton.setVisibility(View.GONE);
 
         GridLayoutManager layoutManager=new GridLayoutManager(getContext(),2,GridLayoutManager.VERTICAL,false);
         nowShowingRecyclerView.setLayoutManager(layoutManager);
-        fetchPopularMovies(page);
+        fetchNowShowingMovies(currentPage);
+        if(currentPage<totalPages)
+        {
+            nextButton.setEnabled(true);
+        }
+        if(currentPage==totalPages)
+        {
+            nextButton.setEnabled(false);
+        }
+        if(currentPage==1)
+        {
+            prevButton.setEnabled(false);
+        }
+        if(currentPage>1)
+        {
+            prevButton.setEnabled(true);
+        }
+        nextButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view)
+            {
+                int id=view.getId();
+                if(id==R.id.nextButton)
+                {
+                    currentPage++;
+                    fetchNowShowingMovies(currentPage);
+                    adapter.notifyDataSetChanged();
+                    if(currentPage<totalPages)
+                    {
+                        nextButton.setEnabled(true);
+                    }
+                    if(currentPage==totalPages)
+                    {
+                        nextButton.setEnabled(false);
+                    }
+                    if(currentPage==1)
+                    {
+                        prevButton.setEnabled(false);
+                    }
+                    if(currentPage>1)
+                    {
+                        prevButton.setEnabled(true);
+                    }
+                }
+            }
+        });
+        prevButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                int id=view.getId();
+                if(id==R.id.prevButton)
+                {
+                    currentPage--;
+                    fetchNowShowingMovies(currentPage);
+                    adapter.notifyDataSetChanged();
+                    if(currentPage<totalPages)
+                    {
+                        nextButton.setEnabled(true);
+                    }
+                    if(currentPage==totalPages)
+                    {
+                        nextButton.setEnabled(false);
+                    }
+                    if(currentPage==1)
+                    {
+                        prevButton.setEnabled(false);
+                    }
+                    if(currentPage>1)
+                    {
+                        prevButton.setEnabled(true);
+                    }
+                }
+            }
+        });
         return output;
     }
 
-    public void fetchPopularMovies(int page)
+    public void fetchNowShowingMovies(int page)
     {
         loading.setVisibility(View.VISIBLE);
+        nextButton.setVisibility(View.GONE);
+        prevButton.setVisibility(View.GONE);
         nowShowingRecyclerView.setVisibility(View.GONE);
         Call<MovieResponse> call=ApiClient.getMoviesService().getNowShowingMovies(page);
-        page++;
         call.enqueue(new Callback<MovieResponse>() {
             @Override
             public void onResponse(Call<MovieResponse> call, Response<MovieResponse> response) {
@@ -105,9 +180,11 @@ public class NowShowingMoviesFragment extends Fragment {
                 nowShowingMoviesList.clear();
                 nowShowingMoviesList.addAll(moviesList);
                 loading.setVisibility(View.GONE);
+                nextButton.setVisibility(View.VISIBLE);
+                prevButton.setVisibility(View.VISIBLE);
                 nowShowingRecyclerView.setVisibility(View.VISIBLE);
                 //searchButton.setVisibility(View.VISIBLE);
-                nowShowingRecyclerView.loadComplete();
+//                nowShowingRecyclerView.loadComplete();
             }
 
             @Override

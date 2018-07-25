@@ -11,6 +11,7 @@ import android.support.v7.widget.GridLayoutManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
@@ -36,8 +37,9 @@ public class TopRatedMoviesFragment extends Fragment {
     LottieAnimationView loading;
     MovieAdapter adapter;
     TopRatedMoviesFragmentCallBack listener;
-    int page=1;
+    int currentPage=1;
     int totalPages;
+    Button nextButton,prevButton;
     public TopRatedMoviesFragment() {
 
     }
@@ -50,7 +52,6 @@ public class TopRatedMoviesFragment extends Fragment {
         {
             listener=(TopRatedMoviesFragmentCallBack) context;
         }
-        page=1;
     }
 
     @Override
@@ -58,6 +59,8 @@ public class TopRatedMoviesFragment extends Fragment {
                              Bundle savedInstanceState) {
         View output=inflater.inflate(R.layout.fragment_top_rated_movies,container,false);
         topRatedRecyclerView=output.findViewById(R.id.topRatedRecyclerView);
+        nextButton=output.findViewById(R.id.nextButton);
+        prevButton=output.findViewById(R.id.prevButton);
         loading=output.findViewById(R.id.loading);
         //searchButton=output.findViewById(R.id.searchButton);
 //        searchButton.setOnClickListener(new View.OnClickListener() {
@@ -68,10 +71,6 @@ public class TopRatedMoviesFragment extends Fragment {
 //                startActivity(intent);
 //            }
 //        });
-        topRatedRecyclerView.setVisibility(View.GONE);
-        //searchButton.setVisibility(View.GONE);
-        loading.setVisibility(View.VISIBLE);
-
         adapter=new MovieAdapter(getContext(), topRatedMoviesList, new MovieClickListener() {
             @Override
             public void onMovieClick(View view, int position)
@@ -86,7 +85,80 @@ public class TopRatedMoviesFragment extends Fragment {
         topRatedRecyclerView.setAdapter(adapter);
         GridLayoutManager layoutManager=new GridLayoutManager(getContext(),2,GridLayoutManager.VERTICAL,false);
         topRatedRecyclerView.setLayoutManager(layoutManager);
-        fetchTopRatedMovies(page);
+        fetchTopRatedMovies(currentPage);
+        if(currentPage<totalPages)
+        {
+            nextButton.setEnabled(true);
+        }
+        if(currentPage==totalPages)
+        {
+            nextButton.setEnabled(false);
+        }
+        if(currentPage==1)
+        {
+            prevButton.setEnabled(false);
+        }
+        if(currentPage>1)
+        {
+            prevButton.setEnabled(true);
+        }
+        nextButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view)
+            {
+                int id=view.getId();
+                if(id==R.id.nextButton)
+                {
+                    currentPage++;
+                    fetchTopRatedMovies(currentPage);
+                    adapter.notifyDataSetChanged();
+                    if(currentPage<totalPages)
+                    {
+                        nextButton.setEnabled(true);
+                    }
+                    if(currentPage==totalPages)
+                    {
+                        nextButton.setEnabled(false);
+                    }
+                    if(currentPage==1)
+                    {
+                        prevButton.setEnabled(false);
+                    }
+                    if(currentPage>1)
+                    {
+                        prevButton.setEnabled(true);
+                    }
+                }
+            }
+        });
+        prevButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                int id=view.getId();
+                if(id==R.id.prevButton)
+                {
+                    currentPage--;
+                    fetchTopRatedMovies(currentPage);
+                    adapter.notifyDataSetChanged();
+                    if(currentPage<totalPages)
+                    {
+                        nextButton.setEnabled(true);
+                    }
+                    if(currentPage==totalPages)
+                    {
+                        nextButton.setEnabled(false);
+                    }
+                    if(currentPage==1)
+                    {
+                        prevButton.setEnabled(false);
+                    }
+                    if(currentPage>1)
+                    {
+                        prevButton.setEnabled(true);
+                    }
+                }
+            }
+        });
         return output;
     }
 
@@ -94,8 +166,9 @@ public class TopRatedMoviesFragment extends Fragment {
     {
         loading.setVisibility(View.VISIBLE);
         topRatedRecyclerView.setVisibility(View.GONE);
+        nextButton.setVisibility(View.GONE);
+        prevButton.setVisibility(View.GONE);
         Call<MovieResponse> call=ApiClient.getMoviesService().getTopRatedMovies(page);
-        page++;
         call.enqueue(new Callback<MovieResponse>() {
             @Override
             public void onResponse(Call<MovieResponse> call, Response<MovieResponse> response) {
@@ -106,6 +179,8 @@ public class TopRatedMoviesFragment extends Fragment {
                 topRatedMoviesList.addAll(moviesList);
                 loading.setVisibility(View.GONE);
                 topRatedRecyclerView.setVisibility(View.VISIBLE);
+                nextButton.setVisibility(View.VISIBLE);
+                prevButton.setVisibility(View.VISIBLE);
                 //searchButton.setVisibility(View.VISIBLE);
                 topRatedRecyclerView.loadComplete();
             }

@@ -9,6 +9,7 @@ import android.support.v7.widget.GridLayoutManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 
 import com.airbnb.lottie.LottieAnimationView;
 import com.hereshem.lib.recycler.MyRecyclerView;
@@ -27,8 +28,9 @@ public class OnTheAirTvShowsFragment extends Fragment
     //FloatingActionButton searchButton;
     TvAdapter adapter;
     OnTheAirTvShowsFragmentCallBack listener;
-    int page=1;
+    int currentPage=1;
     int totalPages;
+    Button nextButton,prevButton;
     public OnTheAirTvShowsFragment() {
 
     }
@@ -41,7 +43,6 @@ public class OnTheAirTvShowsFragment extends Fragment
         {
             listener=(OnTheAirTvShowsFragmentCallBack) context;
         }
-        page=1;
     }
 
     @Override
@@ -49,6 +50,8 @@ public class OnTheAirTvShowsFragment extends Fragment
                              Bundle savedInstanceState) {
         View output=inflater.inflate(R.layout.fragment_on_the_air_tvshows,container,false);
         onTheAirTvRecyclerView=output.findViewById(R.id.onTheAirTvRecyclerView);
+        nextButton=output.findViewById(R.id.nextButton);
+        prevButton=output.findViewById(R.id.prevButton);
         tvLoading=output.findViewById(R.id.tvLoading);
         //searchButton=output.findViewById(R.id.searchButton);
 //        searchButton.setOnClickListener(new View.OnClickListener() {
@@ -59,10 +62,6 @@ public class OnTheAirTvShowsFragment extends Fragment
 //                startActivity(intent);
 //            }
 //        });
-        onTheAirTvRecyclerView.setVisibility(View.GONE);
-        //searchButton.setVisibility(View.GONE);
-        tvLoading.setVisibility(View.VISIBLE);
-
         adapter=new TvAdapter(getContext(), onTheAirTvShowsList, new TvClickListener() {
             @Override
             public void onTvClick(View view, int position)
@@ -77,16 +76,90 @@ public class OnTheAirTvShowsFragment extends Fragment
         onTheAirTvRecyclerView.setAdapter(adapter);
         GridLayoutManager layoutManager=new GridLayoutManager(getContext(),2,GridLayoutManager.VERTICAL,false);
         onTheAirTvRecyclerView.setLayoutManager(layoutManager);
-        fetchOnTheAirTvShows(page);
+        fetchOnTheAirTvShows(currentPage);
+        if(currentPage<totalPages)
+        {
+            nextButton.setEnabled(true);
+        }
+        if(currentPage==totalPages)
+        {
+            nextButton.setEnabled(false);
+        }
+        if(currentPage==1)
+        {
+            prevButton.setEnabled(false);
+        }
+        if(currentPage>1)
+        {
+            prevButton.setEnabled(true);
+        }
+        nextButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view)
+            {
+                int id=view.getId();
+                if(id==R.id.nextButton)
+                {
+                    currentPage++;
+                    fetchOnTheAirTvShows(currentPage);
+                    adapter.notifyDataSetChanged();
+                    if(currentPage<totalPages)
+                    {
+                        nextButton.setEnabled(true);
+                    }
+                    if(currentPage==totalPages)
+                    {
+                        nextButton.setEnabled(false);
+                    }
+                    if(currentPage==1)
+                    {
+                        prevButton.setEnabled(false);
+                    }
+                    if(currentPage>1)
+                    {
+                        prevButton.setEnabled(true);
+                    }
+                }
+            }
+        });
+        prevButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                int id=view.getId();
+                if(id==R.id.prevButton)
+                {
+                    currentPage--;
+                    fetchOnTheAirTvShows(currentPage);
+                    adapter.notifyDataSetChanged();
+                    if(currentPage<totalPages)
+                    {
+                        nextButton.setEnabled(true);
+                    }
+                    if(currentPage==totalPages)
+                    {
+                        nextButton.setEnabled(false);
+                    }
+                    if(currentPage==1)
+                    {
+                        prevButton.setEnabled(false);
+                    }
+                    if(currentPage>1)
+                    {
+                        prevButton.setEnabled(true);
+                    }
+                }
+            }
+        });
         return output;
     }
 
     public void fetchOnTheAirTvShows(int page)
     {
         tvLoading.setVisibility(View.VISIBLE);
+        nextButton.setVisibility(View.GONE);
+        prevButton.setVisibility(View.GONE);
         onTheAirTvRecyclerView.setVisibility(View.GONE);
         Call<TvResponse> call=ApiClient.getTvService().getOnTheAirTvShows(page);
-        page++;
         call.enqueue(new Callback<TvResponse>() {
             @Override
             public void onResponse(Call<TvResponse> call, Response<TvResponse> response) {
@@ -97,6 +170,8 @@ public class OnTheAirTvShowsFragment extends Fragment
                 onTheAirTvShowsList.addAll(tvShowsList);
                 tvLoading.setVisibility(View.GONE);
                 onTheAirTvRecyclerView.setVisibility(View.VISIBLE);
+                nextButton.setVisibility(View.VISIBLE);
+                prevButton.setVisibility(View.VISIBLE);
                 //searchButton.setVisibility(View.VISIBLE);
                 onTheAirTvRecyclerView.loadComplete();
             }

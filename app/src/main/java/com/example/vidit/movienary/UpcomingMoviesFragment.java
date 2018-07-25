@@ -11,6 +11,7 @@ import android.support.v7.widget.GridLayoutManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
@@ -35,8 +36,9 @@ public class UpcomingMoviesFragment extends Fragment {
     LottieAnimationView loading;
     MovieAdapter adapter;
     UpcomingMoviesFragmentCallBack listener;
-    int page=1;
+    int currentPage=1;
     int totalPages;
+    Button nextButton,prevButton;
     public UpcomingMoviesFragment() {
 
     }
@@ -49,7 +51,6 @@ public class UpcomingMoviesFragment extends Fragment {
         {
             listener=(UpcomingMoviesFragmentCallBack) context;
         }
-        page=1;
     }
 
     @Override
@@ -58,6 +59,8 @@ public class UpcomingMoviesFragment extends Fragment {
         View output=inflater.inflate(R.layout.fragment_upcoming_movies,container,false);
         upcomingRecyclerView=output.findViewById(R.id.upcomingRecyclerView);
         loading=output.findViewById(R.id.loading);
+        nextButton=output.findViewById(R.id.nextButton);
+        prevButton=output.findViewById(R.id.prevButton);
         //searchButton=output.findViewById(R.id.searchButton);
 //        searchButton.setOnClickListener(new View.OnClickListener() {
 //            @Override
@@ -67,10 +70,6 @@ public class UpcomingMoviesFragment extends Fragment {
 //                startActivity(intent);
 //            }
 //        });
-        upcomingRecyclerView.setVisibility(View.GONE);
-        //searchButton.setVisibility(View.GONE);
-        loading.setVisibility(View.VISIBLE);
-
         adapter=new MovieAdapter(getContext(), upcomingMoviesList, new MovieClickListener() {
             @Override
             public void onMovieClick(View view, int position)
@@ -85,16 +84,90 @@ public class UpcomingMoviesFragment extends Fragment {
         upcomingRecyclerView.setAdapter(adapter);
         GridLayoutManager layoutManager=new GridLayoutManager(getContext(),2,GridLayoutManager.VERTICAL,false);
         upcomingRecyclerView.setLayoutManager(layoutManager);
-        fetchTopRatedMovies(page);
+        fetchUpcomingMovies(currentPage);
+        if(currentPage<totalPages)
+        {
+            nextButton.setEnabled(true);
+        }
+        if(currentPage==totalPages)
+        {
+            nextButton.setEnabled(false);
+        }
+        if(currentPage==1)
+        {
+            prevButton.setEnabled(false);
+        }
+        if(currentPage>1)
+        {
+            prevButton.setEnabled(true);
+        }
+        nextButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view)
+            {
+                int id=view.getId();
+                if(id==R.id.nextButton)
+                {
+                    currentPage++;
+                    fetchUpcomingMovies(currentPage);
+                    adapter.notifyDataSetChanged();
+                    if(currentPage<totalPages)
+                    {
+                        nextButton.setEnabled(true);
+                    }
+                    if(currentPage==totalPages)
+                    {
+                        nextButton.setEnabled(false);
+                    }
+                    if(currentPage==1)
+                    {
+                        prevButton.setEnabled(false);
+                    }
+                    if(currentPage>1)
+                    {
+                        prevButton.setEnabled(true);
+                    }
+                }
+            }
+        });
+        prevButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                int id=view.getId();
+                if(id==R.id.prevButton)
+                {
+                    currentPage--;
+                    fetchUpcomingMovies(currentPage);
+                    adapter.notifyDataSetChanged();
+                    if(currentPage<totalPages)
+                    {
+                        nextButton.setEnabled(true);
+                    }
+                    if(currentPage==totalPages)
+                    {
+                        nextButton.setEnabled(false);
+                    }
+                    if(currentPage==1)
+                    {
+                        prevButton.setEnabled(false);
+                    }
+                    if(currentPage>1)
+                    {
+                        prevButton.setEnabled(true);
+                    }
+                }
+            }
+        });
         return output;
     }
 
-    public void fetchTopRatedMovies(int page)
+    public void fetchUpcomingMovies(int page)
     {
         loading.setVisibility(View.VISIBLE);
         upcomingRecyclerView.setVisibility(View.GONE);
+        nextButton.setVisibility(View.GONE);
+        prevButton.setVisibility(View.GONE);
         Call<MovieResponse> call=ApiClient.getMoviesService().getUpcomingMovies(page);
-        page++;
         call.enqueue(new Callback<MovieResponse>() {
             @Override
             public void onResponse(Call<MovieResponse> call, Response<MovieResponse> response) {
@@ -105,6 +178,8 @@ public class UpcomingMoviesFragment extends Fragment {
                 upcomingMoviesList.addAll(moviesList);
                 loading.setVisibility(View.GONE);
                 upcomingRecyclerView.setVisibility(View.VISIBLE);
+                nextButton.setVisibility(View.VISIBLE);
+                prevButton.setVisibility(View.VISIBLE);
                 //searchButton.setVisibility(View.VISIBLE);
                 upcomingRecyclerView.loadComplete();
             }

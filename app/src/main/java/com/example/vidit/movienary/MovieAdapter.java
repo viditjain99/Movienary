@@ -5,6 +5,9 @@ import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.text.Layout;
 import android.view.LayoutInflater;
+
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import android.view.View;
 import android.view.ViewGroup;
 
@@ -22,6 +25,12 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieViewHolder> {
         this.movies=movies;
         this.listener=movieClickListener;
     }
+
+    @Override
+    public long getItemId(int position) {
+        return position;
+    }
+
     @NonNull
     @Override
     public MovieViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int i) {
@@ -36,6 +45,7 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieViewHolder> {
         Movie movie=movies.get(i);
         movieViewHolder.name.setText(movie.movieName);
         Picasso.get().load("http://image.tmdb.org/t/p/w500/"+movie.posterPath).into(movieViewHolder.image);
+        //Glide.with(context.getApplicationContext()).load("http://image.tmdb.org/t/p/w500/"+movie.posterPath).asBitmap().diskCacheStrategy(DiskCacheStrategy.ALL).into(movieViewHolder.image);
         if(Float.parseFloat(movie.rating)==0)
         {
             movieViewHolder.rating.setText("N/A");

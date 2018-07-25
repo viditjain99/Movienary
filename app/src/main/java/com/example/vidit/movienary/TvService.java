@@ -16,6 +16,9 @@ public interface TvService
     @GET("3/tv/top_rated?api_key=c8e098971d85941867217bb907834115&language=en-US")
     Call<TvResponse> getTopRatedTvShows(@Query("page") int page);
 
+    @GET("3/tv/airing_today?api_key=c8e098971d85941867217bb907834115&language=en-US")
+    Call<TvResponse> getAiringTodayTvShows(@Query("page") int page);
+
     @GET("3/tv/{id}?api_key=c8e098971d85941867217bb907834115&language=en-US")
     Call<SingleMovie> getDetails(@Path("id") String id);
 

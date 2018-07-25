@@ -25,16 +25,18 @@ import retrofit2.Response;
 
 public class TvShowDetailsActivity extends AppCompatActivity
 {
-    TextView titleTextView,ratingTextView,genreTextView,castTextView,firstAirDateTextView,authorTextView,reviewsTextView,similarTvShowsTextView;
+    TextView titleTextView,ratingTextView,genreTextView,castTextView,firstAirDateTextView,authorTextView,reviewsTextView,similarTvShowsTextView,videoTextView;
     ExpandableTextView overviewTextView,bodyTextView ;
     ImageView backdropImageView,starImageView;
-    RecyclerView castRecyclerView,similarTvShowsRecyclerView;
+    RecyclerView castRecyclerView,similarTvShowsRecyclerView,videoRecyclerView;
     CastAdapter adapter;
     TvAdapter tvAdapter;
+    VideoAdapter videoAdapter;
     Intent intent1,intent;
     ArrayList<Cast> actorsList=new ArrayList<>();
     ArrayList<Review> reviewsList=new ArrayList<>();
     ArrayList<Tv> similarTvShowsList=new ArrayList<>();
+    ArrayList<Video> videoArrayList=new ArrayList<>();
     LottieAnimationView loading;
     Button readAllReviewsButton;
     android.support.v7.widget.Toolbar toolbar;
@@ -75,6 +77,8 @@ public class TvShowDetailsActivity extends AppCompatActivity
         firstAirDateTextView=findViewById(R.id.firstAirDateTextView);
         similarTvShowsRecyclerView=findViewById(R.id.similarTvShowsRecyclerView);
         similarTvShowsTextView=findViewById(R.id.similarTvShowsTextView);
+        videoRecyclerView=findViewById(R.id.videoRecyclerView);
+        videoTextView=findViewById(R.id.videoTextView);
 
         adapter=new CastAdapter(TvShowDetailsActivity.this, actorsList, new CastClickListener() {
             @Override
@@ -111,6 +115,18 @@ public class TvShowDetailsActivity extends AppCompatActivity
         similarTvShowsRecyclerView.setLayoutManager(layoutManager1);
         similarTvShowsRecyclerView.setAdapter(tvAdapter);
 
+        videoAdapter=new VideoAdapter(TvShowDetailsActivity.this, videoArrayList, new VideoClickListener() {
+            @Override
+            public void onVideoClick(View view, int position) {
+                Video video=videoArrayList.get(position);
+                Intent intent=new Intent(Intent.ACTION_VIEW,Uri.parse("http://www.youtube.com/watch?v="+video.key));
+                startActivity(intent);
+            }
+        });
+        LinearLayoutManager layoutManager2=new LinearLayoutManager(TvShowDetailsActivity.this,LinearLayoutManager.HORIZONTAL,false);
+        videoRecyclerView.setLayoutManager(layoutManager2);
+        videoRecyclerView.setAdapter(videoAdapter);
+
         intent=getIntent();
 
         Bundle bundle=intent.getExtras();
@@ -140,6 +156,8 @@ public class TvShowDetailsActivity extends AppCompatActivity
         readAllReviewsButton.setVisibility(View.GONE);
         similarTvShowsRecyclerView.setVisibility(View.GONE);
         similarTvShowsTextView.setVisibility(View.GONE);
+        videoRecyclerView.setVisibility(View.GONE);
+        videoTextView.setVisibility(View.GONE);
         titleTextView.setText(tvShowName);
 
         backdropImageView.setOnClickListener(new View.OnClickListener() {
@@ -215,6 +233,21 @@ public class TvShowDetailsActivity extends AppCompatActivity
             }
         });
 
+        Call<VideoResponse> call4=ApiClient.getVideoService().getTvShowVideos(id);
+        call4.enqueue(new Callback<VideoResponse>() {
+            @Override
+            public void onResponse(Call<VideoResponse> call, Response<VideoResponse> response) {
+                VideoResponse videoResponse=response.body();
+                ArrayList<Video> videos=videoResponse.results;
+                videoArrayList.addAll(videos);
+            }
+
+            @Override
+            public void onFailure(Call<VideoResponse> call, Throwable t) {
+
+            }
+        });
+
         Call<TvResponse> call3=ApiClient.getTvService().getSimilarTvShows(id);
         call3.enqueue(new Callback<TvResponse>() {
             @Override
@@ -274,6 +307,8 @@ public class TvShowDetailsActivity extends AppCompatActivity
                 reviewsTextView.setVisibility(View.VISIBLE);
                 similarTvShowsRecyclerView.setVisibility(View.VISIBLE);
                 similarTvShowsTextView.setVisibility(View.VISIBLE);
+                videoRecyclerView.setVisibility(View.VISIBLE);
+                videoTextView.setVisibility(View.VISIBLE);
                 loading.setVisibility(View.GONE);
             }
 

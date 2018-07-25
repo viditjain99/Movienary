@@ -9,6 +9,7 @@ import android.support.v7.widget.GridLayoutManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 
 import com.airbnb.lottie.LottieAnimationView;
 import com.hereshem.lib.recycler.MyRecyclerView;
@@ -27,8 +28,9 @@ public class PopularTvShowsFragment extends Fragment
     //FloatingActionButton searchButton;
     TvAdapter adapter;
     PopularTvShowsFragmentCallBack listener;
-    int page=1;
+    int currentPage=1;
     int totalPages;
+    Button nextButton,prevButton;
     public PopularTvShowsFragment() {
 
     }
@@ -41,7 +43,6 @@ public class PopularTvShowsFragment extends Fragment
         {
             listener=(PopularTvShowsFragmentCallBack) context;
         }
-        page=1;
     }
 
     @Override
@@ -50,6 +51,8 @@ public class PopularTvShowsFragment extends Fragment
         View output=inflater.inflate(R.layout.fragment_popular_tvshows,container,false);
         popularTvRecyclerView=output.findViewById(R.id.popularTvRecyclerView);
         tvLoading=output.findViewById(R.id.tvLoading);
+        nextButton=output.findViewById(R.id.nextButton);
+        prevButton=output.findViewById(R.id.prevButton);
         //searchButton=output.findViewById(R.id.searchButton);
 //        searchButton.setOnClickListener(new View.OnClickListener() {
 //            @Override
@@ -59,10 +62,6 @@ public class PopularTvShowsFragment extends Fragment
 //                startActivity(intent);
 //            }
 //        });
-        popularTvRecyclerView.setVisibility(View.GONE);
-        //searchButton.setVisibility(View.GONE);
-        tvLoading.setVisibility(View.VISIBLE);
-
         adapter=new TvAdapter(getContext(), popularTvShowsList, new TvClickListener() {
             @Override
             public void onTvClick(View view, int position)
@@ -77,16 +76,90 @@ public class PopularTvShowsFragment extends Fragment
         popularTvRecyclerView.setAdapter(adapter);
         GridLayoutManager layoutManager=new GridLayoutManager(getContext(),2,GridLayoutManager.VERTICAL,false);
         popularTvRecyclerView.setLayoutManager(layoutManager);
-        fetchPopularTvShows(page);
+        fetchPopularTvShows(currentPage);
+        if(currentPage<totalPages)
+        {
+            nextButton.setEnabled(true);
+        }
+        if(currentPage==totalPages)
+        {
+            nextButton.setEnabled(false);
+        }
+        if(currentPage==1)
+        {
+            prevButton.setEnabled(false);
+        }
+        if(currentPage>1)
+        {
+            prevButton.setEnabled(true);
+        }
+        nextButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view)
+            {
+                int id=view.getId();
+                if(id==R.id.nextButton)
+                {
+                    currentPage++;
+                    fetchPopularTvShows(currentPage);
+                    adapter.notifyDataSetChanged();
+                    if(currentPage<totalPages)
+                    {
+                        nextButton.setEnabled(true);
+                    }
+                    if(currentPage==totalPages)
+                    {
+                        nextButton.setEnabled(false);
+                    }
+                    if(currentPage==1)
+                    {
+                        prevButton.setEnabled(false);
+                    }
+                    if(currentPage>1)
+                    {
+                        prevButton.setEnabled(true);
+                    }
+                }
+            }
+        });
+        prevButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                int id=view.getId();
+                if(id==R.id.prevButton)
+                {
+                    currentPage--;
+                    fetchPopularTvShows(currentPage);
+                    adapter.notifyDataSetChanged();
+                    if(currentPage<totalPages)
+                    {
+                        nextButton.setEnabled(true);
+                    }
+                    if(currentPage==totalPages)
+                    {
+                        nextButton.setEnabled(false);
+                    }
+                    if(currentPage==1)
+                    {
+                        prevButton.setEnabled(false);
+                    }
+                    if(currentPage>1)
+                    {
+                        prevButton.setEnabled(true);
+                    }
+                }
+            }
+        });
         return output;
     }
 
     public void fetchPopularTvShows(int page)
     {
-        tvLoading.setVisibility(View.VISIBLE);
         popularTvRecyclerView.setVisibility(View.GONE);
+        nextButton.setVisibility(View.GONE);
+        prevButton.setVisibility(View.GONE);
+        tvLoading.setVisibility(View.VISIBLE);
         Call<TvResponse> call=ApiClient.getTvService().getPopularTvShows(page);
-        page++;
         call.enqueue(new Callback<TvResponse>() {
             @Override
             public void onResponse(Call<TvResponse> call, Response<TvResponse> response) {
@@ -97,6 +170,8 @@ public class PopularTvShowsFragment extends Fragment
                 popularTvShowsList.addAll(tvShowsList);
                 tvLoading.setVisibility(View.GONE);
                 popularTvRecyclerView.setVisibility(View.VISIBLE);
+                nextButton.setVisibility(View.VISIBLE);
+                prevButton.setVisibility(View.VISIBLE);
                 //searchButton.setVisibility(View.VISIBLE);
                 popularTvRecyclerView.loadComplete();
             }
