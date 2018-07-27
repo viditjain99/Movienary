@@ -8,6 +8,7 @@ import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.CollapsingToolbarLayout;
+import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -376,52 +377,73 @@ public class TvShowDetailsActivity extends AppCompatActivity
 
     public void addToWatchlist(View view)
     {
+        final Snackbar removeSnackBar=Snackbar.make(view,"Removed from Watchlist",Snackbar.LENGTH_LONG).setActionTextColor(Color.parseColor("#FF7F50"));
+        final Snackbar addSnackBar=Snackbar.make(view,"Added to Watchlist",Snackbar.LENGTH_LONG).setActionTextColor(Color.parseColor("#FF7F50"));
+        removeSnackBar.setAction("UNDO", new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                watchlistAdd();
+                removeSnackBar.dismiss();
+                addSnackBar.show();
+            }
+        });
+
+        addSnackBar.setAction("UNDO", new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                watchlistRemove();
+                addSnackBar.dismiss();
+                removeSnackBar.show();
+            }
+        });
+
         int id=view.getId();
         if(id==R.id.watchlistButton)
         {
             if(watchlistButtonClicked==true)
             {
-                watchlistButton.setImageResource(R.mipmap.watchlist);
-                Toast.makeText(TvShowDetailsActivity.this,"Removed from Watchlist",Toast.LENGTH_SHORT).show();
-                watchlistButtonClicked=false;
-                WatchlistOpenHelper openHelper=WatchlistOpenHelper.getInstance(getApplicationContext());
-                SQLiteDatabase database=openHelper.getWritableDatabase();
-                String[] selectionArgs={tvShowId+""};
-                database.delete(ContractTv.Tv.TABLE_NAME,ContractTv.Tv.COLUMN_ID+" =?",selectionArgs);
-                for(int i=0;i<watchlistTvShows.size();i++)
-                {
-                    if(watchlistTvShows.get(i).id==tvShowId)
-                    {
-                        watchlistTvShows.remove(i);
-                    }
-                }
+                watchlistRemove();
+                removeSnackBar.show();
             }
             else if(watchlistButtonClicked==false)
             {
-                watchlistButton.setImageResource(R.mipmap.watchlist_fill);
-                Toast.makeText(TvShowDetailsActivity.this,"Added to Watchlist",Toast.LENGTH_SHORT).show();
-                Tv tvShow=new Tv();
-                tvShow.tvShowName=tvShowName;
-                tvShow.posterPath=posterPath;
-                tvShow.rating=rating;
-                tvShow.id=tvShowId;
-                tvShow.backdropPath=backdropPath;
-                tvShow.overview=overview;
-                tvShow.firstAirDate=firstAirDate;
-                watchlistTvShows.add(tvShow);
-                watchlistButtonClicked=true;
-                WatchlistOpenHelper openHelper=WatchlistOpenHelper.getInstance(getApplicationContext());
-                SQLiteDatabase database=openHelper.getWritableDatabase();
-                ContentValues contentValues=new ContentValues();
-                contentValues.put(ContractTv.Tv.COLUMN_ID,tvShowId);
-                contentValues.put(ContractTv.Tv.COLUMN_TVSHOWNAME,tvShowName);
-                contentValues.put(ContractTv.Tv.COLUMN_OVERVIEW,overview);
-                contentValues.put(ContractTv.Tv.COLUMN_RATING,rating);
-                contentValues.put(ContractTv.Tv.COLUMN_FIRSTAIRDATE,firstAirDate);
-                contentValues.put(ContractTv.Tv.COLUMN_POSTERPATH,posterPath);
-                contentValues.put(ContractTv.Tv.COLUMN_BACKDROPPATH,backdropPath);
-                database.insert(ContractTv.Tv.TABLE_NAME,null,contentValues);
+                watchlistAdd();
+                addSnackBar.show();
             }
         }
+    }
+    public void watchlistAdd()
+    {
+        watchlistButton.setImageResource(R.mipmap.watchlist_fill);
+        Tv tvShow=new Tv();
+        tvShow.tvShowName=tvShowName;
+        tvShow.posterPath=posterPath;
+        tvShow.rating=rating;
+        tvShow.id=tvShowId;
+        tvShow.backdropPath=backdropPath;
+        tvShow.overview=overview;
+        tvShow.firstAirDate=firstAirDate;
+        watchlistTvShows.add(tvShow);
+        watchlistButtonClicked=true;
+        WatchlistOpenHelper openHelper=WatchlistOpenHelper.getInstance(getApplicationContext());
+        SQLiteDatabase database=openHelper.getWritableDatabase();
+        ContentValues contentValues=new ContentValues();
+        contentValues.put(ContractTv.Tv.COLUMN_ID,tvShowId);
+        contentValues.put(ContractTv.Tv.COLUMN_TVSHOWNAME,tvShowName);
+        contentValues.put(ContractTv.Tv.COLUMN_OVERVIEW,overview);
+        contentValues.put(ContractTv.Tv.COLUMN_RATING,rating);
+        contentValues.put(ContractTv.Tv.COLUMN_FIRSTAIRDATE,firstAirDate);
+        contentValues.put(ContractTv.Tv.COLUMN_POSTERPATH,posterPath);
+        contentValues.put(ContractTv.Tv.COLUMN_BACKDROPPATH,backdropPath);
+        database.insert(ContractTv.Tv.TABLE_NAME,null,contentValues);
+    }
+    public void watchlistRemove()
+    {
+        watchlistButton.setImageResource(R.mipmap.watchlist);
+        watchlistButtonClicked=false;
+        WatchlistOpenHelper openHelper=WatchlistOpenHelper.getInstance(getApplicationContext());
+        SQLiteDatabase database=openHelper.getWritableDatabase();
+        String[] selectionArgs={tvShowId+""};
+        database.delete(ContractTv.Tv.TABLE_NAME,ContractTv.Tv.COLUMN_ID+" =?",selectionArgs);
     }
 }

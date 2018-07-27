@@ -10,6 +10,7 @@ import android.os.Bundle;
 import android.provider.Settings;
 import android.support.constraint.solver.GoalRow;
 import android.support.design.widget.CollapsingToolbarLayout;
+import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -396,47 +397,74 @@ public class DetailsActivity extends AppCompatActivity
 
     public void addToWatchlist(View view)
     {
+        final Snackbar removeSnackBar=Snackbar.make(view,"Removed from Watchlist",Snackbar.LENGTH_LONG).setActionTextColor(Color.parseColor("#FF7F50"));
+        final Snackbar addSnackBar=Snackbar.make(view,"Added to Watchlist",Snackbar.LENGTH_LONG).setActionTextColor(Color.parseColor("#FF7F50"));
+        removeSnackBar.setAction("UNDO", new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                watchlistAdd();
+                removeSnackBar.dismiss();
+                addSnackBar.show();
+            }
+        });
+
+        addSnackBar.setAction("UNDO", new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                watchlistRemove();
+                addSnackBar.dismiss();
+                removeSnackBar.show();
+            }
+        });
+
         int id=view.getId();
         if(id==R.id.watchlistButton)
         {
             if(watchlistButtonClicked==true)
             {
-                watchlistButton.setImageResource(R.mipmap.watchlist);
-                Toast.makeText(DetailsActivity.this,"Removed from Watchlist",Toast.LENGTH_SHORT).show();
-                watchlistButtonClicked=false;
-                WatchlistOpenHelper openHelper=WatchlistOpenHelper.getInstance(getApplicationContext());
-                SQLiteDatabase database=openHelper.getWritableDatabase();
-                String[] selectionArgs={movieId+""};
-                database.delete(ContractMovies.Movie.TABLE_NAME,ContractMovies.Movie.COLUMN_ID+" =?",selectionArgs);
+                watchlistRemove();
+                removeSnackBar.show();
             }
             else if(watchlistButtonClicked==false)
             {
-                watchlistButton.setImageResource(R.mipmap.watchlist_fill);
-                Toast.makeText(DetailsActivity.this,"Added to Watchlist",Toast.LENGTH_SHORT).show();
-
-                Movie movie=new Movie();
-                movie.movieName=movieName;
-                movie.posterPath=posterPath;
-                movie.rating=rating;
-                movie.id=movieId;
-                movie.backdropPath=backdropPath;
-                movie.overview=overview;
-                movie.releaseDate=releaseDate;
-                watchlistMovies.add(movie);
-                watchlistButtonClicked=true;
-                WatchlistOpenHelper openHelper=WatchlistOpenHelper.getInstance(getApplicationContext());
-                SQLiteDatabase database=openHelper.getWritableDatabase();
-                ContentValues contentValues=new ContentValues();
-                contentValues.put(ContractMovies.Movie.COLUMN_ID,movieId);
-                contentValues.put(ContractMovies.Movie.COLUMN_MOVIENAME,movieName);
-                contentValues.put(ContractMovies.Movie.COLUMN_OVERVIEW,overview);
-                contentValues.put(ContractMovies.Movie.COLUMN_RATING,rating);
-                contentValues.put(ContractMovies.Movie.COLUMN_RELEASEDATE,releaseDate);
-                contentValues.put(ContractMovies.Movie.COLUMN_POSTERPATH,posterPath);
-                contentValues.put(ContractMovies.Movie.COLUMN_BACKDROPPATH,backdropPath);
-                database.insert(ContractMovies.Movie.TABLE_NAME,null,contentValues);
+                watchlistAdd();
+                addSnackBar.show();
             }
         }
+    }
+    public void watchlistAdd()
+    {
+        watchlistButton.setImageResource(R.mipmap.watchlist_fill);
+        Movie movie=new Movie();
+        movie.movieName=movieName;
+        movie.posterPath=posterPath;
+        movie.rating=rating;
+        movie.id=movieId;
+        movie.backdropPath=backdropPath;
+        movie.overview=overview;
+        movie.releaseDate=releaseDate;
+        watchlistMovies.add(movie);
+        watchlistButtonClicked=true;
+        WatchlistOpenHelper openHelper=WatchlistOpenHelper.getInstance(getApplicationContext());
+        SQLiteDatabase database=openHelper.getWritableDatabase();
+        ContentValues contentValues=new ContentValues();
+        contentValues.put(ContractMovies.Movie.COLUMN_ID,movieId);
+        contentValues.put(ContractMovies.Movie.COLUMN_MOVIENAME,movieName);
+        contentValues.put(ContractMovies.Movie.COLUMN_OVERVIEW,overview);
+        contentValues.put(ContractMovies.Movie.COLUMN_RATING,rating);
+        contentValues.put(ContractMovies.Movie.COLUMN_RELEASEDATE,releaseDate);
+        contentValues.put(ContractMovies.Movie.COLUMN_POSTERPATH,posterPath);
+        contentValues.put(ContractMovies.Movie.COLUMN_BACKDROPPATH,backdropPath);
+        database.insert(ContractMovies.Movie.TABLE_NAME,null,contentValues);
+    }
+    public void watchlistRemove()
+    {
+        watchlistButton.setImageResource(R.mipmap.watchlist);
+        watchlistButtonClicked=false;
+        WatchlistOpenHelper openHelper=WatchlistOpenHelper.getInstance(getApplicationContext());
+        SQLiteDatabase database=openHelper.getWritableDatabase();
+        String[] selectionArgs={movieId+""};
+        database.delete(ContractMovies.Movie.TABLE_NAME,ContractMovies.Movie.COLUMN_ID+" =?",selectionArgs);
     }
     @Override
     public void onBackPressed()
