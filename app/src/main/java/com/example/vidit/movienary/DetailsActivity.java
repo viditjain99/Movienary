@@ -1,9 +1,13 @@
 package com.example.vidit.movienary;
 
+import android.content.ContentValues;
 import android.content.Intent;
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
+import android.provider.Settings;
 import android.support.constraint.solver.GoalRow;
 import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.v7.app.AppCompatActivity;
@@ -14,6 +18,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
@@ -50,8 +55,18 @@ public class DetailsActivity extends AppCompatActivity
     ArrayList<Video> videoArrayList=new ArrayList<>();
     LottieAnimationView loading;
     Button readAllReviewsButton;
+    ImageButton watchlistButton;
+    ArrayList<Movie> watchlistMovies=new ArrayList<>();
     android.support.v7.widget.Toolbar toolbar;
     CollapsingToolbarLayout collapsingToolbarLayout;
+    boolean watchlistButtonClicked;
+    String movieName;
+    String posterPath;
+    String backdropPath;
+    String movieId;
+    String rating;
+    String overview;
+    String releaseDate;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -90,6 +105,7 @@ public class DetailsActivity extends AppCompatActivity
         similarMoviesRecyclerView=findViewById(R.id.similarMoviesRecyclerView);
         videoRecyclerView=findViewById(R.id.videoRecyclerView);
         videoTextView=findViewById(R.id.videoTextView);
+        watchlistButton=findViewById(R.id.watchlistButton);
 
         adapter=new CastAdapter(DetailsActivity.this, actorsList, new CastClickListener() {
             @Override
@@ -142,14 +158,35 @@ public class DetailsActivity extends AppCompatActivity
         intent = getIntent();
 
         Bundle bundle=intent.getExtras();
-        String movieName = bundle.getString("MovieName");
-        String posterPath = bundle.getString("PosterPath");
-        String rating = bundle.getString("Rating");
-        String id = bundle.getString("Id");
-        final String backdropPath = bundle.getString("BackdropPath");
-        String overview = bundle.getString("Overview");
-        final String releaseDate = bundle.getString("ReleaseDate");
+        movieName = bundle.getString("MovieName");
+        posterPath = bundle.getString("PosterPath");
+        rating = bundle.getString("Rating");
+        movieId = bundle.getString("Id");
+        backdropPath = bundle.getString("BackdropPath");
+        overview = bundle.getString("Overview");
+        releaseDate = bundle.getString("ReleaseDate");
 
+        WatchlistOpenHelper openHelper=WatchlistOpenHelper.getInstance(DetailsActivity.this);
+        SQLiteDatabase database=openHelper.getReadableDatabase();
+        String[] selectionArgs={movieId+""};
+        String[] columns={ContractMovies.Movie.COLUMN_MOVIENAME};
+        Cursor cursor=database.query(ContractMovies.Movie.TABLE_NAME,columns,ContractMovies.Movie.COLUMN_ID+" =?",selectionArgs,null,null,null);
+        String name=null;
+        while(cursor.moveToNext())
+        {
+            name=cursor.getString(cursor.getColumnIndex(ContractMovies.Movie.COLUMN_MOVIENAME));
+        }
+        if(name==null)
+        {
+            watchlistButton.setImageResource(R.mipmap.watchlist);
+            watchlistButtonClicked=false;
+        }
+        else if(name!=null)
+        {
+            watchlistButton.setImageResource(R.mipmap.watchlist_fill);
+            watchlistButtonClicked=true;
+        }
+        //Log.d("movieName",cursor.getString(0));
         collapsingToolbarLayout.setTitle(movieName);
         collapsingToolbarLayout.setExpandedTitleColor(getResources().getColor(android.R.color.transparent));
         titleTextView.setVisibility(View.GONE);
@@ -201,7 +238,7 @@ public class DetailsActivity extends AppCompatActivity
         }
         releaseDateTextView.setText("Release Date: "+releaseDate);
 
-        Call<SingleMovie> call=ApiClient.getMoviesService().getDetails(id);
+        Call<SingleMovie> call=ApiClient.getMoviesService().getDetails(movieId);
         call.enqueue(new Callback<SingleMovie>() {
             @Override
             public void onResponse(Call<SingleMovie> call, Response<SingleMovie> response)
@@ -235,7 +272,7 @@ public class DetailsActivity extends AppCompatActivity
             }
         });
 
-        Call<VideoResponse> call4=ApiClient.getVideoService().getVideos(id);
+        Call<VideoResponse> call4=ApiClient.getVideoService().getVideos(movieId);
         call4.enqueue(new Callback<VideoResponse>() {
             @Override
             public void onResponse(Call<VideoResponse> call, Response<VideoResponse> response) {
@@ -250,7 +287,7 @@ public class DetailsActivity extends AppCompatActivity
             }
         });
 
-        Call<CastResponse> call1=ApiClient.getMoviesService().getCast(id);
+        Call<CastResponse> call1=ApiClient.getMoviesService().getCast(movieId);
         call1.enqueue(new Callback<CastResponse>() {
             @Override
             public void onResponse(Call<CastResponse> call1, Response<CastResponse> response) {
@@ -265,7 +302,7 @@ public class DetailsActivity extends AppCompatActivity
             }
         });
 
-        Call<MovieResponse> call3=ApiClient.getMoviesService().getSimilarMovies(id);
+        Call<MovieResponse> call3=ApiClient.getMoviesService().getSimilarMovies(movieId);
         call3.enqueue(new Callback<MovieResponse>() {
             @Override
             public void onResponse(Call<MovieResponse> call3, Response<MovieResponse> response)
@@ -282,7 +319,7 @@ public class DetailsActivity extends AppCompatActivity
             }
         });
 
-        Call<ReviewResponse> call2=ApiClient.getMoviesService().getReviews(id);
+        Call<ReviewResponse> call2=ApiClient.getMoviesService().getReviews(movieId);
         call2.enqueue(new Callback<ReviewResponse>() {
             @Override
             public void onResponse(Call<ReviewResponse> call2, Response<ReviewResponse> response)
@@ -355,5 +392,55 @@ public class DetailsActivity extends AppCompatActivity
             intent.putExtra("content",content);
             startActivity(intent);
         }
+    }
+
+    public void addToWatchlist(View view)
+    {
+        int id=view.getId();
+        if(id==R.id.watchlistButton)
+        {
+            if(watchlistButtonClicked==true)
+            {
+                watchlistButton.setImageResource(R.mipmap.watchlist);
+                Toast.makeText(DetailsActivity.this,"Removed from Watchlist",Toast.LENGTH_SHORT).show();
+                watchlistButtonClicked=false;
+                WatchlistOpenHelper openHelper=WatchlistOpenHelper.getInstance(getApplicationContext());
+                SQLiteDatabase database=openHelper.getWritableDatabase();
+                String[] selectionArgs={movieId+""};
+                database.delete(ContractMovies.Movie.TABLE_NAME,ContractMovies.Movie.COLUMN_ID+" =?",selectionArgs);
+            }
+            else if(watchlistButtonClicked==false)
+            {
+                watchlistButton.setImageResource(R.mipmap.watchlist_fill);
+                Toast.makeText(DetailsActivity.this,"Added to Watchlist",Toast.LENGTH_SHORT).show();
+
+                Movie movie=new Movie();
+                movie.movieName=movieName;
+                movie.posterPath=posterPath;
+                movie.rating=rating;
+                movie.id=movieId;
+                movie.backdropPath=backdropPath;
+                movie.overview=overview;
+                movie.releaseDate=releaseDate;
+                watchlistMovies.add(movie);
+                watchlistButtonClicked=true;
+                WatchlistOpenHelper openHelper=WatchlistOpenHelper.getInstance(getApplicationContext());
+                SQLiteDatabase database=openHelper.getWritableDatabase();
+                ContentValues contentValues=new ContentValues();
+                contentValues.put(ContractMovies.Movie.COLUMN_ID,movieId);
+                contentValues.put(ContractMovies.Movie.COLUMN_MOVIENAME,movieName);
+                contentValues.put(ContractMovies.Movie.COLUMN_OVERVIEW,overview);
+                contentValues.put(ContractMovies.Movie.COLUMN_RATING,rating);
+                contentValues.put(ContractMovies.Movie.COLUMN_RELEASEDATE,releaseDate);
+                contentValues.put(ContractMovies.Movie.COLUMN_POSTERPATH,posterPath);
+                contentValues.put(ContractMovies.Movie.COLUMN_BACKDROPPATH,backdropPath);
+                database.insert(ContractMovies.Movie.TABLE_NAME,null,contentValues);
+            }
+        }
+    }
+    @Override
+    public void onBackPressed()
+    {
+        finish();
     }
 }

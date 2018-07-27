@@ -51,16 +51,7 @@
                 android:padding="5dp"
                 android:textColor="#000000" />
 
-            <ImageButton
-                android:layout_width="30dp"
-                android:layout_height="30dp"
-                android:id="@+id/watchListButton"
-                android:layout_gravity="end"
-                android:padding="5dp"/>
-
         </LinearLayout>
-
-
 
     </LinearLayout>
 

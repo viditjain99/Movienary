@@ -24,7 +24,7 @@ public class PopularTvShowsFragment extends Fragment
 {
     MyRecyclerView popularTvRecyclerView;
     LottieAnimationView tvLoading;
-    ArrayList<Tv> popularTvShowsList=new ArrayList<>();
+    static ArrayList<Tv> popularTvShowsList=new ArrayList<>();
     //FloatingActionButton searchButton;
     TvAdapter adapter;
     PopularTvShowsFragmentCallBack listener;
@@ -53,15 +53,6 @@ public class PopularTvShowsFragment extends Fragment
         tvLoading=output.findViewById(R.id.tvLoading);
         nextButton=output.findViewById(R.id.nextButton);
         prevButton=output.findViewById(R.id.prevButton);
-        //searchButton=output.findViewById(R.id.searchButton);
-//        searchButton.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view)
-//            {
-//                Intent intent=new Intent(getActivity(),SearchActivity.class);
-//                startActivity(intent);
-//            }
-//        });
         adapter=new TvAdapter(getContext(), popularTvShowsList, new TvClickListener() {
             @Override
             public void onTvClick(View view, int position)
@@ -172,7 +163,6 @@ public class PopularTvShowsFragment extends Fragment
                 popularTvRecyclerView.setVisibility(View.VISIBLE);
                 nextButton.setVisibility(View.VISIBLE);
                 prevButton.setVisibility(View.VISIBLE);
-                //searchButton.setVisibility(View.VISIBLE);
                 popularTvRecyclerView.loadComplete();
             }
 

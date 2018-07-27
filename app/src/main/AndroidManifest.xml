@@ -11,7 +11,8 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".MainActivity"
+        <activity
+            android:name=".MainActivity"
             android:theme="@style/NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -19,8 +20,9 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".SearchActivity"
-            android:theme="@style/NoActionBar"/>
+        <activity
+            android:name=".SearchActivity"
+            android:theme="@style/NoActionBar" />
         <activity
             android:name=".DetailsActivity"
             android:theme="@style/NoActionBar" />
@@ -30,12 +32,19 @@
         <activity
             android:name=".ImageActivity"
             android:theme="@style/ImageTheme" />
-        <activity android:name=".TvShowsActivity"
-            android:theme="@style/NoActionBar"/>
-        <activity android:name=".TvShowDetailsActivity"
-            android:theme="@style/NoActionBar"/>
-        <activity android:name=".ActorDetailsActivity"
-            android:theme="@style/NoActionBar"/>
+        <activity
+            android:name=".TvShowsActivity"
+            android:theme="@style/NoActionBar" />
+        <activity
+            android:name=".TvShowDetailsActivity"
+            android:theme="@style/NoActionBar" />
+        <activity
+            android:name=".ActorDetailsActivity"
+            android:theme="@style/NoActionBar" />
+        <activity
+            android:name=".WatchListActivity"
+            android:label="Watchlist"
+            android:theme="@style/AppTheme.NoActionBar"/>
     </application>
 
 </manifest>

@@ -16,5 +16,5 @@ public class Tv
     String id;
     @SerializedName("vote_average")
     String rating;
-    boolean favourite=false;
+    String mediaType;
 }

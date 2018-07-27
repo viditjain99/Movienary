@@ -3,6 +3,7 @@ package com.example.vidit.movienary;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
@@ -214,15 +215,26 @@ public class MainActivity extends AppCompatActivity implements PopularMoviesFrag
         }
         else if (id == R.id.nav_watchlist)
         {
-            toolbar.setTitle("Watchlist");
+            Intent intent=new Intent(this,WatchListActivity.class);
+            startActivity(intent);
+            finish();
         }
         else if (id == R.id.nav_share)
         {
-
+            Intent intent=new Intent();
+            intent.setAction(Intent.ACTION_SEND);
+            intent.putExtra(Intent.EXTRA_TEXT,"Hey check out this app at:https://play.google.com/store");
+            intent.setType("text/plain");
+            startActivity(intent);
         }
         else if (id == R.id.nav_send)
         {
-
+            Intent intent=new Intent();
+            intent.setAction(Intent.ACTION_SENDTO);
+            Uri uri=Uri.parse("mailto:vidit1000@gmail.com");
+            intent.putExtra(Intent.EXTRA_SUBJECT,"Feedback of Movienary App");
+            intent.setData(uri);
+            startActivity(intent);
         }
         transaction.commit();
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);

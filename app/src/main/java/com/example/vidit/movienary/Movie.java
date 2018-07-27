@@ -22,5 +22,5 @@ public class Movie
     String tvShowName;
     @SerializedName("first_air_date")
     String firstAirDate;
-    boolean favourite=false;
+    long dbPosition;
 }

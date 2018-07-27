@@ -42,7 +42,19 @@
                 android:layout_width="match_parent"
                 android:layout_height="?attr/actionBarSize"
                 app:layout_scrollFlags="scroll|enterAlways"
-                app:layout_collapseMode="pin"/>
+                app:layout_collapseMode="pin">
+
+            <ImageButton
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/watchlistButton"
+                android:src="@mipmap/watchlist"
+                android:background="@null"
+                android:layout_gravity="end"
+                android:layout_marginEnd="15dp"
+                android:onClick="addToWatchlist"/>
+
+            </android.support.v7.widget.Toolbar>
 
         </android.support.design.widget.CollapsingToolbarLayout>
 

@@ -1,6 +1,7 @@
 package com.example.vidit.movienary;
 
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
@@ -91,7 +92,6 @@ public class TvShowsActivity extends AppCompatActivity implements PopularTvShows
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawer.addDrawerListener(toggle);
         toggle.syncState();
-        //searchEditText=findViewById(R.id.searchEditText);
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
@@ -106,7 +106,6 @@ public class TvShowsActivity extends AppCompatActivity implements PopularTvShows
         transaction.commit();
         loading.setVisibility(View.GONE);
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
-        //searchEditText.setOnKeyListener(TvShowsActivity.this);
     }
 
     @Override
@@ -204,14 +203,25 @@ public class TvShowsActivity extends AppCompatActivity implements PopularTvShows
         else if (id == R.id.nav_watchlist)
         {
             toolbar.setTitle("Watchlist");
+            Intent intent=new Intent(TvShowsActivity.this,WatchListActivity.class);
+            startActivity(intent);
         }
         else if (id == R.id.nav_share)
         {
-
+            Intent intent=new Intent();
+            intent.setAction(Intent.ACTION_SEND);
+            intent.putExtra(Intent.EXTRA_TEXT,"Hey check out this app at:https://play.google.com/store");
+            intent.setType("text/plain");
+            startActivity(intent);
         }
         else if (id == R.id.nav_send)
         {
-
+            Intent intent=new Intent();
+            intent.setAction(Intent.ACTION_SENDTO);
+            Uri uri=Uri.parse("mailto:vidit1000@gmail.com");
+            intent.putExtra(Intent.EXTRA_SUBJECT,"Feedback of Movienary App");
+            intent.setData(uri);
+            startActivity(intent);
         }
         transaction.commit();
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);

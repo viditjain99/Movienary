@@ -1,8 +1,10 @@
 package com.example.vidit.movienary;
 
 
+import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
+import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
@@ -19,6 +21,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -40,8 +43,7 @@ public class PopularMoviesFragment extends Fragment{
 
     MyRecyclerView popularRecyclerView;
     LottieAnimationView loading;
-    ArrayList<Movie> popularMoviesList=new ArrayList<>();
-    //FloatingActionButton searchButton;
+    static ArrayList<Movie> popularMoviesList=new ArrayList<>();
     MovieAdapter adapter;
     PopularMoviesFragmentCallBack listener;
     int totalPages;
@@ -62,7 +64,7 @@ public class PopularMoviesFragment extends Fragment{
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+    public View onCreateView(LayoutInflater inflater, final ViewGroup container,
                              Bundle savedInstanceState) {
         View output=inflater.inflate(R.layout.fragment_popular_movies,container,false);
         popularRecyclerView=output.findViewById(R.id.popularRecyclerView);
@@ -70,17 +72,6 @@ public class PopularMoviesFragment extends Fragment{
         loading=output.findViewById(R.id.loading);
         nextButton=output.findViewById(R.id.nextButton);
         prevButton=output.findViewById(R.id.prevButton);
-        //loading.setVisibility(View.VISIBLE);
-        //searchButton=output.findViewById(R.id.searchButton);
-//        searchButton.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view)
-//            {
-//                Intent intent=new Intent(getActivity(),SearchActivity.class);
-//                startActivity(intent);
-//            }
-//        });
-        //searchButton.setVisibility(View.GONE);
 
         adapter=new MovieAdapter(getContext(), popularMoviesList, new MovieClickListener() {
             @Override

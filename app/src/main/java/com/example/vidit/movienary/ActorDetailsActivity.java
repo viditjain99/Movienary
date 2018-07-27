@@ -68,16 +68,16 @@ public class ActorDetailsActivity extends AppCompatActivity
         adapter=new MovieAdapter(ActorDetailsActivity.this, movieCredits, new MovieClickListener() {
             @Override
             public void onMovieClick(View view, int position) {
-                Movie movie=movieCredits.get(position);
-                Bundle bundle=new Bundle();
-                bundle.putString("MovieName",movie.movieName);
-                bundle.putString("PosterPath",movie.posterPath);
-                bundle.putString("Rating",movie.rating);
-                bundle.putString("Id",movie.id);
-                bundle.putString("BackdropPath",movie.backdropPath);
-                bundle.putString("Overview",movie.overview);
-                bundle.putString("ReleaseDate",movie.releaseDate);
-                Intent intent=new Intent(ActorDetailsActivity.this,DetailsActivity.class);
+                Movie movie = movieCredits.get(position);
+                Bundle bundle = new Bundle();
+                bundle.putString("MovieName", movie.movieName);
+                bundle.putString("PosterPath", movie.posterPath);
+                bundle.putString("Rating", movie.rating);
+                bundle.putString("Id", movie.id);
+                bundle.putString("BackdropPath", movie.backdropPath);
+                bundle.putString("Overview", movie.overview);
+                bundle.putString("ReleaseDate", movie.releaseDate);
+                Intent intent = new Intent(ActorDetailsActivity.this, DetailsActivity.class);
                 intent.putExtras(bundle);
                 startActivity(intent);
             }

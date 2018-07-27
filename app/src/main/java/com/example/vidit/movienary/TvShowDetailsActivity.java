@@ -1,6 +1,9 @@
 package com.example.vidit.movienary;
 
+import android.content.ContentValues;
 import android.content.Intent;
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
@@ -11,8 +14,10 @@ import android.support.v7.widget.RecyclerView;
 import android.text.Html;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.airbnb.lottie.LottieAnimationView;
 import com.squareup.picasso.Picasso;
@@ -37,10 +42,20 @@ public class TvShowDetailsActivity extends AppCompatActivity
     ArrayList<Review> reviewsList=new ArrayList<>();
     ArrayList<Tv> similarTvShowsList=new ArrayList<>();
     ArrayList<Video> videoArrayList=new ArrayList<>();
+    ArrayList<Tv> watchlistTvShows=new ArrayList<>();
     LottieAnimationView loading;
     Button readAllReviewsButton;
+    ImageButton watchlistButton;
     android.support.v7.widget.Toolbar toolbar;
     CollapsingToolbarLayout collapsingToolbarLayout;
+    boolean watchlistButtonClicked;
+    String tvShowName;
+    String posterPath;
+    String backdropPath;
+    String tvShowId;
+    String rating;
+    String overview;
+    String firstAirDate;
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {
@@ -79,6 +94,7 @@ public class TvShowDetailsActivity extends AppCompatActivity
         similarTvShowsTextView=findViewById(R.id.similarTvShowsTextView);
         videoRecyclerView=findViewById(R.id.videoRecyclerView);
         videoTextView=findViewById(R.id.videoTextView);
+        watchlistButton=findViewById(R.id.watchlistButton);
 
         adapter=new CastAdapter(TvShowDetailsActivity.this, actorsList, new CastClickListener() {
             @Override
@@ -130,13 +146,34 @@ public class TvShowDetailsActivity extends AppCompatActivity
         intent=getIntent();
 
         Bundle bundle=intent.getExtras();
-        String tvShowName = bundle.getString("TvShowName");
-        String posterPath = bundle.getString("PosterPath");
-        String rating = bundle.getString("Rating");
-        String id = bundle.getString("Id");
-        final String backdropPath = bundle.getString("BackdropPath");
-        String overview = bundle.getString("Overview");
-        final String firstAirDate = bundle.getString("FirstAirDate");
+        tvShowName = bundle.getString("TvShowName");
+        posterPath = bundle.getString("PosterPath");
+        rating = bundle.getString("Rating");
+        tvShowId = bundle.getString("Id");
+        backdropPath = bundle.getString("BackdropPath");
+        overview = bundle.getString("Overview");
+        firstAirDate = bundle.getString("FirstAirDate");
+
+        WatchlistOpenHelper openHelper=WatchlistOpenHelper.getInstance(TvShowDetailsActivity.this);
+        SQLiteDatabase database=openHelper.getReadableDatabase();
+        String[] selectionArgs={tvShowId+""};
+        String[] columns={ContractTv.Tv.COLUMN_TVSHOWNAME};
+        Cursor cursor=database.query(ContractTv.Tv.TABLE_NAME,columns,ContractTv.Tv.COLUMN_ID+" =?",selectionArgs,null,null,null);
+        String name=null;
+        while(cursor.moveToNext())
+        {
+            name=cursor.getString(cursor.getColumnIndex(ContractTv.Tv.COLUMN_TVSHOWNAME));
+        }
+        if(name==null)
+        {
+            watchlistButton.setImageResource(R.mipmap.watchlist);
+            watchlistButtonClicked=false;
+        }
+        else if(name!=null)
+        {
+            watchlistButton.setImageResource(R.mipmap.watchlist_fill);
+            watchlistButtonClicked=true;
+        }
 
         collapsingToolbarLayout.setTitle(tvShowName);
         collapsingToolbarLayout.setExpandedTitleColor(getResources().getColor(android.R.color.transparent));
@@ -188,7 +225,7 @@ public class TvShowDetailsActivity extends AppCompatActivity
         }
         firstAirDateTextView.setText("First Air Date: "+firstAirDate);
 
-        Call<SingleMovie> call=ApiClient.getTvService().getDetails(id);
+        Call<SingleMovie> call=ApiClient.getTvService().getDetails(tvShowId);
         call.enqueue(new Callback<SingleMovie>() {
             @Override
             public void onResponse(Call<SingleMovie> call, Response<SingleMovie> response)
@@ -217,7 +254,7 @@ public class TvShowDetailsActivity extends AppCompatActivity
             }
         });
 
-        Call<CastResponse> call1=ApiClient.getTvService().getCast(id);
+        Call<CastResponse> call1=ApiClient.getTvService().getCast(tvShowId);
         call1.enqueue(new Callback<CastResponse>() {
             @Override
             public void onResponse(Call<CastResponse> call1, Response<CastResponse> response) {
@@ -233,7 +270,7 @@ public class TvShowDetailsActivity extends AppCompatActivity
             }
         });
 
-        Call<VideoResponse> call4=ApiClient.getVideoService().getTvShowVideos(id);
+        Call<VideoResponse> call4=ApiClient.getVideoService().getTvShowVideos(tvShowId);
         call4.enqueue(new Callback<VideoResponse>() {
             @Override
             public void onResponse(Call<VideoResponse> call, Response<VideoResponse> response) {
@@ -248,7 +285,7 @@ public class TvShowDetailsActivity extends AppCompatActivity
             }
         });
 
-        Call<TvResponse> call3=ApiClient.getTvService().getSimilarTvShows(id);
+        Call<TvResponse> call3=ApiClient.getTvService().getSimilarTvShows(tvShowId);
         call3.enqueue(new Callback<TvResponse>() {
             @Override
             public void onResponse(Call<TvResponse> call, Response<TvResponse> response) {
@@ -264,7 +301,7 @@ public class TvShowDetailsActivity extends AppCompatActivity
             }
         });
 
-        Call<ReviewResponse> call2=ApiClient.getTvService().getReviews(id);
+        Call<ReviewResponse> call2=ApiClient.getTvService().getReviews(tvShowId);
         call2.enqueue(new Callback<ReviewResponse>() {
             @Override
             public void onResponse(Call<ReviewResponse> call2, Response<ReviewResponse> response)
@@ -334,6 +371,57 @@ public class TvShowDetailsActivity extends AppCompatActivity
             intent.putExtra("authors",authors);
             intent.putExtra("content",content);
             startActivity(intent);
+        }
+    }
+
+    public void addToWatchlist(View view)
+    {
+        int id=view.getId();
+        if(id==R.id.watchlistButton)
+        {
+            if(watchlistButtonClicked==true)
+            {
+                watchlistButton.setImageResource(R.mipmap.watchlist);
+                Toast.makeText(TvShowDetailsActivity.this,"Removed from Watchlist",Toast.LENGTH_SHORT).show();
+                watchlistButtonClicked=false;
+                WatchlistOpenHelper openHelper=WatchlistOpenHelper.getInstance(getApplicationContext());
+                SQLiteDatabase database=openHelper.getWritableDatabase();
+                String[] selectionArgs={tvShowId+""};
+                database.delete(ContractTv.Tv.TABLE_NAME,ContractTv.Tv.COLUMN_ID+" =?",selectionArgs);
+                for(int i=0;i<watchlistTvShows.size();i++)
+                {
+                    if(watchlistTvShows.get(i).id==tvShowId)
+                    {
+                        watchlistTvShows.remove(i);
+                    }
+                }
+            }
+            else if(watchlistButtonClicked==false)
+            {
+                watchlistButton.setImageResource(R.mipmap.watchlist_fill);
+                Toast.makeText(TvShowDetailsActivity.this,"Added to Watchlist",Toast.LENGTH_SHORT).show();
+                Tv tvShow=new Tv();
+                tvShow.tvShowName=tvShowName;
+                tvShow.posterPath=posterPath;
+                tvShow.rating=rating;
+                tvShow.id=tvShowId;
+                tvShow.backdropPath=backdropPath;
+                tvShow.overview=overview;
+                tvShow.firstAirDate=firstAirDate;
+                watchlistTvShows.add(tvShow);
+                watchlistButtonClicked=true;
+                WatchlistOpenHelper openHelper=WatchlistOpenHelper.getInstance(getApplicationContext());
+                SQLiteDatabase database=openHelper.getWritableDatabase();
+                ContentValues contentValues=new ContentValues();
+                contentValues.put(ContractTv.Tv.COLUMN_ID,tvShowId);
+                contentValues.put(ContractTv.Tv.COLUMN_TVSHOWNAME,tvShowName);
+                contentValues.put(ContractTv.Tv.COLUMN_OVERVIEW,overview);
+                contentValues.put(ContractTv.Tv.COLUMN_RATING,rating);
+                contentValues.put(ContractTv.Tv.COLUMN_FIRSTAIRDATE,firstAirDate);
+                contentValues.put(ContractTv.Tv.COLUMN_POSTERPATH,posterPath);
+                contentValues.put(ContractTv.Tv.COLUMN_BACKDROPPATH,backdropPath);
+                database.insert(ContractTv.Tv.TABLE_NAME,null,contentValues);
+            }
         }
     }
 }
