@@ -13,7 +13,7 @@ import android.widget.TextView;
 
 public class SearchResultsTextView extends TextView
 {
-    private static final int DEFAULT_TRIM_LENGTH = 100;
+    private static final int DEFAULT_TRIM_LENGTH = 75;
     private static final String ELLIPSIS = " ...";
 
     private CharSequence originalText;

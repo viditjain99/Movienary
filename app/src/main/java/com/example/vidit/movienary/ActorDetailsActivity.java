@@ -8,6 +8,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.airbnb.lottie.LottieAnimationView;
 import com.hereshem.lib.recycler.MyRecyclerView;
@@ -157,6 +158,21 @@ public class ActorDetailsActivity extends AppCompatActivity
                 MovieCreditsResponse movieCreditsResponse=response.body();
                 ArrayList<Movie> moviesList=movieCreditsResponse.cast;
                 movieCredits.addAll(moviesList);
+                movieCreditsRecyclerView.setVisibility(View.VISIBLE);
+            }
+
+            @Override
+            public void onFailure(Call<MovieCreditsResponse> call, Throwable t) {
+
+            }
+        });
+        Call<TvCreditsResponse> call2=ApiClient.getTvService().getTvCredits(id);
+        call2.enqueue(new Callback<TvCreditsResponse>() {
+            @Override
+            public void onResponse(Call<TvCreditsResponse> call, Response<TvCreditsResponse> response) {
+                TvCreditsResponse tvCreditsResponse=response.body();
+                ArrayList<Tv> tvShowsList=tvCreditsResponse.cast;
+                tvCredits.addAll(tvShowsList);
                 actorNameTextView.setVisibility(View.VISIBLE);
                 biographyTextView.setVisibility(View.VISIBLE);
                 ageTextView.setVisibility(View.VISIBLE);
@@ -165,13 +181,12 @@ public class ActorDetailsActivity extends AppCompatActivity
                 movieCreditsTextView.setVisibility(View.VISIBLE);
                 tvShowCredits.setVisibility(View.VISIBLE);
                 profileImageView.setVisibility(View.VISIBLE);
-                movieCreditsRecyclerView.setVisibility(View.VISIBLE);
                 tvCreditsRecyclerView.setVisibility(View.VISIBLE);
                 loading.setVisibility(View.GONE);
             }
 
             @Override
-            public void onFailure(Call<MovieCreditsResponse> call, Throwable t) {
+            public void onFailure(Call<TvCreditsResponse> call, Throwable t) {
 
             }
         });

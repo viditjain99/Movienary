@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="horizontal"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_gravity="bottom|end">
+
+    <ImageView
+        android:id="@+id/starImageView"
+        android:layout_width="23dp"
+        android:layout_height="23dp"
+        app:srcCompat="@drawable/ic_action_name" />
+
+    <TextView
+        android:id="@+id/searchResultsRatingTextView"
+        android:layout_width="43dp"
+        android:layout_height="wrap_content"
+        android:gravity="center_vertical"
+        android:text="rating"
+        android:textColor="#808080"
+        android:textStyle="bold" />
+
+</LinearLayout>

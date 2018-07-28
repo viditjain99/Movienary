@@ -63,7 +63,7 @@ public class SearchAdapter extends RecyclerView.Adapter<SearchViewHolder>
         }
         searchViewHolder.type.setText(mediaType);
         searchViewHolder.overview.setText(result.overview);
-        Picasso.get().load("http://image.tmdb.org/t/p/w500"+result.posterPath).into(searchViewHolder.image);
+        Picasso.get().load("http://image.tmdb.org/t/p/w185"+result.posterPath).into(searchViewHolder.image);
         if(Float.parseFloat(result.rating)==0)
         {
             searchViewHolder.rating.setText("N/A");

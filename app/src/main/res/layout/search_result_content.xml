@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <ImageView
+        android:id="@+id/searchResultsPosterImageView"
+        android:layout_width="144dp"
+        android:layout_height="match_parent"
+        android:adjustViewBounds="true"
+        android:scaleType="centerCrop"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.0" />
+
+    <LinearLayout
+        android:layout_width="235dp"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toEndOf="@+id/searchResultsPosterImageView"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.0">
+
+        <com.example.vidit.movienary.SearchResultsNameExTextView
+            android:id="@+id/searchResultsNameTextView"
+            android:layout_width="241dp"
+            android:layout_height="wrap_content"
+            android:padding="5dp"
+            android:text="name"
+            android:textAppearance="@style/TextAppearance.AppCompat.Large"
+            android:textColor="#000000"
+            android:textSize="20dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toEndOf="@+id/searchResultsPosterImageView"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/searchResultsTypeTextView"
+            android:layout_width="168dp"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="8dp"
+            android:layout_marginRight="8dp"
+            android:padding="5dp"
+            android:text="type"
+            android:textColor="#000000"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toEndOf="@+id/searchResultsPosterImageView"
+            app:layout_constraintTop_toBottomOf="@+id/searchResultsNameTextView" />
+
+        <com.example.vidit.movienary.SearchResultsTextView
+            android:id="@+id/searchResultsOverviewTextView"
+            android:layout_width="245dp"
+            android:layout_height="wrap_content"
+            android:padding="5dp"
+            android:text="overview"
+            android:textColor="#000000"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="@+id/searchResultsTypeTextView"
+            app:layout_constraintTop_toBottomOf="@+id/searchResultsTypeTextView"
+            app:layout_constraintVertical_bias="0.0" />
+
+        <include layout="@layout/row_layout"/>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="2dp"
+            android:background="@android:color/darker_gray"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/searchResultsRatingTextView"
+            tools:layout_editor_absoluteX="16dp" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/moreInfoTextView"
+            android:text="More Info..."
+            android:textColor="@color/color_grey_700"
+            android:clickable="true"
+            android:padding="5dp"/>
+    </LinearLayout>
+
+</android.support.constraint.ConstraintLayout>
