@@ -480,6 +480,7 @@ public class DetailsActivity extends AppCompatActivity
     @Override
     public void onBackPressed()
     {
+        WatchlistMovieFragment.adapter.notifyDataSetChanged();
         finish();
     }
 }

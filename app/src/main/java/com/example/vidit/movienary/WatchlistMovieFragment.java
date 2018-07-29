@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.GridLayoutManager;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -20,7 +21,7 @@ public class WatchlistMovieFragment extends Fragment
 {
     MyRecyclerView watchlistMoviesRecyclerView;
     WatchlistMovieFragmentCallback listener;
-    MovieAdapter adapter;
+    static MovieAdapter adapter;
     ArrayList<Movie> watchlistMovies=new ArrayList<>();
 
     public WatchlistMovieFragment()
@@ -36,9 +37,9 @@ public class WatchlistMovieFragment extends Fragment
             listener=(WatchlistMovieFragmentCallback) context;
         }
     }
-
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
     {
+        Log.d("See","view");
         View output=inflater.inflate(R.layout.fragment_movie_watchlist,container,false);
         watchlistMoviesRecyclerView=output.findViewById(R.id.watchlistMoviesRecyclerView);
         adapter=new MovieAdapter(getContext(), watchlistMovies, new MovieClickListener() {
@@ -84,5 +85,17 @@ public class WatchlistMovieFragment extends Fragment
     public interface WatchlistMovieFragmentCallback
     {
         void onMovieSelected(Movie movie);
+    }
+    @Override
+    public void onResume()
+    {
+        super.onResume();
+        adapter.notifyDataSetChanged();
+    }
+    @Override
+    public void onStart()
+    {
+        super.onStart();
+        adapter.notifyDataSetChanged();
     }
 }
