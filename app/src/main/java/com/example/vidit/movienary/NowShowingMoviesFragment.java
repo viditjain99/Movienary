@@ -32,13 +32,12 @@ public class NowShowingMoviesFragment extends Fragment {
 
     MyRecyclerView nowShowingRecyclerView;
     ArrayList<Movie> nowShowingMoviesList=new ArrayList<>();
-    //FloatingActionButton searchButton;
     LottieAnimationView loading;
     MovieAdapter adapter;
     NowShowingMoviesFragmentCallBack listener;
     int currentPage=1;
     int totalPages;
-    Button nextButton,prevButton;
+    FloatingActionButton nextButton,prevButton;
     public NowShowingMoviesFragment() {
 
     }
@@ -61,6 +60,8 @@ public class NowShowingMoviesFragment extends Fragment {
         loading=output.findViewById(R.id.loading);
         nextButton=output.findViewById(R.id.nextButton);
         prevButton=output.findViewById(R.id.prevButton);
+        nextButton.setAlpha(0.75f);
+        prevButton.setAlpha(0.75f);
         //searchButton=output.findViewById(R.id.searchButton);
 //        searchButton.setOnClickListener(new View.OnClickListener() {
 //            @Override

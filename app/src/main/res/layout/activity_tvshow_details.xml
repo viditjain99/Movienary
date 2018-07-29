@@ -44,16 +44,6 @@
                 app:layout_scrollFlags="scroll|enterAlways"
                 app:layout_collapseMode="pin">
 
-            <ImageButton
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:id="@+id/watchlistButton"
-                android:src="@mipmap/watchlist"
-                android:background="@null"
-                android:layout_gravity="end"
-                android:layout_marginEnd="15dp"
-                android:onClick="addToWatchlist"/>
-
             </android.support.v7.widget.Toolbar>
 
         </android.support.design.widget.CollapsingToolbarLayout>
@@ -68,6 +58,15 @@
         app:lottie_fileName="movie_loading.json"
         app:lottie_loop="true"
         android:layout_gravity="center"/>
+
+    <android.support.design.widget.FloatingActionButton
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/watchlistButton"
+        android:src="@drawable/watchlist"
+        app:layout_anchor="@+id/collapsingToolbar"
+        app:layout_anchorGravity="bottom|end"
+        android:layout_marginEnd="15dp"/>
 
     <android.support.v4.widget.NestedScrollView
         android:layout_width="match_parent"
@@ -85,9 +84,10 @@
                 android:layout_height="wrap_content"
                 android:textColor="#000000"
                 android:id="@+id/titleTextView"
-                android:textStyle="bold"
                 android:textAppearance="@style/Base.TextAppearance.AppCompat.Large"
-                android:padding="10dp"/>
+                android:textStyle="bold"
+                android:padding="10dp"
+                android:layout_marginTop="15dp"/>
 
             <com.example.vidit.movienary.ExpandableTextView
                 android:layout_width="match_parent"
@@ -155,6 +155,7 @@
                 android:layout_height="match_parent"
                 android:id="@+id/videoRecyclerView"
                 android:layout_below="@id/videoTextView"
+                android:nestedScrollingEnabled="false"
                 app:layout_behavior="@string/appbar_scrolling_view_behavior"/>
 
             <TextView
@@ -172,6 +173,7 @@
                 android:layout_height="match_parent"
                 android:id="@+id/castRecyclerView"
                 android:layout_below="@+id/castTextView"
+                android:nestedScrollingEnabled="false"
                 app:layout_behavior="@string/appbar_scrolling_view_behavior" />
 
             <TextView
@@ -188,6 +190,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:id="@+id/similarTvShowsRecyclerView"
+                android:nestedScrollingEnabled="false"
                 android:layout_below="@+id/similarTvShowsTextView"
                 app:layout_behavior="@string/appbar_scrolling_view_behavior" />
 

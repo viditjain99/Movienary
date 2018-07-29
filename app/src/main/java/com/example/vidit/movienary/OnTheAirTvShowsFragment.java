@@ -30,7 +30,7 @@ public class OnTheAirTvShowsFragment extends Fragment
     OnTheAirTvShowsFragmentCallBack listener;
     int currentPage=1;
     int totalPages;
-    Button nextButton,prevButton;
+    FloatingActionButton nextButton,prevButton;
     public OnTheAirTvShowsFragment() {
 
     }
@@ -52,6 +52,8 @@ public class OnTheAirTvShowsFragment extends Fragment
         onTheAirTvRecyclerView=output.findViewById(R.id.onTheAirTvRecyclerView);
         nextButton=output.findViewById(R.id.nextButton);
         prevButton=output.findViewById(R.id.prevButton);
+        nextButton.setAlpha(0.75f);
+        prevButton.setAlpha(0.75f);
         tvLoading=output.findViewById(R.id.tvLoading);
         //searchButton=output.findViewById(R.id.searchButton);
 //        searchButton.setOnClickListener(new View.OnClickListener() {

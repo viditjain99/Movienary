@@ -39,7 +39,7 @@ public class TopRatedMoviesFragment extends Fragment {
     TopRatedMoviesFragmentCallBack listener;
     int currentPage=1;
     int totalPages;
-    Button nextButton,prevButton;
+    FloatingActionButton nextButton,prevButton;
     public TopRatedMoviesFragment() {
 
     }
@@ -61,6 +61,8 @@ public class TopRatedMoviesFragment extends Fragment {
         topRatedRecyclerView=output.findViewById(R.id.topRatedRecyclerView);
         nextButton=output.findViewById(R.id.nextButton);
         prevButton=output.findViewById(R.id.prevButton);
+        nextButton.setAlpha(0.75f);
+        prevButton.setAlpha(0.75f);
         loading=output.findViewById(R.id.loading);
         //searchButton=output.findViewById(R.id.searchButton);
 //        searchButton.setOnClickListener(new View.OnClickListener() {

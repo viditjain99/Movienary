@@ -48,7 +48,7 @@ public class PopularMoviesFragment extends Fragment{
     PopularMoviesFragmentCallBack listener;
     int totalPages;
     int currentPage=1;
-    Button nextButton,prevButton;
+    FloatingActionButton nextButton,prevButton;
     public PopularMoviesFragment() {
 
     }
@@ -72,6 +72,8 @@ public class PopularMoviesFragment extends Fragment{
         loading=output.findViewById(R.id.loading);
         nextButton=output.findViewById(R.id.nextButton);
         prevButton=output.findViewById(R.id.prevButton);
+        nextButton.setAlpha(0.75f);
+        prevButton.setAlpha(0.75f);
 
         adapter=new MovieAdapter(getContext(), popularMoviesList, new MovieClickListener() {
             @Override
@@ -181,7 +183,6 @@ public class PopularMoviesFragment extends Fragment{
                 popularRecyclerView.setVisibility(View.VISIBLE);
                 nextButton.setVisibility(View.VISIBLE);
                 prevButton.setVisibility(View.VISIBLE);
-                //searchButton.setVisibility(View.VISIBLE);
                 popularRecyclerView.loadComplete();
             }
 

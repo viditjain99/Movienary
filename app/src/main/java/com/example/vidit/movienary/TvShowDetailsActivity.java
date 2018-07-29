@@ -8,6 +8,7 @@ import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.CollapsingToolbarLayout;
+import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
@@ -46,7 +47,7 @@ public class TvShowDetailsActivity extends AppCompatActivity
     ArrayList<Tv> watchlistTvShows=new ArrayList<>();
     LottieAnimationView loading;
     Button readAllReviewsButton;
-    ImageButton watchlistButton;
+    FloatingActionButton watchlistButton;
     android.support.v7.widget.Toolbar toolbar;
     CollapsingToolbarLayout collapsingToolbarLayout;
     boolean watchlistButtonClicked;
@@ -96,6 +97,12 @@ public class TvShowDetailsActivity extends AppCompatActivity
         videoRecyclerView=findViewById(R.id.videoRecyclerView);
         videoTextView=findViewById(R.id.videoTextView);
         watchlistButton=findViewById(R.id.watchlistButton);
+        watchlistButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                addToWatchlist(view);
+            }
+        });
 
         adapter=new CastAdapter(TvShowDetailsActivity.this, actorsList, new CastClickListener() {
             @Override
@@ -196,6 +203,7 @@ public class TvShowDetailsActivity extends AppCompatActivity
         similarTvShowsTextView.setVisibility(View.GONE);
         videoRecyclerView.setVisibility(View.GONE);
         videoTextView.setVisibility(View.GONE);
+        watchlistButton.setVisibility(View.GONE);
         titleTextView.setText(tvShowName);
 
         backdropImageView.setOnClickListener(new View.OnClickListener() {
@@ -347,6 +355,7 @@ public class TvShowDetailsActivity extends AppCompatActivity
                 similarTvShowsTextView.setVisibility(View.VISIBLE);
                 videoRecyclerView.setVisibility(View.VISIBLE);
                 videoTextView.setVisibility(View.VISIBLE);
+                watchlistButton.setVisibility(View.VISIBLE);
                 loading.setVisibility(View.GONE);
             }
 

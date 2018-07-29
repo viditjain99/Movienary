@@ -10,6 +10,7 @@ import android.os.Bundle;
 import android.provider.Settings;
 import android.support.constraint.solver.GoalRow;
 import android.support.design.widget.CollapsingToolbarLayout;
+import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
@@ -56,7 +57,8 @@ public class DetailsActivity extends AppCompatActivity
     ArrayList<Video> videoArrayList=new ArrayList<>();
     LottieAnimationView loading;
     Button readAllReviewsButton;
-    ImageButton watchlistButton;
+    //ImageButton watchlistButton;
+    FloatingActionButton watchlistButton;
     ArrayList<Movie> watchlistMovies=new ArrayList<>();
     android.support.v7.widget.Toolbar toolbar;
     CollapsingToolbarLayout collapsingToolbarLayout;
@@ -107,6 +109,13 @@ public class DetailsActivity extends AppCompatActivity
         videoRecyclerView=findViewById(R.id.videoRecyclerView);
         videoTextView=findViewById(R.id.videoTextView);
         watchlistButton=findViewById(R.id.watchlistButton);
+
+        watchlistButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                addToWatchlist(view);
+            }
+        });
 
         adapter=new CastAdapter(DetailsActivity.this, actorsList, new CastClickListener() {
             @Override
@@ -209,6 +218,7 @@ public class DetailsActivity extends AppCompatActivity
         similarMoviesRecyclerView.setVisibility(View.GONE);
         videoRecyclerView.setVisibility(View.GONE);
         videoTextView.setVisibility(View.GONE);
+        watchlistButton.setVisibility(View.GONE);
         titleTextView.setText(movieName);
 
         backdropImageView.setOnClickListener(new View.OnClickListener() {
@@ -367,6 +377,7 @@ public class DetailsActivity extends AppCompatActivity
                 similarMoviesRecyclerView.setVisibility(View.VISIBLE);
                 videoRecyclerView.setVisibility(View.VISIBLE);
                 videoTextView.setVisibility(View.VISIBLE);
+                watchlistButton.setVisibility(View.VISIBLE);
                 loading.setVisibility(View.GONE);
             }
 

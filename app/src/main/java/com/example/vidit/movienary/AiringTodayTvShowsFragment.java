@@ -25,12 +25,11 @@ public class AiringTodayTvShowsFragment extends Fragment
     MyRecyclerView airingTodayTvRecyclerView;
     LottieAnimationView tvLoading;
     ArrayList<Tv> airingTodayTvShowsList=new ArrayList<>();
-    //FloatingActionButton searchButton;
     TvAdapter adapter;
     AiringTodayTvShowsFragmentCallBack listener;
     int currentPage=1;
     int totalPages;
-    Button nextButton,prevButton;
+    FloatingActionButton nextButton,prevButton;
     public AiringTodayTvShowsFragment() {
 
     }
@@ -53,6 +52,8 @@ public class AiringTodayTvShowsFragment extends Fragment
         tvLoading=output.findViewById(R.id.tvLoading);
         nextButton=output.findViewById(R.id.nextButton);
         prevButton=output.findViewById(R.id.prevButton);
+        nextButton.setAlpha(0.75f);
+        prevButton.setAlpha(0.75f);
         airingTodayTvShowsList.clear();
         //searchButton=output.findViewById(R.id.searchButton);
 //        searchButton.setOnClickListener(new View.OnClickListener() {

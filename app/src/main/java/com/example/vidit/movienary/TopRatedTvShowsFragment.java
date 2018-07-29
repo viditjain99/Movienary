@@ -30,7 +30,7 @@ public class TopRatedTvShowsFragment extends Fragment
     TopRatedTvShowsFragmentCallBack listener;
     int currentPage=1;
     int totalPages;
-    Button nextButton,prevButton;
+    FloatingActionButton nextButton,prevButton;
     public TopRatedTvShowsFragment() {
 
     }
@@ -53,6 +53,8 @@ public class TopRatedTvShowsFragment extends Fragment
         tvLoading=output.findViewById(R.id.tvLoading);
         nextButton=output.findViewById(R.id.nextButton);
         prevButton=output.findViewById(R.id.prevButton);
+        nextButton.setAlpha(0.75f);
+        prevButton.setAlpha(0.75f);
         //searchButton=output.findViewById(R.id.searchButton);
 //        searchButton.setOnClickListener(new View.OnClickListener() {
 //            @Override

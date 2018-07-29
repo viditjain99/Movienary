@@ -14,7 +14,6 @@ public class MovieViewHolder extends RecyclerView.ViewHolder {
     ImageView image,star;
     TextView name,rating;
     LottieAnimationView loading;
-    ImageButton watchListButton;
     public MovieViewHolder(@NonNull View itemView) {
         super(itemView);
         image=itemView.findViewById(R.id.posterImageView);
@@ -22,6 +21,5 @@ public class MovieViewHolder extends RecyclerView.ViewHolder {
         rating=itemView.findViewById(R.id.ratingTextView);
         star=itemView.findViewById(R.id.starImageView);
         loading=itemView.findViewById(R.id.loading);
-        //watchListButton=itemView.findViewById(R.id.watchListButton);
     }
 }
