@@ -55,8 +55,6 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieViewHolder> {
         {
             movieViewHolder.rating.setText(movie.rating);
         }
-        //Drawable back=context.getResources().getDrawable(R.drawable.watchlist);
-        //movieViewHolder.watchListButton.setBackgroundDrawable(back);
         Picasso.get().load("https://cdn2.iconfinder.com/data/icons/modifiers-add-on-1-flat/48/Mod_Add-On_1-35-512.png").into(movieViewHolder.star);
         movieViewHolder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override

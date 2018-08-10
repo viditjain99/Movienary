@@ -188,6 +188,7 @@ public class TvShowsActivity extends AppCompatActivity implements PopularTvShows
         }
         FragmentManager fragmentManager=getSupportFragmentManager();
         FragmentTransaction transaction=fragmentManager.beginTransaction();
+        transaction.setCustomAnimations(R.anim.enter_from_right,R.anim.exit_to_left,R.anim.enter_from_left,R.anim.exit_to_right);
         int id = menuItem.getItemId();
 
         if (id == R.id.nav_movies)

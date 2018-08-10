@@ -51,6 +51,7 @@ public class MainActivity extends AppCompatActivity implements PopularMoviesFrag
     TopRatedMoviesFragment topRatedMoviesFragment;
     NowShowingMoviesFragment nowShowingMoviesFragment;
     UpcomingMoviesFragment upcomingMoviesFragment;
+    String tag="";
     LottieAnimationView loading;
     Toolbar toolbar;
     MenuItem searchItem;
@@ -61,20 +62,26 @@ public class MainActivity extends AppCompatActivity implements PopularMoviesFrag
         public boolean onNavigationItemSelected(@NonNull MenuItem item) {
             FragmentManager fragmentManager=getSupportFragmentManager();
             FragmentTransaction transaction=fragmentManager.beginTransaction();
+            transaction.setCustomAnimations(R.anim.enter_from_right,R.anim.exit_to_left,R.anim.enter_from_left,R.anim.exit_to_right);
+
             if(popularMoviesFragment==null)
             {
                 popularMoviesFragment=new PopularMoviesFragment();
+                //transaction.setCustomAnimations(R.anim.exit_to_left,R.anim.enter_from_right);
             }
             if(topRatedMoviesFragment==null)
             {
                 topRatedMoviesFragment=new TopRatedMoviesFragment();
+                //transaction.setCustomAnimations(R.anim.exit_to_left, R.anim.enter_from_right, R.anim.exit_to_right, R.anim.enter_from_left);
             }
             if(nowShowingMoviesFragment==null)
             {
+                //transaction.setCustomAnimations(R.anim.exit_to_left, R.anim.enter_from_right, R.anim.exit_to_right, R.anim.enter_from_left);
                 nowShowingMoviesFragment=new NowShowingMoviesFragment();
             }
             if(upcomingMoviesFragment==null)
             {
+                //transaction.setCustomAnimations(R.anim.exit_to_right, R.anim.enter_from_left);
                 upcomingMoviesFragment=new UpcomingMoviesFragment();
             }
             switch (item.getItemId()) {

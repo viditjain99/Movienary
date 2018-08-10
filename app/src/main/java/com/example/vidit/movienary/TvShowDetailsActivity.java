@@ -1,5 +1,6 @@
 package com.example.vidit.movienary;
 
+import android.animation.Animator;
 import android.content.ContentValues;
 import android.content.Intent;
 import android.database.Cursor;
@@ -47,6 +48,7 @@ public class TvShowDetailsActivity extends AppCompatActivity
     ArrayList<Tv> watchlistTvShows=new ArrayList<>();
     LottieAnimationView loading;
     Button readAllReviewsButton;
+    ExternalIdResponse externalIdResponse;
     FloatingActionButton watchlistButton;
     android.support.v7.widget.Toolbar toolbar;
     CollapsingToolbarLayout collapsingToolbarLayout;
@@ -58,6 +60,8 @@ public class TvShowDetailsActivity extends AppCompatActivity
     String rating;
     String overview;
     String firstAirDate;
+    FloatingActionButton facebook,instagram,twitter,imdb,menuButton;
+    boolean isFABOpen=false;
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {
@@ -97,6 +101,12 @@ public class TvShowDetailsActivity extends AppCompatActivity
         videoRecyclerView=findViewById(R.id.videoRecyclerView);
         videoTextView=findViewById(R.id.videoTextView);
         watchlistButton=findViewById(R.id.watchlistButton);
+        menuButton=findViewById(R.id.menuButton);
+        facebook=findViewById(R.id.facebook);
+        instagram=findViewById(R.id.instagram);
+        twitter=findViewById(R.id.twitter);
+        imdb=findViewById(R.id.imdb);
+        externalIdResponse=new ExternalIdResponse();
         watchlistButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -114,6 +124,21 @@ public class TvShowDetailsActivity extends AppCompatActivity
                 startActivity(intent1);
             }
         });
+
+        menuButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if(!isFABOpen)
+                {
+                    showFABMenu();
+                }
+                else
+                {
+                    closeFABMenu();
+                }
+            }
+        });
+
         LinearLayoutManager layoutManager=new LinearLayoutManager(TvShowDetailsActivity.this,LinearLayoutManager.HORIZONTAL,false);
         castRecyclerView.setLayoutManager(layoutManager);
         castRecyclerView.setAdapter(adapter);
@@ -204,6 +229,7 @@ public class TvShowDetailsActivity extends AppCompatActivity
         videoRecyclerView.setVisibility(View.GONE);
         videoTextView.setVisibility(View.GONE);
         watchlistButton.setVisibility(View.GONE);
+        menuButton.setVisibility(View.GONE);
         titleTextView.setText(tvShowName);
 
         backdropImageView.setOnClickListener(new View.OnClickListener() {
@@ -259,6 +285,27 @@ public class TvShowDetailsActivity extends AppCompatActivity
 
             @Override
             public void onFailure(Call<SingleMovie> call, Throwable t) {
+
+            }
+        });
+
+        Call<ExternalIdResponse> call5=ApiClient.getTvService().getExternalIds(tvShowId);
+        call5.enqueue(new Callback<ExternalIdResponse>() {
+            @Override
+            public void onResponse(Call<ExternalIdResponse> call, Response<ExternalIdResponse> response) {
+                externalIdResponse=response.body();
+                if(externalIdResponse==null)
+                {
+                    menuButton.setEnabled(false);
+                }
+                else
+                {
+                    menuButton.setEnabled(true);
+                }
+            }
+
+            @Override
+            public void onFailure(Call<ExternalIdResponse> call, Throwable t) {
 
             }
         });
@@ -356,6 +403,7 @@ public class TvShowDetailsActivity extends AppCompatActivity
                 videoRecyclerView.setVisibility(View.VISIBLE);
                 videoTextView.setVisibility(View.VISIBLE);
                 watchlistButton.setVisibility(View.VISIBLE);
+                menuButton.setVisibility(View.VISIBLE);
                 loading.setVisibility(View.GONE);
             }
 
@@ -454,5 +502,94 @@ public class TvShowDetailsActivity extends AppCompatActivity
         SQLiteDatabase database=openHelper.getWritableDatabase();
         String[] selectionArgs={tvShowId+""};
         database.delete(ContractTv.Tv.TABLE_NAME,ContractTv.Tv.COLUMN_ID+" =?",selectionArgs);
+    }
+
+    public void openFacebook(View view)
+    {
+        if(externalIdResponse.facebookId==null)
+        {
+            Toast.makeText(this,"Link not available",Toast.LENGTH_LONG).show();
+            return;
+        }
+        Intent intent=new Intent(Intent.ACTION_VIEW,Uri.parse("https://www.facebook.com/"+externalIdResponse.facebookId+"/?ref=br_rs"));
+        startActivity(intent);
+    }
+    public void openTwitter(View view)
+    {
+        if(externalIdResponse.twitterId==null)
+        {
+            Toast.makeText(this,"Link not available",Toast.LENGTH_LONG).show();
+            return;
+        }
+        Intent intent=new Intent(Intent.ACTION_VIEW,Uri.parse("https://twitter.com/"+externalIdResponse.twitterId));
+        startActivity(intent);
+    }
+    public void openInstagram(View view)
+    {
+        if(externalIdResponse.instagramId==null)
+        {
+            Toast.makeText(this,"Link not available",Toast.LENGTH_LONG).show();
+            return;
+        }
+        Intent intent=new Intent(Intent.ACTION_VIEW,Uri.parse("https://www.instagram.com/"+externalIdResponse.instagramId));
+        startActivity(intent);
+    }
+    public void openImdb(View view)
+    {
+        if(externalIdResponse.imdbId==null)
+        {
+            Toast.makeText(this,"Link not available",Toast.LENGTH_LONG).show();
+            return;
+        }
+        Intent intent=new Intent(Intent.ACTION_VIEW,Uri.parse("https://www.imdb.com/find?ref_=nv_sr_fn&q="+externalIdResponse.imdbId+"&s=all"));
+        startActivity(intent);
+    }
+    private void showFABMenu(){
+        isFABOpen=true;
+        facebook.setVisibility(View.VISIBLE);
+        twitter.setVisibility(View.VISIBLE);
+        instagram.setVisibility(View.VISIBLE);
+        imdb.setVisibility(View.VISIBLE);
+
+        menuButton.animate().rotationBy(180);
+        facebook.animate().translationY(-getResources().getDimension(R.dimen.standard_75));
+        twitter.animate().translationY(-getResources().getDimension(R.dimen.standard_135));
+        instagram.animate().translationY(-getResources().getDimension(R.dimen.standard_195));
+        imdb.animate().translationY(-getResources().getDimension(R.dimen.standard_255));
+    }
+
+    private void closeFABMenu(){
+        isFABOpen=false;
+        menuButton.animate().rotationBy(-180);
+        facebook.animate().translationY(0);
+        twitter.animate().translationY(0);
+        instagram.animate().translationY(0);
+        imdb.animate().translationY(0).setListener(new Animator.AnimatorListener() {
+            @Override
+            public void onAnimationStart(Animator animator) {
+
+            }
+
+            @Override
+            public void onAnimationEnd(Animator animator) {
+                if(!isFABOpen)
+                {
+                    facebook.setVisibility(View.GONE);
+                    twitter.setVisibility(View.GONE);
+                    instagram.setVisibility(View.GONE);
+                    imdb.setVisibility(View.GONE);
+                }
+            }
+
+            @Override
+            public void onAnimationCancel(Animator animator) {
+
+            }
+
+            @Override
+            public void onAnimationRepeat(Animator animator) {
+
+            }
+        });
     }
 }

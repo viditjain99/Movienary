@@ -1,5 +1,6 @@
 package com.example.vidit.movienary;
 
+import android.animation.Animator;
 import android.content.ContentValues;
 import android.content.Intent;
 import android.database.Cursor;
@@ -30,6 +31,7 @@ import android.widget.Toast;
 import android.widget.Toolbar;
 
 import com.airbnb.lottie.LottieAnimationView;
+import com.github.clans.fab.FloatingActionMenu;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
@@ -57,6 +59,7 @@ public class DetailsActivity extends AppCompatActivity
     ArrayList<Video> videoArrayList=new ArrayList<>();
     LottieAnimationView loading;
     Button readAllReviewsButton;
+    ExternalIdResponse externalIdResponse;
     //ImageButton watchlistButton;
     FloatingActionButton watchlistButton;
     ArrayList<Movie> watchlistMovies=new ArrayList<>();
@@ -70,6 +73,8 @@ public class DetailsActivity extends AppCompatActivity
     String rating;
     String overview;
     String releaseDate;
+    FloatingActionButton facebook,instagram,twitter,imdb,menuButton;
+    boolean isFABOpen=false;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -109,11 +114,31 @@ public class DetailsActivity extends AppCompatActivity
         videoRecyclerView=findViewById(R.id.videoRecyclerView);
         videoTextView=findViewById(R.id.videoTextView);
         watchlistButton=findViewById(R.id.watchlistButton);
+        menuButton=findViewById(R.id.menuButton);
+        facebook=findViewById(R.id.facebook);
+        instagram=findViewById(R.id.instagram);
+        twitter=findViewById(R.id.twitter);
+        imdb=findViewById(R.id.imdb);
+        externalIdResponse=new ExternalIdResponse();
 
         watchlistButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 addToWatchlist(view);
+            }
+        });
+
+        menuButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if(!isFABOpen)
+                {
+                    showFABMenu();
+                }
+                else
+                {
+                    closeFABMenu();
+                }
             }
         });
 
@@ -220,6 +245,7 @@ public class DetailsActivity extends AppCompatActivity
         videoTextView.setVisibility(View.GONE);
         watchlistButton.setVisibility(View.GONE);
         titleTextView.setText(movieName);
+        menuButton.setVisibility(View.GONE);
 
         backdropImageView.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -330,6 +356,27 @@ public class DetailsActivity extends AppCompatActivity
             }
         });
 
+        Call<ExternalIdResponse> call5=ApiClient.getMoviesService().getExternalIds(movieId);
+        call5.enqueue(new Callback<ExternalIdResponse>() {
+            @Override
+            public void onResponse(Call<ExternalIdResponse> call, Response<ExternalIdResponse> response) {
+                externalIdResponse=response.body();
+                if(externalIdResponse==null)
+                {
+                    menuButton.setEnabled(false);
+                }
+                else
+                {
+                    menuButton.setEnabled(true);
+                }
+            }
+
+            @Override
+            public void onFailure(Call<ExternalIdResponse> call, Throwable t) {
+
+            }
+        });
+
         Call<ReviewResponse> call2=ApiClient.getMoviesService().getReviews(movieId);
         call2.enqueue(new Callback<ReviewResponse>() {
             @Override
@@ -378,6 +425,7 @@ public class DetailsActivity extends AppCompatActivity
                 videoRecyclerView.setVisibility(View.VISIBLE);
                 videoTextView.setVisibility(View.VISIBLE);
                 watchlistButton.setVisibility(View.VISIBLE);
+                menuButton.setVisibility(View.VISIBLE);
                 loading.setVisibility(View.GONE);
             }
 
@@ -480,7 +528,94 @@ public class DetailsActivity extends AppCompatActivity
     @Override
     public void onBackPressed()
     {
-        WatchlistMovieFragment.adapter.notifyDataSetChanged();
         finish();
+    }
+    public void openFacebook(View view)
+    {
+        if(externalIdResponse.facebookId==null)
+        {
+            Toast.makeText(this,"Link not available",Toast.LENGTH_LONG).show();
+            return;
+        }
+        Intent intent=new Intent(Intent.ACTION_VIEW,Uri.parse("https://www.facebook.com/"+externalIdResponse.facebookId+"/?ref=br_rs"));
+        startActivity(intent);
+    }
+    public void openTwitter(View view)
+    {
+        if(externalIdResponse.twitterId==null)
+        {
+            Toast.makeText(this,"Link not available",Toast.LENGTH_LONG).show();
+            return;
+        }
+        Intent intent=new Intent(Intent.ACTION_VIEW,Uri.parse("https://twitter.com/"+externalIdResponse.twitterId));
+        startActivity(intent);
+    }
+    public void openInstagram(View view)
+    {
+        if(externalIdResponse.instagramId==null)
+        {
+            Toast.makeText(this,"Link not available",Toast.LENGTH_LONG).show();
+            return;
+        }
+        Intent intent=new Intent(Intent.ACTION_VIEW,Uri.parse("https://www.instagram.com/"+externalIdResponse.instagramId));
+        startActivity(intent);
+    }
+    public void openImdb(View view)
+    {
+        if(externalIdResponse.imdbId==null)
+        {
+            Toast.makeText(this,"Link not available",Toast.LENGTH_LONG).show();
+            return;
+        }
+        Intent intent=new Intent(Intent.ACTION_VIEW,Uri.parse("https://www.imdb.com/find?ref_=nv_sr_fn&q="+externalIdResponse.imdbId+"&s=all"));
+        startActivity(intent);
+    }
+    private void showFABMenu(){
+        isFABOpen=true;
+        facebook.setVisibility(View.VISIBLE);
+        twitter.setVisibility(View.VISIBLE);
+        instagram.setVisibility(View.VISIBLE);
+        imdb.setVisibility(View.VISIBLE);
+
+        menuButton.animate().rotationBy(180);
+        facebook.animate().translationY(-getResources().getDimension(R.dimen.standard_75));
+        twitter.animate().translationY(-getResources().getDimension(R.dimen.standard_135));
+        instagram.animate().translationY(-getResources().getDimension(R.dimen.standard_195));
+        imdb.animate().translationY(-getResources().getDimension(R.dimen.standard_255));
+    }
+
+    private void closeFABMenu(){
+        isFABOpen=false;
+        menuButton.animate().rotationBy(-180);
+        facebook.animate().translationY(0);
+        twitter.animate().translationY(0);
+        instagram.animate().translationY(0);
+        imdb.animate().translationY(0).setListener(new Animator.AnimatorListener() {
+            @Override
+            public void onAnimationStart(Animator animator) {
+
+            }
+
+            @Override
+            public void onAnimationEnd(Animator animator) {
+                if(!isFABOpen)
+                {
+                    facebook.setVisibility(View.GONE);
+                    twitter.setVisibility(View.GONE);
+                    instagram.setVisibility(View.GONE);
+                    imdb.setVisibility(View.GONE);
+                }
+            }
+
+            @Override
+            public void onAnimationCancel(Animator animator) {
+
+            }
+
+            @Override
+            public void onAnimationRepeat(Animator animator) {
+
+            }
+        });
     }
 }
