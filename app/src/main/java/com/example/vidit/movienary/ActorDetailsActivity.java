@@ -1,8 +1,11 @@
 package com.example.vidit.movienary;
 
+import android.animation.Animator;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.CollapsingToolbarLayout;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.view.View;
@@ -36,6 +39,9 @@ public class ActorDetailsActivity extends AppCompatActivity
     MovieAdapter adapter;
     TvAdapter tvAdapter;
     LottieAnimationView loading;
+    ExternalIdResponse externalIdResponse;
+    FloatingActionButton facebook,instagram,twitter,imdb,menuButton;
+    boolean isFABOpen=false;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -52,6 +58,11 @@ public class ActorDetailsActivity extends AppCompatActivity
         tvShowCredits=findViewById(R.id.tvCredits);
         loading=findViewById(R.id.loading);
         biography=findViewById(R.id.biography);
+        menuButton=findViewById(R.id.menuButton);
+        facebook=findViewById(R.id.facebook);
+        instagram=findViewById(R.id.instagram);
+        twitter=findViewById(R.id.twitter);
+        imdb=findViewById(R.id.imdb);
 
         toolbar=findViewById(R.id.toolbar);
         collapsingToolbarLayout=findViewById(R.id.collapsingToolbar);
@@ -63,6 +74,21 @@ public class ActorDetailsActivity extends AppCompatActivity
             @Override
             public void onClick(View view) {
                 finish();
+            }
+        });
+
+        externalIdResponse=new ExternalIdResponse();
+        menuButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if(!isFABOpen)
+                {
+                    showFABMenu();
+                }
+                else
+                {
+                    closeFABMenu();
+                }
             }
         });
 
@@ -117,6 +143,7 @@ public class ActorDetailsActivity extends AppCompatActivity
         profileImageView.setVisibility(View.GONE);
         movieCreditsRecyclerView.setVisibility(View.GONE);
         tvCreditsRecyclerView.setVisibility(View.GONE);
+        menuButton.setVisibility(View.GONE);
         loading.setVisibility(View.VISIBLE);
         intent=getIntent();
         String id=intent.getStringExtra("Id");
@@ -147,6 +174,27 @@ public class ActorDetailsActivity extends AppCompatActivity
 
             @Override
             public void onFailure(Call<Actor> call, Throwable t) {
+
+            }
+        });
+
+        Call<ExternalIdResponse> call3=ApiClient.getActorsService().getExternalIds(id);
+        call3.enqueue(new Callback<ExternalIdResponse>() {
+            @Override
+            public void onResponse(Call<ExternalIdResponse> call, Response<ExternalIdResponse> response) {
+                externalIdResponse=response.body();
+                if(externalIdResponse==null)
+                {
+                    menuButton.setEnabled(false);
+                }
+                else
+                {
+                    menuButton.setEnabled(true);
+                }
+            }
+
+            @Override
+            public void onFailure(Call<ExternalIdResponse> call, Throwable t) {
 
             }
         });
@@ -182,6 +230,7 @@ public class ActorDetailsActivity extends AppCompatActivity
                 tvShowCredits.setVisibility(View.VISIBLE);
                 profileImageView.setVisibility(View.VISIBLE);
                 tvCreditsRecyclerView.setVisibility(View.VISIBLE);
+                menuButton.setVisibility(View.VISIBLE);
                 loading.setVisibility(View.GONE);
             }
 
@@ -200,6 +249,94 @@ public class ActorDetailsActivity extends AppCompatActivity
                     intent.putExtra("BackdropPath",profilePath);
                     startActivity(intent);
                 }
+            }
+        });
+    }
+    public void openFacebook(View view)
+    {
+        if(externalIdResponse.facebookId==null)
+        {
+            Toast.makeText(this,"Link not available",Toast.LENGTH_LONG).show();
+            return;
+        }
+        Intent intent=new Intent(Intent.ACTION_VIEW, Uri.parse("https://www.facebook.com/"+externalIdResponse.facebookId+"/?ref=br_rs"));
+        startActivity(intent);
+    }
+    public void openTwitter(View view)
+    {
+        if(externalIdResponse.twitterId==null)
+        {
+            Toast.makeText(this,"Link not available",Toast.LENGTH_LONG).show();
+            return;
+        }
+        Intent intent=new Intent(Intent.ACTION_VIEW,Uri.parse("https://twitter.com/"+externalIdResponse.twitterId));
+        startActivity(intent);
+    }
+    public void openInstagram(View view)
+    {
+        if(externalIdResponse.instagramId==null)
+        {
+            Toast.makeText(this,"Link not available",Toast.LENGTH_LONG).show();
+            return;
+        }
+        Intent intent=new Intent(Intent.ACTION_VIEW,Uri.parse("https://www.instagram.com/"+externalIdResponse.instagramId));
+        startActivity(intent);
+    }
+    public void openImdb(View view)
+    {
+        if(externalIdResponse.imdbId==null)
+        {
+            Toast.makeText(this,"Link not available",Toast.LENGTH_LONG).show();
+            return;
+        }
+        Intent intent=new Intent(Intent.ACTION_VIEW,Uri.parse("https://www.imdb.com/find?ref_=nv_sr_fn&q="+externalIdResponse.imdbId+"&s=all"));
+        startActivity(intent);
+    }
+    private void showFABMenu(){
+        isFABOpen=true;
+        facebook.setVisibility(View.VISIBLE);
+        twitter.setVisibility(View.VISIBLE);
+        instagram.setVisibility(View.VISIBLE);
+        imdb.setVisibility(View.VISIBLE);
+
+        menuButton.animate().rotationBy(180);
+        facebook.animate().translationY(-getResources().getDimension(R.dimen.standard_75));
+        twitter.animate().translationY(-getResources().getDimension(R.dimen.standard_135));
+        instagram.animate().translationY(-getResources().getDimension(R.dimen.standard_195));
+        imdb.animate().translationY(-getResources().getDimension(R.dimen.standard_255));
+    }
+
+    private void closeFABMenu(){
+        isFABOpen=false;
+        menuButton.animate().rotationBy(-180);
+        facebook.animate().translationY(0);
+        twitter.animate().translationY(0);
+        instagram.animate().translationY(0);
+        imdb.animate().translationY(0).setListener(new Animator.AnimatorListener() {
+            @Override
+            public void onAnimationStart(Animator animator) {
+
+            }
+
+            @Override
+            public void onAnimationEnd(Animator animator) {
+                if(!isFABOpen)
+                {
+                    facebook.setVisibility(View.GONE);
+                    twitter.setVisibility(View.GONE);
+                    instagram.setVisibility(View.GONE);
+                    imdb.setVisibility(View.GONE);
+                }
+            }
+
+            @Override
+            public void onAnimationCancel(Animator animator) {
+
+            }
+
+            @Override
+            public void onAnimationRepeat(Animator animator) {
+
             }
         });
     }

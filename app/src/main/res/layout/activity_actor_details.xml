@@ -58,6 +58,70 @@
         app:lottie_loop="true"
         android:layout_gravity="center"/>
 
+    <android.support.design.widget.FloatingActionButton
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@mipmap/facebook"
+        android:id="@+id/facebook"
+        app:backgroundTint="#3B5998"
+        app:fabSize="normal"
+        android:scaleType="centerCrop"
+        android:layout_gravity="bottom|end"
+        android:onClick="openFacebook"
+        android:layout_margin="15dp"
+        android:visibility="gone"
+        android:padding="0dp"/>
+
+    <android.support.design.widget.FloatingActionButton
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@mipmap/twitter"
+        android:id="@+id/twitter"
+        app:fabSize="normal"
+        app:backgroundTint="#1dcaff"
+        android:scaleType="centerCrop"
+        android:onClick="openTwitter"
+        android:layout_gravity="bottom|end"
+        android:layout_margin="15dp"
+        android:visibility="gone"
+        android:padding="0dp"/>
+
+    <android.support.design.widget.FloatingActionButton
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@mipmap/instagram"
+        android:id="@+id/instagram"
+        app:backgroundTint="#fb3958"
+        app:fabSize="normal"
+        android:scaleType="centerCrop"
+        android:onClick="openInstagram"
+        android:layout_gravity="bottom|end"
+        android:layout_margin="15dp"
+        android:visibility="gone"
+        android:padding="0dp"/>
+
+    <android.support.design.widget.FloatingActionButton
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@mipmap/imdb"
+        app:fabSize="normal"
+        android:id="@+id/imdb"
+        app:backgroundTint="#f3ce13"
+        android:scaleType="centerCrop"
+        android:onClick="openImdb"
+        android:layout_gravity="bottom|end"
+        android:layout_margin="15dp"
+        android:visibility="gone"
+        android:padding="0dp"/>
+
+    <android.support.design.widget.FloatingActionButton
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/menuButton"
+        android:layout_gravity="bottom|end"
+        android:src="@mipmap/social_network"
+        android:layout_margin="15dp"/>
+
     <android.support.v4.widget.NestedScrollView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -89,6 +153,8 @@
                 android:layout_height="wrap_content"
                 android:id="@+id/biographyTextView"
                 android:textColor="#000000"
+                android:background="@color/color_grey_200"
+                android:layout_margin="5dp"
                 android:layout_below="@+id/biography"
                 android:padding="10dp"/>
             <TextView
@@ -121,6 +187,7 @@
                 android:layout_height="wrap_content"
                 android:id="@+id/movieCreditsRecyclerView"
                 android:layout_below="@+id/movieCredits"
+                android:background="@color/color_grey_200"
                 android:nestedScrollingEnabled="false"
                 app:layout_behavior="@string/appbar_scrolling_view_behavior"/>
             <TextView
@@ -137,6 +204,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:id="@+id/tvCreditsRecyclerView"
+                android:background="@color/color_grey_200"
                 android:nestedScrollingEnabled="false"
                 android:layout_below="@+id/tvCredits"
                 app:layout_behavior="@string/appbar_scrolling_view_behavior"/>
