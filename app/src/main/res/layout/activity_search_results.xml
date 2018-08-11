@@ -4,7 +4,7 @@
     android:id="@+id/scrollView"
     android:layout_height="match_parent"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
-    android:background="#ffffff"
+    android:background="#555555"
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical">
 
@@ -35,16 +35,33 @@
         app:lottie_fileName="movie_loading.json"
         app:lottie_loop="true" />
 
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="No Results Found"
-        android:textSize="20dp"
-        android:textColor="#000000"
-        android:layout_gravity="center"
-        android:gravity="center"
-        android:id="@+id/noResultsFoundTextView"
-        android:visibility="gone"/>
+    <FrameLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/noResultsFound"
+        android:orientation="vertical"
+        android:layout_gravity="center">
+
+        <com.airbnb.lottie.LottieAnimationView
+            android:layout_width="300dp"
+            android:layout_height="300dp"
+            android:layout_gravity="center"
+            android:id="@+id/notFound"
+            app:lottie_autoPlay="true"
+            app:lottie_fileName="not_found.json"
+            app:lottie_loop="true" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:text="No Results Found"
+            android:textSize="20dp"
+            android:textColor="#FFFFFF"
+            android:layout_marginTop="50dp"
+            android:layout_gravity="center"
+            android:id="@+id/noResultsFoundTextView" />
+
+    </FrameLayout>
 
     <android.support.v4.widget.NestedScrollView
         android:layout_width="match_parent"

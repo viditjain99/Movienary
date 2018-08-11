@@ -60,7 +60,7 @@ public class ExpandableTextView extends TextView
         if (originalText != null && originalText.length() > trimLength) {
             SpannableStringBuilder builder=new SpannableStringBuilder(originalText,0,trimLength+1);
             SpannableString ellipsis=new SpannableString(ELLIPSIS);
-            ellipsis.setSpan(new ForegroundColorSpan(Color.parseColor("#007FFF")),0,ELLIPSIS.length(),0);
+            ellipsis.setSpan(new ForegroundColorSpan(Color.parseColor("#FFDE03")),0,ELLIPSIS.length(),0);
             builder.append(ellipsis);
             return builder;
             //return new SpannableStringBuilder(originalText, 0, trimLength + 1).append(ELLIPSIS);

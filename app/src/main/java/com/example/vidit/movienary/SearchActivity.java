@@ -8,6 +8,8 @@ import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
+import android.widget.FrameLayout;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -23,9 +25,9 @@ import retrofit2.Response;
 public class SearchActivity extends AppCompatActivity
 {
     ArrayList<Movie> searchResults=new ArrayList<>();
-    LottieAnimationView loading;
+    LottieAnimationView loading,notFound;
     MyRecyclerView searchResultsRecyclerView;
-    TextView noResultsFoundTextView;
+    FrameLayout noResultsFound;
     SearchAdapter adapter;
     Toolbar toolbar;
     @Override
@@ -35,12 +37,12 @@ public class SearchActivity extends AppCompatActivity
         getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LAYOUT_STABLE | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN);
         loading=findViewById(R.id.loading);
         loading.setVisibility(View.VISIBLE);
+        notFound=findViewById(R.id.notFound);
         searchResultsRecyclerView=findViewById(R.id.searchResultsRecyclerView);
-        noResultsFoundTextView=findViewById(R.id.noResultsFoundTextView);
-        noResultsFoundTextView.setVisibility(View.GONE);
+        noResultsFound=findViewById(R.id.noResultsFound);
+        noResultsFound.setVisibility(View.GONE);
         toolbar=findViewById(R.id.toolbar);
         toolbar.setNavigationIcon(R.drawable.back);
-        //toolbar.setTitle("");
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowTitleEnabled(true);
@@ -106,7 +108,7 @@ public class SearchActivity extends AppCompatActivity
                 {
                     searchResultsRecyclerView.setVisibility(View.GONE);
                     loading.setVisibility(View.GONE);
-                    noResultsFoundTextView.setVisibility(View.VISIBLE);
+                    noResultsFound.setVisibility(View.VISIBLE);
                     return;
                 }
                 searchResults.addAll(results);

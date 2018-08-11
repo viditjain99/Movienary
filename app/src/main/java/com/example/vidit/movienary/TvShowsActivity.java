@@ -1,6 +1,7 @@
 package com.example.vidit.movienary;
 
 import android.content.Intent;
+import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -84,6 +85,7 @@ public class TvShowsActivity extends AppCompatActivity implements PopularTvShows
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_tvshow);
         getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LAYOUT_STABLE | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN);
+        getWindow().setStatusBarColor(Color.BLACK);
 
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);

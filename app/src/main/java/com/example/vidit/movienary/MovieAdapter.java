@@ -3,6 +3,7 @@ package com.example.vidit.movienary;
 import android.content.Context;
 import android.graphics.drawable.Drawable;
 import android.support.annotation.NonNull;
+import android.support.v4.view.ViewCompat;
 import android.support.v7.widget.RecyclerView;
 import android.text.Layout;
 import android.view.LayoutInflater;
@@ -46,6 +47,7 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieViewHolder> {
         Movie movie=movies.get(i);
         movieViewHolder.name.setText(movie.movieName);
         Picasso.get().load("http://image.tmdb.org/t/p/w500/"+movie.posterPath).into(movieViewHolder.image);
+        ViewCompat.setTransitionName(movieViewHolder.image,movie.movieName);
         //Glide.with(context.getApplicationContext()).load("http://image.tmdb.org/t/p/w500/"+movie.posterPath).asBitmap().diskCacheStrategy(DiskCacheStrategy.ALL).into(movieViewHolder.image);
         if(Float.parseFloat(movie.rating)==0)
         {

@@ -6,7 +6,7 @@
     android:id="@+id/scrollView"
     android:layout_height="match_parent"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
-    android:background="#ffffff"
+    android:background="#333333"
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical">
 
@@ -139,7 +139,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/watchlistButton"
-        android:src="@drawable/watchlist"
+        android:src="@drawable/bookmark"
         app:layout_anchor="@+id/collapsingToolbar"
         app:layout_anchorGravity="bottom|end"
         android:layout_marginEnd="15dp"/>
@@ -158,7 +158,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textColor="#000000"
+                android:textColor="#FFFFFF"
                 android:id="@+id/titleTextView"
                 android:textAppearance="@style/Base.TextAppearance.AppCompat.Large"
                 android:textStyle="bold"
@@ -169,12 +169,11 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:id="@+id/overviewTextView"
-                android:textColor="#000000"
+                android:textColor="#FFFFFF"
                 android:layout_below="@id/titleTextView"
                 android:padding="10dp"
                 android:paddingTop="16dp"
-                android:layout_margin="5dp"
-                android:background="@color/color_grey_200"/>
+                android:background="#333333"/>
 
             <LinearLayout
                 android:layout_width="wrap_content"
@@ -194,7 +193,7 @@
                     android:layout_height="wrap_content"
                     android:id="@+id/ratingTextView"
                     android:textSize="20dp"
-                    android:textColor="#808080"
+                    android:textColor="#FFFFFF"
                     android:layout_toRightOf="@id/starImageView"/>
 
             </LinearLayout>
@@ -205,7 +204,7 @@
                 android:id="@+id/runTimeTextView"
                 android:padding="10dp"
                 android:textSize="15dp"
-                android:textColor="#808080"
+                android:textColor="#FFFFFF"
                 android:layout_below="@+id/releaseDateTextView"/>
 
             <TextView
@@ -214,7 +213,7 @@
                 android:id="@+id/genreTextView"
                 android:padding="10dp"
                 android:textSize="15dp"
-                android:textColor="#808080"
+                android:textColor="#FFFFFF"
                 android:layout_below="@+id/runTimeTextView"/>
 
             <TextView
@@ -222,7 +221,7 @@
                 android:layout_height="wrap_content"
                 android:id="@+id/videoTextView"
                 android:padding="10dp"
-                android:textColor="#000000"
+                android:textColor="#FFFFFF"
                 android:textAppearance="@style/TextAppearance.AppCompat.Large"
                 android:text="Videos"
                 android:layout_below="@+id/genreTextView"/>
@@ -232,7 +231,7 @@
                 android:layout_height="match_parent"
                 android:id="@+id/videoRecyclerView"
                 android:layout_below="@id/videoTextView"
-                android:background="@color/color_grey_200"
+                android:background="#333333"
                 android:nestedScrollingEnabled="false"
                 app:layout_behavior="@string/appbar_scrolling_view_behavior"/>
 
@@ -242,7 +241,7 @@
                 android:id="@+id/castTextView"
                 android:textAppearance="@style/Base.TextAppearance.AppCompat.Large"
                 android:text="Cast"
-                android:textColor="#000000"
+                android:textColor="#FFFFFF"
                 android:layout_below="@id/videoRecyclerView"
                 android:padding="10dp"/>
 
@@ -251,7 +250,7 @@
                 android:layout_height="match_parent"
                 android:id="@+id/castRecyclerView"
                 android:nestedScrollingEnabled="false"
-                android:background="@color/color_grey_200"
+                android:background="#333333"
                 android:layout_below="@+id/castTextView"
                 app:layout_behavior="@string/appbar_scrolling_view_behavior" />
 
@@ -261,7 +260,7 @@
                 android:id="@+id/similarMoviesTextView"
                 android:text="Similar Movies"
                 android:textAppearance="@style/Base.TextAppearance.AppCompat.Large"
-                android:textColor="#000000"
+                android:textColor="#FFFFFF"
                 android:layout_below="@+id/castRecyclerView"
                 android:padding="10dp"/>
 
@@ -270,7 +269,7 @@
                 android:layout_height="match_parent"
                 android:id="@+id/similarMoviesRecyclerView"
                 android:nestedScrollingEnabled="false"
-                android:background="@color/color_grey_200"
+                android:background="#333333"
                 android:layout_below="@+id/similarMoviesTextView"
                 app:layout_behavior="@string/appbar_scrolling_view_behavior" />
 
@@ -280,7 +279,7 @@
             android:id="@+id/releaseDateTextView"
             android:padding="10dp"
             android:textSize="15dp"
-            android:textColor="#808080"
+            android:textColor="#FFFFFF"
             android:layout_below="@id/ratingLayout"/>
 
             <TextView
@@ -290,7 +289,7 @@
                 android:padding="10dp"
                 android:textAppearance="@style/Base.TextAppearance.AppCompat.Large"
                 android:text="Reviews"
-                android:textColor="#000000"
+                android:textColor="#FFFFFF"
                 android:layout_below="@id/similarMoviesRecyclerView"/>
 
             <LinearLayout
@@ -298,8 +297,7 @@
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/reviewsTextView"
                 android:orientation="vertical"
-                android:layout_margin="5dp"
-                android:background="@color/color_grey_200"
+                android:background="#333333"
                 android:padding="5dp"
                 android:id="@+id/reviewsLinearLayout">
 
@@ -308,7 +306,7 @@
                     android:layout_height="wrap_content"
                     android:id="@+id/authorTextView"
                     android:text="author"
-                    android:textColor="#000000"
+                    android:textColor="#FFFFFF"
                     android:textStyle="bold"
                     android:textSize="15dp"
                     android:padding="10dp"/>
@@ -318,7 +316,7 @@
                     android:layout_height="wrap_content"
                     android:id="@+id/reviewBodyTextView"
                     android:text="body"
-                    android:textColor="#000000"
+                    android:textColor="#FFFFFF"
                     android:textSize="13dp"
                     android:paddingLeft="10dp"
                     android:paddingRight="10dp"
@@ -334,7 +332,7 @@
                 android:gravity="center"
                 android:layout_centerHorizontal="true"
                 android:onClick="readAllReviews"
-                android:textColor="#000000"
+                android:textColor="#FFFFFF"
                 android:id="@+id/readAllReviewsButton"
                 android:background="@android:color/transparent"/>
 

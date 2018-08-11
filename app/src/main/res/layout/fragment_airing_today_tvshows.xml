@@ -3,12 +3,11 @@
     android:layout_height="match_parent"
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:id="@+id/tvLayout"
-    android:background="@color/color_grey_100">
+    android:id="@+id/tvLayout">
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/color_grey_100"
+        android:background="#333333"
         xmlns:android="http://schemas.android.com/apk/res/android">
 
         <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"

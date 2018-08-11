@@ -34,7 +34,7 @@
             android:padding="5dp"
             android:text="name"
             android:textAppearance="@style/TextAppearance.AppCompat.Large"
-            android:textColor="#000000"
+            android:textColor="#FFFFFF"
             android:textSize="20dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.0"
@@ -49,7 +49,7 @@
             android:layout_marginRight="8dp"
             android:padding="5dp"
             android:text="type"
-            android:textColor="#000000"
+            android:textColor="#FFFFFF"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toEndOf="@+id/searchResultsPosterImageView"
@@ -61,7 +61,7 @@
             android:layout_height="wrap_content"
             android:padding="5dp"
             android:text="overview"
-            android:textColor="#000000"
+            android:textColor="#FFFFFF"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.0"
@@ -69,7 +69,7 @@
             app:layout_constraintTop_toBottomOf="@+id/searchResultsTypeTextView"
             app:layout_constraintVertical_bias="0.0" />
 
-        <include layout="@layout/row_layout"/>
+        <!--<include layout="@layout/row_layout"/>-->
 
         <View
             android:layout_width="match_parent"
@@ -84,7 +84,7 @@
             android:layout_height="wrap_content"
             android:id="@+id/moreInfoTextView"
             android:text="More Info..."
-            android:textColor="@color/color_grey_700"
+            android:textColor="@color/colorAccent"
             android:clickable="true"
             android:padding="5dp"/>
     </LinearLayout>

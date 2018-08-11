@@ -36,7 +36,7 @@
                 android:layout_height="wrap_content"
                 app:tabGravity="fill"
                 app:tabTextColor="#FFFFFF"
-                app:tabIndicatorColor="@color/color_orange_700"
+                app:tabIndicatorColor="@color/colorAccent"
                 android:id="@+id/tabs">
 
                 <android.support.design.widget.TabItem
@@ -69,9 +69,10 @@
         android:layout_height="match_parent"
         android:layout_gravity="start"
         android:fitsSystemWindows="true"
+        android:background="#333333"
         app:headerLayout="@layout/nav_header_nav"
         app:menu="@menu/activity_nav_drawer"
-        app:itemTextColor="@drawable/bottom_nav_states"
-        app:itemIconTint="@drawable/bottom_nav_states"/>
+        app:itemTextColor="@drawable/drawer_states"
+        app:itemIconTint="@drawable/drawer_states"/>
 
 </android.support.v4.widget.DrawerLayout>

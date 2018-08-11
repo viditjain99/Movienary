@@ -5,7 +5,7 @@
     android:id="@+id/scrollView"
     android:layout_height="match_parent"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
-    android:background="#ffffff"
+    android:background="#333333"
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical"
     android:fitsSystemWindows="true">
@@ -133,12 +133,12 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:id="@+id/actorNameTextView"
-                android:textColor="#000000"
+                android:textColor="#FFFFFF"
                 android:padding="10dp"
                 android:textSize="40dp"
                 android:textStyle="bold"
                 android:layout_gravity="center_horizontal|bottom"
-                android:layout_marginBottom="10dp"/>
+                android:layout_marginBottom="5dp"/>
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -146,21 +146,20 @@
                 android:layout_below="@+id/actorNameTextView"
                 android:text="About"
                 android:textAppearance="@style/TextAppearance.AppCompat.Large"
-                android:textColor="#000000"
+                android:textColor="#FFFFFF"
                 android:padding="10dp"/>
             <com.example.vidit.movienary.ExpandableTextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:id="@+id/biographyTextView"
-                android:textColor="#000000"
-                android:background="@color/color_grey_200"
-                android:layout_margin="5dp"
+                android:textColor="#FFFFFF"
+                android:background="#333333"
                 android:layout_below="@+id/biography"
                 android:padding="10dp"/>
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textColor="#808080"
+                android:textColor="#FFFFFF"
                 android:text="Age"
                 android:id="@+id/ageTextView"
                 android:padding="10dp"
@@ -170,7 +169,7 @@
                 android:layout_height="wrap_content"
                 android:text="Birth Place"
                 android:id="@+id/birthPlaceTextView"
-                android:textColor="#808080"
+                android:textColor="#FFFFFF"
                 android:padding="10dp"
                 android:layout_below="@+id/ageTextView" />
             <TextView
@@ -178,7 +177,7 @@
                 android:layout_height="wrap_content"
                 android:text="Movie Credits"
                 android:id="@+id/movieCredits"
-                android:textColor="#000000"
+                android:textColor="#FFFFFF"
                 android:layout_below="@+id/birthPlaceTextView"
                 android:padding="10dp"
                 android:textAppearance="@style/TextAppearance.AppCompat.Large"/>
@@ -187,7 +186,7 @@
                 android:layout_height="wrap_content"
                 android:id="@+id/movieCreditsRecyclerView"
                 android:layout_below="@+id/movieCredits"
-                android:background="@color/color_grey_200"
+                android:background="#333333"
                 android:nestedScrollingEnabled="false"
                 app:layout_behavior="@string/appbar_scrolling_view_behavior"/>
             <TextView
@@ -195,7 +194,7 @@
                 android:layout_height="wrap_content"
                 android:text="TV Credits"
                 android:id="@+id/tvCredits"
-                android:textColor="#000000"
+                android:textColor="#FFFFFF"
                 android:layout_below="@+id/movieCreditsRecyclerView"
                 android:padding="10dp"
                 android:textAppearance="@style/TextAppearance.AppCompat.Large"/>
@@ -204,7 +203,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:id="@+id/tvCreditsRecyclerView"
-                android:background="@color/color_grey_200"
+                android:background="#333333"
                 android:nestedScrollingEnabled="false"
                 android:layout_below="@+id/tvCredits"
                 app:layout_behavior="@string/appbar_scrolling_view_behavior"/>

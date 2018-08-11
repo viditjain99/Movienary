@@ -7,7 +7,7 @@
     app:cardElevation="2dp"
     android:layout_margin="4dp"
     app:cardCornerRadius="4dp"
-    app:cardBackgroundColor="#ffffff"
+    app:cardBackgroundColor="#666666"
     xmlns:android="http://schemas.android.com/apk/res/android">
     <LinearLayout
         xmlns:android="http://schemas.android.com/apk/res/android"
@@ -29,7 +29,7 @@
             android:id="@+id/castNameTextView"
             android:padding="3dp"
             android:text="Name"
-            android:textColor="#000000"
+            android:textColor="#FFFFFF"
             android:layout_gravity="center_horizontal"
             android:gravity="center"/>
 

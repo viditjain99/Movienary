@@ -27,7 +27,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/titleTextView"
-        android:textColor="#000000"
+        android:textColor="#FFFFFF"
         android:padding="5dp"
         android:layout_gravity="center_horizontal"
         android:textSize="15dp"

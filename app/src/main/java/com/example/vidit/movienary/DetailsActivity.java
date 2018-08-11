@@ -7,12 +7,15 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Color;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.provider.Settings;
 import android.support.constraint.solver.GoalRow;
 import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
+import android.support.v4.app.ActivityOptionsCompat;
+import android.support.v4.view.ViewCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -200,6 +203,11 @@ public class DetailsActivity extends AppCompatActivity
         backdropPath = bundle.getString("BackdropPath");
         overview = bundle.getString("Overview");
         releaseDate = bundle.getString("ReleaseDate");
+        if(Build.VERSION.SDK_INT>=Build.VERSION_CODES.LOLLIPOP)
+        {
+            String transitionName=bundle.getString("Transition");
+            backdropImageView.setTransitionName(transitionName);
+        }
 
         WatchlistOpenHelper openHelper=WatchlistOpenHelper.getInstance(DetailsActivity.this);
         SQLiteDatabase database=openHelper.getReadableDatabase();
@@ -213,12 +221,12 @@ public class DetailsActivity extends AppCompatActivity
         }
         if(name==null)
         {
-            watchlistButton.setImageResource(R.mipmap.watchlist);
+            watchlistButton.setImageResource(R.mipmap.bookmark);
             watchlistButtonClicked=false;
         }
         else if(name!=null)
         {
-            watchlistButton.setImageResource(R.mipmap.watchlist_fill);
+            watchlistButton.setImageResource(R.mipmap.bookmark_fill);
             watchlistButtonClicked=true;
         }
         //Log.d("movieName",cursor.getString(0));
@@ -456,8 +464,12 @@ public class DetailsActivity extends AppCompatActivity
 
     public void addToWatchlist(View view)
     {
-        final Snackbar removeSnackBar=Snackbar.make(view,"Removed from Watchlist",Snackbar.LENGTH_LONG).setActionTextColor(Color.parseColor("#FF7F50"));
-        final Snackbar addSnackBar=Snackbar.make(view,"Added to Watchlist",Snackbar.LENGTH_LONG).setActionTextColor(Color.parseColor("#FF7F50"));
+        final Snackbar removeSnackBar=Snackbar.make(view,"Removed from Watchlist",Snackbar.LENGTH_LONG).setActionTextColor(Color.parseColor("#FFDE03"));
+        View rView=removeSnackBar.getView();
+        rView.setBackgroundColor(Color.BLACK);
+        final Snackbar addSnackBar=Snackbar.make(view,"Added to Watchlist",Snackbar.LENGTH_LONG).setActionTextColor(Color.parseColor("#FFDE03"));
+        View aView=addSnackBar.getView();
+        aView.setBackgroundColor(Color.BLACK);
         removeSnackBar.setAction("UNDO", new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -493,7 +505,7 @@ public class DetailsActivity extends AppCompatActivity
     }
     public void watchlistAdd()
     {
-        watchlistButton.setImageResource(R.mipmap.watchlist_fill);
+        watchlistButton.setImageResource(R.mipmap.bookmark_fill);
         Movie movie=new Movie();
         movie.movieName=movieName;
         movie.posterPath=posterPath;
@@ -518,7 +530,7 @@ public class DetailsActivity extends AppCompatActivity
     }
     public void watchlistRemove()
     {
-        watchlistButton.setImageResource(R.mipmap.watchlist);
+        watchlistButton.setImageResource(R.mipmap.bookmark);
         watchlistButtonClicked=false;
         WatchlistOpenHelper openHelper=WatchlistOpenHelper.getInstance(getApplicationContext());
         SQLiteDatabase database=openHelper.getWritableDatabase();
