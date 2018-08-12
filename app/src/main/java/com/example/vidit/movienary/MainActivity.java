@@ -2,10 +2,13 @@ package com.example.vidit.movienary;
 
 import android.content.Context;
 import android.content.Intent;
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Color;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.strictmode.SqliteObjectLeakedViolation;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
 import android.support.design.widget.NavigationView;
@@ -59,6 +62,8 @@ public class MainActivity extends AppCompatActivity implements PopularMoviesFrag
     LottieAnimationView loading;
     Toolbar toolbar;
     MenuItem searchItem;
+    private static final int TIME_INTERVAL = 2000;
+    private long mBackPressed;
     private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
             = new BottomNavigationView.OnNavigationItemSelectedListener() {
 
@@ -155,14 +160,24 @@ public class MainActivity extends AppCompatActivity implements PopularMoviesFrag
     }
 
     @Override
-    public void onBackPressed() {
+    public void onBackPressed()
+    {
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-        if (drawer.isDrawerOpen(GravityCompat.START))
-        {
+        if (drawer.isDrawerOpen(GravityCompat.START)) {
             drawer.closeDrawer(GravityCompat.START);
         }
-        else {
-            super.onBackPressed();
+        else
+        {
+            if(mBackPressed+TIME_INTERVAL>System.currentTimeMillis())
+            {
+                super.onBackPressed();
+                return;
+            }
+            else
+            {
+                Toast.makeText(this,"Press again to exit",Toast.LENGTH_SHORT).show();
+            }
+            mBackPressed = System.currentTimeMillis();
         }
     }
 

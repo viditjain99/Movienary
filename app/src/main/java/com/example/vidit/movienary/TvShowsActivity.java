@@ -23,6 +23,7 @@ import android.view.View;
 import android.view.inputmethod.EditorInfo;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.airbnb.lottie.LottieAnimationView;
 
@@ -38,6 +39,8 @@ public class TvShowsActivity extends AppCompatActivity implements PopularTvShows
     Toolbar toolbar;
     MenuItem searchItem;
     private MenuItem menuItem;
+    private static final int TIME_INTERVAL = 2000;
+    private long mBackPressed;
     private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
             = new BottomNavigationView.OnNavigationItemSelectedListener() {
 
@@ -127,12 +130,24 @@ public class TvShowsActivity extends AppCompatActivity implements PopularTvShows
     }
 
     @Override
-    public void onBackPressed() {
+    public void onBackPressed()
+    {
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         if (drawer.isDrawerOpen(GravityCompat.START)) {
             drawer.closeDrawer(GravityCompat.START);
-        } else {
-            super.onBackPressed();
+        }
+        else
+        {
+            if(mBackPressed+TIME_INTERVAL>System.currentTimeMillis())
+            {
+                super.onBackPressed();
+                return;
+            }
+            else
+            {
+                Toast.makeText(this,"Press again to exit",Toast.LENGTH_SHORT).show();
+            }
+            mBackPressed = System.currentTimeMillis();
         }
     }
 

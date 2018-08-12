@@ -184,7 +184,9 @@ public class DetailsActivity extends AppCompatActivity
             @Override
             public void onVideoClick(View view, int position) {
                 Video video=videoArrayList.get(position);
-                Intent intent=new Intent(Intent.ACTION_VIEW,Uri.parse("http://www.youtube.com/watch?v="+video.key));
+                //Intent intent=new Intent(Intent.ACTION_VIEW,Uri.parse("http://www.youtube.com/watch?v="+video.key));
+                Intent intent=new Intent(DetailsActivity.this,YoutubeActivity.class);
+                intent.putExtra("Key",video.key);
                 startActivity(intent);
             }
         });
@@ -281,8 +283,18 @@ public class DetailsActivity extends AppCompatActivity
             String r="<b>"+rating+"</b>";
             ratingTextView.setText(Html.fromHtml(r));
         }
-        releaseDateTextView.setText("Release Date: "+releaseDate);
-
+        if(releaseDate!=null)
+        {
+            String[] rd=releaseDate.split("-");
+            String year=rd[0];
+            String month=rd[1];
+            String day=rd[2];
+            releaseDateTextView.setText("Release Date: "+day+"/"+month+"/"+year);
+        }
+        else
+        {
+            releaseDateTextView.setText("Release Date: "+releaseDate);
+        }
         Call<SingleMovie> call=ApiClient.getMoviesService().getDetails(movieId);
         call.enqueue(new Callback<SingleMovie>() {
             @Override

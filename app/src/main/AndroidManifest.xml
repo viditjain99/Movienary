@@ -7,7 +7,7 @@
     <application
         android:allowBackup="true"
         android:icon="@mipmap/movie_launcher"
-        android:label="Movienary"
+        android:label="ShowBuzz"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
@@ -45,6 +45,8 @@
             android:name=".WatchListActivity"
             android:label="Watchlist"
             android:theme="@style/AppTheme.NoActionBar"/>
+        <activity android:name=".YoutubeActivity"
+            android:theme="@style/ImageTheme"/>
     </application>
 
 </manifest>

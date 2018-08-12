@@ -85,9 +85,9 @@ public class SearchActivity extends AppCompatActivity
                     intent.putExtras(bundle);
                     startActivity(intent);
                 }
-                else
+                else if(result.mediaType.equals("person"))
                 {
-
+                    searchResultsRecyclerView.setVisibility(View.GONE);
                 }
             }
         });
@@ -111,9 +111,19 @@ public class SearchActivity extends AppCompatActivity
                     noResultsFound.setVisibility(View.VISIBLE);
                     return;
                 }
-                searchResults.addAll(results);
+                for(int i=0;i<results.size();i++)
+                {
+                    if(results.get(i).mediaType.equals("person"))
+                    {
+
+                    }
+                    else
+                    {
+                        searchResults.add(results.get(i));
+                    }
+                }
+                //searchResults.addAll(results);
                 searchResultsRecyclerView.setVisibility(View.VISIBLE);
-                //Toast.makeText(SearchActivity.this,searchResults.get(0).posterPath,Toast.LENGTH_LONG).show();
                 loading.setVisibility(View.GONE);
             }
 

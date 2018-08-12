@@ -10,7 +10,9 @@ import android.support.v7.widget.GridLayoutManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
+import com.airbnb.lottie.LottieAnimationView;
 import com.hereshem.lib.recycler.MyRecyclerView;
 
 import java.util.ArrayList;
@@ -21,6 +23,8 @@ public class WatchlistTvFragment extends Fragment
     WatchlistTvFragmentCallback listener;
     TvAdapter adapter;
     ArrayList<Tv> watchlistTvShows=new ArrayList<>();
+    LottieAnimationView emptyList;
+    TextView emptyListTextView;
 
     public WatchlistTvFragment()
     {
@@ -40,6 +44,8 @@ public class WatchlistTvFragment extends Fragment
     {
         View output=inflater.inflate(R.layout.fragment_tv_watchlist,container,false);
         watchlistTvShowsRecyclerView=output.findViewById(R.id.watchlistTvShowsRecyclerView);
+        emptyList=output.findViewById(R.id.emptyList);
+        emptyListTextView=output.findViewById(R.id.emptyListTextView);
         adapter=new TvAdapter(getContext(), watchlistTvShows, new TvClickListener() {
             @Override
             public void onTvClick(View view, int position) {
@@ -75,6 +81,11 @@ public class WatchlistTvFragment extends Fragment
             tvShow.rating=rating;
             tvShow.firstAirDate=firstAirDate;
             watchlistTvShows.add(tvShow);
+        }
+        if(watchlistTvShows.size()==0)
+        {
+            emptyList.setVisibility(View.VISIBLE);
+            emptyListTextView.setVisibility(View.VISIBLE);
         }
         adapter.notifyDataSetChanged();
         return output;

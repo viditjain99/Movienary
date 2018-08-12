@@ -138,7 +138,6 @@ public class TvShowDetailsActivity extends AppCompatActivity
                 }
             }
         });
-
         LinearLayoutManager layoutManager=new LinearLayoutManager(TvShowDetailsActivity.this,LinearLayoutManager.HORIZONTAL,false);
         castRecyclerView.setLayoutManager(layoutManager);
         castRecyclerView.setAdapter(adapter);
@@ -168,7 +167,9 @@ public class TvShowDetailsActivity extends AppCompatActivity
             @Override
             public void onVideoClick(View view, int position) {
                 Video video=videoArrayList.get(position);
-                Intent intent=new Intent(Intent.ACTION_VIEW,Uri.parse("http://www.youtube.com/watch?v="+video.key));
+                //Intent intent=new Intent(Intent.ACTION_VIEW,Uri.parse("http://www.youtube.com/watch?v="+video.key));
+                Intent intent=new Intent(TvShowDetailsActivity.this,YoutubeActivity.class);
+                intent.putExtra("Key",video.key);
                 startActivity(intent);
             }
         });
@@ -199,12 +200,12 @@ public class TvShowDetailsActivity extends AppCompatActivity
         }
         if(name==null)
         {
-            watchlistButton.setImageResource(R.mipmap.watchlist);
+            watchlistButton.setImageResource(R.mipmap.bookmark);
             watchlistButtonClicked=false;
         }
         else if(name!=null)
         {
-            watchlistButton.setImageResource(R.mipmap.watchlist_fill);
+            watchlistButton.setImageResource(R.mipmap.bookmark_fill);
             watchlistButtonClicked=true;
         }
 
@@ -258,7 +259,18 @@ public class TvShowDetailsActivity extends AppCompatActivity
             String r="<b>"+rating+"</b>";
             ratingTextView.setText(Html.fromHtml(r));
         }
-        firstAirDateTextView.setText("First Air Date: "+firstAirDate);
+        if(firstAirDate!=null)
+        {
+            String fd[]=firstAirDate.split("-");
+            String year=fd[0];
+            String month=fd[1];
+            String day=fd[2];
+            firstAirDateTextView.setText("First Air Date: "+day+"/"+month+"/"+year);
+        }
+        else
+        {
+            firstAirDateTextView.setText("First Air Date: "+firstAirDate);
+        }
 
         Call<SingleMovie> call=ApiClient.getTvService().getDetails(tvShowId);
         call.enqueue(new Callback<SingleMovie>() {
@@ -318,7 +330,6 @@ public class TvShowDetailsActivity extends AppCompatActivity
                 ArrayList<Cast> castList=castResponse.cast;
                 actorsList.clear();
                 actorsList.addAll(castList);
-                castRecyclerView.setVisibility(View.VISIBLE);
             }
 
             @Override
@@ -404,6 +415,7 @@ public class TvShowDetailsActivity extends AppCompatActivity
                 videoTextView.setVisibility(View.VISIBLE);
                 watchlistButton.setVisibility(View.VISIBLE);
                 menuButton.setVisibility(View.VISIBLE);
+                castRecyclerView.setVisibility(View.VISIBLE);
                 loading.setVisibility(View.GONE);
             }
 
@@ -434,8 +446,12 @@ public class TvShowDetailsActivity extends AppCompatActivity
 
     public void addToWatchlist(View view)
     {
-        final Snackbar removeSnackBar=Snackbar.make(view,"Removed from Watchlist",Snackbar.LENGTH_LONG).setActionTextColor(Color.parseColor("#FF7F50"));
-        final Snackbar addSnackBar=Snackbar.make(view,"Added to Watchlist",Snackbar.LENGTH_LONG).setActionTextColor(Color.parseColor("#FF7F50"));
+        final Snackbar removeSnackBar=Snackbar.make(view,"Removed from Watchlist",Snackbar.LENGTH_LONG).setActionTextColor(Color.parseColor("#FFDE03"));
+        View rView=removeSnackBar.getView();
+        rView.setBackgroundColor(Color.BLACK);
+        final Snackbar addSnackBar=Snackbar.make(view,"Added to Watchlist",Snackbar.LENGTH_LONG).setActionTextColor(Color.parseColor("#FFDE03"));
+        View aView=addSnackBar.getView();
+        aView.setBackgroundColor(Color.BLACK);
         removeSnackBar.setAction("UNDO", new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -471,7 +487,7 @@ public class TvShowDetailsActivity extends AppCompatActivity
     }
     public void watchlistAdd()
     {
-        watchlistButton.setImageResource(R.mipmap.watchlist_fill);
+        watchlistButton.setImageResource(R.mipmap.bookmark_fill);
         Tv tvShow=new Tv();
         tvShow.tvShowName=tvShowName;
         tvShow.posterPath=posterPath;
@@ -496,7 +512,7 @@ public class TvShowDetailsActivity extends AppCompatActivity
     }
     public void watchlistRemove()
     {
-        watchlistButton.setImageResource(R.mipmap.watchlist);
+        watchlistButton.setImageResource(R.mipmap.bookmark);
         watchlistButtonClicked=false;
         WatchlistOpenHelper openHelper=WatchlistOpenHelper.getInstance(getApplicationContext());
         SQLiteDatabase database=openHelper.getWritableDatabase();

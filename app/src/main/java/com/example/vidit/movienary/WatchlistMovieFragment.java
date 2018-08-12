@@ -13,7 +13,9 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.TextView;
 
+import com.airbnb.lottie.LottieAnimationView;
 import com.hereshem.lib.recycler.MyRecyclerView;
 
 import java.util.ArrayList;
@@ -24,6 +26,8 @@ public class WatchlistMovieFragment extends Fragment
     WatchlistMovieFragmentCallback listener;
     static MovieAdapter adapter;
     ArrayList<Movie> watchlistMovies=new ArrayList<>();
+    LottieAnimationView emptyList;
+    TextView emptyListTextView;
 
     public WatchlistMovieFragment()
     {
@@ -40,8 +44,9 @@ public class WatchlistMovieFragment extends Fragment
     }
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
     {
-        Log.d("See","view");
         View output=inflater.inflate(R.layout.fragment_movie_watchlist,container,false);
+        emptyList=output.findViewById(R.id.emptyList);
+        emptyListTextView=output.findViewById(R.id.emptyListTextView);
         watchlistMoviesRecyclerView=output.findViewById(R.id.watchlistMoviesRecyclerView);
         adapter=new MovieAdapter(getContext(), watchlistMovies, new MovieClickListener() {
             @Override
@@ -78,6 +83,11 @@ public class WatchlistMovieFragment extends Fragment
             movie.rating=rating;
             movie.releaseDate=releaseDate;
             watchlistMovies.add(movie);
+        }
+        if(watchlistMovies.size()==0)
+        {
+            emptyList.setVisibility(View.VISIBLE);
+            emptyListTextView.setVisibility(View.VISIBLE);
         }
         adapter.notifyDataSetChanged();
         return output;

@@ -14,6 +14,7 @@ import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.SearchView;
+import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -87,7 +88,7 @@ public class PopularMoviesFragment extends Fragment{
             }
         });
         popularRecyclerView.setAdapter(adapter);
-        GridLayoutManager layoutManager=new GridLayoutManager(getContext(),2,GridLayoutManager.VERTICAL,false);
+        GridLayoutManager layoutManager=new GridLayoutManager(getContext(),2,StaggeredGridLayoutManager.VERTICAL,false);
         popularRecyclerView.setLayoutManager(layoutManager);
         fetchPopularMovies(currentPage);
         if(currentPage<totalPages)
