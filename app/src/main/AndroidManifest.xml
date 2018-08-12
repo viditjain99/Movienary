@@ -6,19 +6,14 @@
 
     <application
         android:allowBackup="true"
-        android:icon="@mipmap/movie_launcher"
+        android:icon="@mipmap/startup_icon_round"
         android:label="ShowBuzz"
-        android:roundIcon="@mipmap/ic_launcher_round"
+        android:roundIcon="@mipmap/startup_icon_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity
             android:name=".MainActivity"
             android:theme="@style/NoActionBar">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
         </activity>
         <activity
             android:name=".SearchActivity"
@@ -47,6 +42,14 @@
             android:theme="@style/AppTheme.NoActionBar"/>
         <activity android:name=".YoutubeActivity"
             android:theme="@style/ImageTheme"/>
+        <activity android:name=".SplashScreenActivity"
+            android:theme="@style/NoActionBar">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
     </application>
 
 </manifest>

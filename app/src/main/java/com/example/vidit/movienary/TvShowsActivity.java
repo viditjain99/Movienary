@@ -27,6 +27,8 @@ import android.widget.Toast;
 
 import com.airbnb.lottie.LottieAnimationView;
 
+import static java.lang.Thread.sleep;
+
 public class TvShowsActivity extends AppCompatActivity implements PopularTvShowsFragment.PopularTvShowsFragmentCallBack,
         OnTheAirTvShowsFragment.OnTheAirTvShowsFragmentCallBack,AiringTodayTvShowsFragment.AiringTodayTvShowsFragmentCallBack,
         TopRatedTvShowsFragment.TopRatedTvShowsFragmentCallBack,NavigationView.OnNavigationItemSelectedListener
@@ -48,6 +50,7 @@ public class TvShowsActivity extends AppCompatActivity implements PopularTvShows
         public boolean onNavigationItemSelected(@NonNull MenuItem item) {
             FragmentManager fragmentManager=getSupportFragmentManager();
             FragmentTransaction transaction=fragmentManager.beginTransaction();
+            transaction.setCustomAnimations(R.anim.enter_from_right,R.anim.exit_to_left,R.anim.enter_from_left,R.anim.exit_to_right);
             if(popularTvShowsFragment==null)
             {
                 popularTvShowsFragment=new PopularTvShowsFragment();
