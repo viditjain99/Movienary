@@ -3,13 +3,18 @@ apply plugin: 'com.android.application'
 android {
     compileSdkVersion 28
     defaultConfig {
-        applicationId "com.example.vidit.movienary"
-        minSdkVersion 16
+        applicationId "com.vidit.vidit.movienary"
+        minSdkVersion 21
         targetSdkVersion 28
-        versionCode 1
-        versionName "1.0"
+        versionCode 3
+        versionName "1.1"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
         vectorDrawables.useSupportLibrary = true
+        lintOptions {
+
+            checkReleaseBuilds false
+
+        }
     }
     buildTypes {
         release {

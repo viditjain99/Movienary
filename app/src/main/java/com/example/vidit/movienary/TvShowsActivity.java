@@ -231,7 +231,7 @@ public class TvShowsActivity extends AppCompatActivity implements PopularTvShows
         {
             Intent intent=new Intent();
             intent.setAction(Intent.ACTION_SEND);
-            intent.putExtra(Intent.EXTRA_TEXT,"Hey check out this app at:https://play.google.com/store");
+            intent.putExtra(Intent.EXTRA_TEXT,"Hey check out the ShowBuzz app at:https://play.google.com/store/apps/details?id=com.vidit.vidit.movienary");
             intent.setType("text/plain");
             startActivity(intent);
         }

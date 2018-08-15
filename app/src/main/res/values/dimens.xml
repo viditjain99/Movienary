@@ -21,5 +21,6 @@
     <dimen name="standard_190">190dp</dimen>
     <dimen name="standard_195">195dp</dimen>
     <dimen name="standard_255">255dp</dimen>
+    <dimen name="standard_315">315dp</dimen>
 
 </resources>

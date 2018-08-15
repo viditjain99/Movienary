@@ -60,7 +60,7 @@ public class TvShowDetailsActivity extends AppCompatActivity
     String rating;
     String overview;
     String firstAirDate;
-    FloatingActionButton facebook,instagram,twitter,imdb,menuButton;
+    FloatingActionButton facebook,instagram,twitter,imdb,menuButton,shareButton;
     boolean isFABOpen=false;
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -106,6 +106,7 @@ public class TvShowDetailsActivity extends AppCompatActivity
         instagram=findViewById(R.id.instagram);
         twitter=findViewById(R.id.twitter);
         imdb=findViewById(R.id.imdb);
+        shareButton=findViewById(R.id.shareButton);
         externalIdResponse=new ExternalIdResponse();
         watchlistButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -518,6 +519,14 @@ public class TvShowDetailsActivity extends AppCompatActivity
         SQLiteDatabase database=openHelper.getWritableDatabase();
         String[] selectionArgs={tvShowId+""};
         database.delete(ContractTv.Tv.TABLE_NAME,ContractTv.Tv.COLUMN_ID+" =?",selectionArgs);
+        for(int i=0;i<watchlistTvShows.size();i++)
+        {
+            Tv tvShow=watchlistTvShows.get(i);
+            if(tvShow.id.equals(tvShowId))
+            {
+                watchlistTvShows.remove(i);
+            }
+        }
     }
 
     public void openFacebook(View view)
@@ -560,18 +569,28 @@ public class TvShowDetailsActivity extends AppCompatActivity
         Intent intent=new Intent(Intent.ACTION_VIEW,Uri.parse("https://www.imdb.com/find?ref_=nv_sr_fn&q="+externalIdResponse.imdbId+"&s=all"));
         startActivity(intent);
     }
+    public void shareTvShow(View view)
+    {
+        Intent intent=new Intent();
+        intent.setAction(Intent.ACTION_SEND);
+        intent.putExtra(Intent.EXTRA_TEXT,"Check out "+tvShowName+" at "+"https://www.themoviedb.org/tv/"+tvShowId);
+        intent.setType("text/plain");
+        startActivity(intent);
+    }
     private void showFABMenu(){
         isFABOpen=true;
         facebook.setVisibility(View.VISIBLE);
         twitter.setVisibility(View.VISIBLE);
         instagram.setVisibility(View.VISIBLE);
         imdb.setVisibility(View.VISIBLE);
+        shareButton.setVisibility(View.VISIBLE);
 
         menuButton.animate().rotationBy(180);
         facebook.animate().translationY(-getResources().getDimension(R.dimen.standard_75));
         twitter.animate().translationY(-getResources().getDimension(R.dimen.standard_135));
         instagram.animate().translationY(-getResources().getDimension(R.dimen.standard_195));
         imdb.animate().translationY(-getResources().getDimension(R.dimen.standard_255));
+        shareButton.animate().translationX(-getResources().getDimension(R.dimen.standard_75));
     }
 
     private void closeFABMenu(){
@@ -580,7 +599,8 @@ public class TvShowDetailsActivity extends AppCompatActivity
         facebook.animate().translationY(0);
         twitter.animate().translationY(0);
         instagram.animate().translationY(0);
-        imdb.animate().translationY(0).setListener(new Animator.AnimatorListener() {
+        imdb.animate().translationY(0);
+        shareButton.animate().translationX(0).setListener(new Animator.AnimatorListener() {
             @Override
             public void onAnimationStart(Animator animator) {
 
@@ -594,6 +614,7 @@ public class TvShowDetailsActivity extends AppCompatActivity
                     twitter.setVisibility(View.GONE);
                     instagram.setVisibility(View.GONE);
                     imdb.setVisibility(View.GONE);
+                    shareButton.setVisibility(View.GONE);
                 }
             }
 

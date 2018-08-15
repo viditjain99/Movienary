@@ -21,8 +21,8 @@ public class WatchlistTvFragment extends Fragment
 {
     MyRecyclerView watchlistTvShowsRecyclerView;
     WatchlistTvFragmentCallback listener;
-    TvAdapter adapter;
-    ArrayList<Tv> watchlistTvShows=new ArrayList<>();
+    static TvAdapter adapter;
+    static ArrayList<Tv> watchlistTvShows=new ArrayList<>();
     LottieAnimationView emptyList;
     TextView emptyListTextView;
 
@@ -44,6 +44,7 @@ public class WatchlistTvFragment extends Fragment
     {
         View output=inflater.inflate(R.layout.fragment_tv_watchlist,container,false);
         watchlistTvShowsRecyclerView=output.findViewById(R.id.watchlistTvShowsRecyclerView);
+        watchlistTvShows.clear();
         emptyList=output.findViewById(R.id.emptyList);
         emptyListTextView=output.findViewById(R.id.emptyListTextView);
         adapter=new TvAdapter(getContext(), watchlistTvShows, new TvClickListener() {

@@ -19,7 +19,7 @@
             android:layout_height="wrap_content"
             android:id="@+id/authorTextView"
             android:text="author"
-            android:textColor="#FFFFFF"
+            android:textColor="@color/colorAccent"
             android:textStyle="bold"
             android:textSize="15dp"
             android:padding="10dp"/>

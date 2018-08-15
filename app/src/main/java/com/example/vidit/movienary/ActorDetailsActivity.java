@@ -42,8 +42,9 @@ public class ActorDetailsActivity extends AppCompatActivity
     TvAdapter tvAdapter;
     LottieAnimationView loading;
     ExternalIdResponse externalIdResponse;
-    FloatingActionButton facebook,instagram,twitter,imdb,menuButton;
+    FloatingActionButton facebook,instagram,twitter,imdb,menuButton,shareButton;
     boolean isFABOpen=false;
+    String actorId;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -65,6 +66,7 @@ public class ActorDetailsActivity extends AppCompatActivity
         instagram=findViewById(R.id.instagram);
         twitter=findViewById(R.id.twitter);
         imdb=findViewById(R.id.imdb);
+        shareButton=findViewById(R.id.shareButton);
 
         toolbar=findViewById(R.id.toolbar);
         collapsingToolbarLayout=findViewById(R.id.collapsingToolbar);
@@ -148,8 +150,8 @@ public class ActorDetailsActivity extends AppCompatActivity
         menuButton.setVisibility(View.GONE);
         loading.setVisibility(View.VISIBLE);
         intent=getIntent();
-        String id=intent.getStringExtra("Id");
-        Call<Actor> call=ApiClient.getActorsService().getDetails(id);
+        actorId=intent.getStringExtra("Id");
+        Call<Actor> call=ApiClient.getActorsService().getDetails(actorId);
         call.enqueue(new Callback<Actor>() {
             @Override
             public void onResponse(Call<Actor> call, Response<Actor> response) {
@@ -180,7 +182,7 @@ public class ActorDetailsActivity extends AppCompatActivity
             }
         });
 
-        Call<ExternalIdResponse> call3=ApiClient.getActorsService().getExternalIds(id);
+        Call<ExternalIdResponse> call3=ApiClient.getActorsService().getExternalIds(actorId);
         call3.enqueue(new Callback<ExternalIdResponse>() {
             @Override
             public void onResponse(Call<ExternalIdResponse> call, Response<ExternalIdResponse> response) {
@@ -201,7 +203,7 @@ public class ActorDetailsActivity extends AppCompatActivity
             }
         });
 
-        Call<MovieCreditsResponse> call1=ApiClient.getMoviesService().getMovieCredits(id);
+        Call<MovieCreditsResponse> call1=ApiClient.getMoviesService().getMovieCredits(actorId);
         call1.enqueue(new Callback<MovieCreditsResponse>() {
             @Override
             public void onResponse(Call<MovieCreditsResponse> call, Response<MovieCreditsResponse> response) {
@@ -216,7 +218,7 @@ public class ActorDetailsActivity extends AppCompatActivity
 
             }
         });
-        Call<TvCreditsResponse> call2=ApiClient.getTvService().getTvCredits(id);
+        Call<TvCreditsResponse> call2=ApiClient.getTvService().getTvCredits(actorId);
         call2.enqueue(new Callback<TvCreditsResponse>() {
             @Override
             public void onResponse(Call<TvCreditsResponse> call, Response<TvCreditsResponse> response) {
@@ -294,18 +296,28 @@ public class ActorDetailsActivity extends AppCompatActivity
         Intent intent=new Intent(Intent.ACTION_VIEW,Uri.parse("https://www.imdb.com/find?ref_=nv_sr_fn&q="+externalIdResponse.imdbId+"&s=all"));
         startActivity(intent);
     }
+    public void shareActor(View view)
+    {
+        Intent intent=new Intent();
+        intent.setAction(Intent.ACTION_SEND);
+        intent.putExtra(Intent.EXTRA_TEXT,"Check out "+actorNameTextView.getText().toString()+" at "+"https://www.themoviedb.org/person/"+actorId);
+        intent.setType("text/plain");
+        startActivity(intent);
+    }
     private void showFABMenu(){
         isFABOpen=true;
         facebook.setVisibility(View.VISIBLE);
         twitter.setVisibility(View.VISIBLE);
         instagram.setVisibility(View.VISIBLE);
         imdb.setVisibility(View.VISIBLE);
+        shareButton.setVisibility(View.VISIBLE);
 
         menuButton.animate().rotationBy(180);
         facebook.animate().translationY(-getResources().getDimension(R.dimen.standard_75));
         twitter.animate().translationY(-getResources().getDimension(R.dimen.standard_135));
         instagram.animate().translationY(-getResources().getDimension(R.dimen.standard_195));
         imdb.animate().translationY(-getResources().getDimension(R.dimen.standard_255));
+        shareButton.animate().translationX(-getResources().getDimension(R.dimen.standard_75));
     }
 
     private void closeFABMenu(){
@@ -314,7 +326,8 @@ public class ActorDetailsActivity extends AppCompatActivity
         facebook.animate().translationY(0);
         twitter.animate().translationY(0);
         instagram.animate().translationY(0);
-        imdb.animate().translationY(0).setListener(new Animator.AnimatorListener() {
+        imdb.animate().translationY(0);
+        shareButton.animate().translationX(0).setListener(new Animator.AnimatorListener() {
             @Override
             public void onAnimationStart(Animator animator) {
 
@@ -328,6 +341,7 @@ public class ActorDetailsActivity extends AppCompatActivity
                     twitter.setVisibility(View.GONE);
                     instagram.setVisibility(View.GONE);
                     imdb.setVisibility(View.GONE);
+                    shareButton.setVisibility(View.GONE);
                 }
             }
 

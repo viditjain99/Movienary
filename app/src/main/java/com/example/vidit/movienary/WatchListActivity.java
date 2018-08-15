@@ -5,6 +5,7 @@ import android.content.pm.ActivityInfo;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.graphics.Color;
 import android.net.Uri;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -66,6 +67,7 @@ public class WatchListActivity extends AppCompatActivity implements NavigationVi
         setContentView(R.layout.activity_watch_list);
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LAYOUT_STABLE | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN);
+        getWindow().setStatusBarColor(Color.BLACK);
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         toolbar.setTitle("Watchlist");
         setSupportActionBar(toolbar);
@@ -144,7 +146,7 @@ public class WatchListActivity extends AppCompatActivity implements NavigationVi
         {
             Intent intent=new Intent();
             intent.setAction(Intent.ACTION_SEND);
-            intent.putExtra(Intent.EXTRA_TEXT,"Hey check out this app at:https://play.google.com/store");
+            intent.putExtra(Intent.EXTRA_TEXT,"Hey check out the ShowBuzz app at:https://play.google.com/store/apps/details?id=com.vidit.vidit.movienary");
             intent.setType("text/plain");
             startActivity(intent);
         }

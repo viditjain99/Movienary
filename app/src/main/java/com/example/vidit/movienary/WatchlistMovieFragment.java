@@ -25,9 +25,10 @@ public class WatchlistMovieFragment extends Fragment
     MyRecyclerView watchlistMoviesRecyclerView;
     WatchlistMovieFragmentCallback listener;
     static MovieAdapter adapter;
-    ArrayList<Movie> watchlistMovies=new ArrayList<>();
+    static ArrayList<Movie> watchlistMovies=new ArrayList<>();
     LottieAnimationView emptyList;
     TextView emptyListTextView;
+    boolean changed=false;
 
     public WatchlistMovieFragment()
     {
@@ -46,6 +47,7 @@ public class WatchlistMovieFragment extends Fragment
     {
         View output=inflater.inflate(R.layout.fragment_movie_watchlist,container,false);
         emptyList=output.findViewById(R.id.emptyList);
+        watchlistMovies.clear();
         emptyListTextView=output.findViewById(R.id.emptyListTextView);
         watchlistMoviesRecyclerView=output.findViewById(R.id.watchlistMoviesRecyclerView);
         adapter=new MovieAdapter(getContext(), watchlistMovies, new MovieClickListener() {
@@ -96,17 +98,5 @@ public class WatchlistMovieFragment extends Fragment
     public interface WatchlistMovieFragmentCallback
     {
         void onMovieSelected(Movie movie);
-    }
-    @Override
-    public void onResume()
-    {
-        super.onResume();
-        adapter.notifyDataSetChanged();
-    }
-    @Override
-    public void onStart()
-    {
-        super.onStart();
-        adapter.notifyDataSetChanged();
     }
 }
