@@ -3,6 +3,7 @@ package com.example.vidit.movienary;
 import android.content.Context;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
+import android.util.DisplayMetrics;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -35,7 +36,29 @@ public class TvAdapter extends RecyclerView.Adapter<TvViewHolder>
     {
         Tv tvShow=tvShows.get(i);
         tvViewHolder.name.setText(tvShow.tvShowName);
-        Picasso.get().load("http://image.tmdb.org/t/p/w500/"+tvShow.posterPath).into(tvViewHolder.image);
+        DisplayMetrics metrics=context.getResources().getDisplayMetrics();
+        int width=metrics.widthPixels;
+        if(width>720 && width<=1080)
+        {
+            Picasso.get().load("http://image.tmdb.org/t/p/w500/"+tvShow.posterPath).into(tvViewHolder.image);
+        }
+        else if(width>1080 && width<=1440)
+        {
+            Picasso.get().load("http://image.tmdb.org/t/p/w780/"+tvShow.posterPath).into(tvViewHolder.image);
+        }
+        else
+        {
+            Picasso.get().load("http://image.tmdb.org/t/p/w342/"+tvShow.posterPath).into(tvViewHolder.image);
+        }
+//        float ratio=((float) metrics.heightPixels/(float) metrics.widthPixels);
+//        if(ratio<1.8f && ratio>1.33f)
+//        {
+//            Picasso.get().load("http://image.tmdb.org/t/p/w500/"+tvShow.posterPath).into(tvViewHolder.image);
+//        }
+//        else
+//        {
+//            Picasso.get().load("http://image.tmdb.org/t/p/w780/"+tvShow.posterPath).into(tvViewHolder.image);
+//        }
         if(Float.parseFloat(tvShow.rating)==0)
         {
             tvViewHolder.rating.setText("N/A");

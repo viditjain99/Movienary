@@ -6,6 +6,7 @@ import android.support.annotation.NonNull;
 import android.support.v4.view.ViewCompat;
 import android.support.v7.widget.RecyclerView;
 import android.text.Layout;
+import android.util.DisplayMetrics;
 import android.view.LayoutInflater;
 
 import com.bumptech.glide.Glide;
@@ -46,7 +47,33 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieViewHolder> {
     {
         Movie movie=movies.get(i);
         movieViewHolder.name.setText(movie.movieName);
-        Picasso.get().load("http://image.tmdb.org/t/p/w500/"+movie.posterPath).into(movieViewHolder.image);
+        DisplayMetrics metrics=context.getResources().getDisplayMetrics();
+        int width=metrics.widthPixels;
+        if(width>720 && width<=1080)
+        {
+            Picasso.get().load("http://image.tmdb.org/t/p/w500/"+movie.posterPath).into(movieViewHolder.image);
+        }
+        else if(width>1080 && width<=1440)
+        {
+            Picasso.get().load("http://image.tmdb.org/t/p/w780/"+movie.posterPath).into(movieViewHolder.image);
+        }
+        else
+        {
+            Picasso.get().load("http://image.tmdb.org/t/p/w342/"+movie.posterPath).into(movieViewHolder.image);
+        }
+//        float ratio=((float) metrics.heightPixels/(float) metrics.widthPixels);
+//        if(ratio<=1.8f && ratio>1.33f)
+//        {
+//            Picasso.get().load("http://image.tmdb.org/t/p/w500/"+movie.posterPath).into(movieViewHolder.image);
+//        }
+//        else if(ratio<=1.33f)
+//        {
+//            Picasso.get().load("http://image.tmdb.org/t/p/w342/"+movie.posterPath).into(movieViewHolder.image);
+//        }
+//        else if(ratio>1.8f)
+//        {
+//            Picasso.get().load("http://image.tmdb.org/t/p/w780/"+movie.posterPath).into(movieViewHolder.image);
+//        }
         ViewCompat.setTransitionName(movieViewHolder.image,movie.movieName);
         //Glide.with(context.getApplicationContext()).load("http://image.tmdb.org/t/p/w500/"+movie.posterPath).asBitmap().diskCacheStrategy(DiskCacheStrategy.ALL).into(movieViewHolder.image);
         if(Float.parseFloat(movie.rating)==0)

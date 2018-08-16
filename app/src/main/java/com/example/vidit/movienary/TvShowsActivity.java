@@ -216,6 +216,7 @@ public class TvShowsActivity extends AppCompatActivity implements PopularTvShows
             toolbar.setTitle("Movies");
             Intent intent=new Intent(TvShowsActivity.this,MainActivity.class);
             startActivity(intent);
+            finish();
         }
         else if (id == R.id.nav_tv_shows)
         {
@@ -226,6 +227,7 @@ public class TvShowsActivity extends AppCompatActivity implements PopularTvShows
             toolbar.setTitle("Watchlist");
             Intent intent=new Intent(TvShowsActivity.this,WatchListActivity.class);
             startActivity(intent);
+            finish();
         }
         else if (id == R.id.nav_share)
         {

@@ -36,6 +36,7 @@ import android.view.ViewGroup;
 
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.io.FileDescriptor;
 import java.io.PrintWriter;
@@ -61,6 +62,8 @@ public class WatchListActivity extends AppCompatActivity implements NavigationVi
     private ViewPager mViewPager;
 
     Toolbar toolbar;
+    private long mBackPressed;
+    private static final int TIME_INTERVAL = 2000;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -111,14 +114,24 @@ public class WatchListActivity extends AppCompatActivity implements NavigationVi
     }
 
     @Override
-    public void onBackPressed() {
+    public void onBackPressed()
+    {
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-        if (drawer.isDrawerOpen(GravityCompat.START))
-        {
+        if (drawer.isDrawerOpen(GravityCompat.START)) {
             drawer.closeDrawer(GravityCompat.START);
         }
-        else {
-            super.onBackPressed();
+        else
+        {
+            if(mBackPressed+TIME_INTERVAL>System.currentTimeMillis())
+            {
+                super.onBackPressed();
+                return;
+            }
+            else
+            {
+                Toast.makeText(this,"Press again to exit",Toast.LENGTH_SHORT).show();
+            }
+            mBackPressed = System.currentTimeMillis();
         }
     }
 
@@ -131,12 +144,14 @@ public class WatchListActivity extends AppCompatActivity implements NavigationVi
             toolbar.setTitle("Movies");
             Intent intent=new Intent(WatchListActivity.this,MainActivity.class);
             startActivity(intent);
+            finish();
         }
         else if (id == R.id.nav_tv_shows)
         {
             toolbar.setTitle("TV Shows");
             Intent intent=new Intent(WatchListActivity.this,TvShowsActivity.class);
             startActivity(intent);
+            finish();
         }
         else if (id == R.id.nav_watchlist)
         {

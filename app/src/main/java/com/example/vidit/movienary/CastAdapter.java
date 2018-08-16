@@ -9,6 +9,7 @@ import android.support.v4.graphics.drawable.RoundedBitmapDrawable;
 import android.support.v4.graphics.drawable.RoundedBitmapDrawableFactory;
 import android.support.v7.widget.RecyclerView;
 import android.text.Html;
+import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -49,6 +50,8 @@ public class CastAdapter extends RecyclerView.Adapter<CastViewHolder>
         String s="<b>"+cast.actorName+"</b>";
         castViewHolder.name.setText(Html.fromHtml(s));
         //Transformation transformation = new RoundedTransformationBuilder().borderColor(Color.BLACK).borderWidthDp(0).cornerRadiusDp(0).oval(true).build();
+        DisplayMetrics metrics=context.getResources().getDisplayMetrics();
+        float ratio=((float) metrics.heightPixels/(float) metrics.widthPixels);
         Picasso.get().load("http://image.tmdb.org/t/p/w500/"+cast.profilePath).into(castViewHolder.image);
         castViewHolder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
