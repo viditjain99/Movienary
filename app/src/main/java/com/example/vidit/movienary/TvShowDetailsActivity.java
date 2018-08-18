@@ -126,23 +126,6 @@ public class TvShowDetailsActivity extends AppCompatActivity
             }
         });
 
-        menuButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if(!isFABOpen)
-                {
-                    showFABMenu();
-                }
-                else
-                {
-                    closeFABMenu();
-                }
-            }
-        });
-        LinearLayoutManager layoutManager=new LinearLayoutManager(TvShowDetailsActivity.this,LinearLayoutManager.HORIZONTAL,false);
-        castRecyclerView.setLayoutManager(layoutManager);
-        castRecyclerView.setAdapter(adapter);
-
         tvAdapter=new TvAdapter(TvShowDetailsActivity.this, similarTvShowsList, new TvClickListener() {
             @Override
             public void onTvClick(View view, int position) {
@@ -160,9 +143,6 @@ public class TvShowDetailsActivity extends AppCompatActivity
                 startActivity(intent);
             }
         });
-        LinearLayoutManager layoutManager1=new LinearLayoutManager(TvShowDetailsActivity.this,LinearLayoutManager.HORIZONTAL,false);
-        similarTvShowsRecyclerView.setLayoutManager(layoutManager1);
-        similarTvShowsRecyclerView.setAdapter(tvAdapter);
 
         videoAdapter=new VideoAdapter(TvShowDetailsActivity.this, videoArrayList, new VideoClickListener() {
             @Override
@@ -174,6 +154,28 @@ public class TvShowDetailsActivity extends AppCompatActivity
                 startActivity(intent);
             }
         });
+
+        menuButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if(!isFABOpen)
+                {
+                    showFABMenu();
+                }
+                else
+                {
+                    closeFABMenu();
+                }
+            }
+        });
+        LinearLayoutManager layoutManager=new LinearLayoutManager(TvShowDetailsActivity.this,LinearLayoutManager.HORIZONTAL,false);
+        castRecyclerView.setLayoutManager(layoutManager);
+        castRecyclerView.setAdapter(adapter);
+
+        LinearLayoutManager layoutManager1=new LinearLayoutManager(TvShowDetailsActivity.this,LinearLayoutManager.HORIZONTAL,false);
+        similarTvShowsRecyclerView.setLayoutManager(layoutManager1);
+        similarTvShowsRecyclerView.setAdapter(tvAdapter);
+
         LinearLayoutManager layoutManager2=new LinearLayoutManager(TvShowDetailsActivity.this,LinearLayoutManager.HORIZONTAL,false);
         videoRecyclerView.setLayoutManager(layoutManager2);
         videoRecyclerView.setAdapter(videoAdapter);
@@ -331,6 +333,7 @@ public class TvShowDetailsActivity extends AppCompatActivity
                 ArrayList<Cast> castList=castResponse.cast;
                 actorsList.clear();
                 actorsList.addAll(castList);
+                adapter.notifyDataSetChanged();
             }
 
             @Override
@@ -345,6 +348,7 @@ public class TvShowDetailsActivity extends AppCompatActivity
                 VideoResponse videoResponse=response.body();
                 ArrayList<Video> videos=videoResponse.results;
                 videoArrayList.addAll(videos);
+                videoAdapter.notifyDataSetChanged();
             }
 
             @Override
@@ -361,6 +365,7 @@ public class TvShowDetailsActivity extends AppCompatActivity
                 ArrayList<Tv> tvShows=tvResponse.results;
                 similarTvShowsList.clear();
                 similarTvShowsList.addAll(tvShows);
+                tvAdapter.notifyDataSetChanged();
             }
 
             @Override

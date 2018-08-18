@@ -137,6 +137,7 @@ public class ActorDetailsActivity extends AppCompatActivity
         LinearLayoutManager layoutManager1=new LinearLayoutManager(ActorDetailsActivity.this,LinearLayoutManager.HORIZONTAL,false);
         tvCreditsRecyclerView.setLayoutManager(layoutManager1);
         tvCreditsRecyclerView.setAdapter(tvAdapter);
+
         actorNameTextView.setVisibility(View.GONE);
         biographyTextView.setVisibility(View.GONE);
         ageTextView.setVisibility(View.GONE);
@@ -210,7 +211,7 @@ public class ActorDetailsActivity extends AppCompatActivity
                 MovieCreditsResponse movieCreditsResponse=response.body();
                 ArrayList<Movie> moviesList=movieCreditsResponse.cast;
                 movieCredits.addAll(moviesList);
-                movieCreditsRecyclerView.setVisibility(View.VISIBLE);
+                adapter.notifyDataSetChanged();
             }
 
             @Override
@@ -225,12 +226,15 @@ public class ActorDetailsActivity extends AppCompatActivity
                 TvCreditsResponse tvCreditsResponse=response.body();
                 ArrayList<Tv> tvShowsList=tvCreditsResponse.cast;
                 tvCredits.addAll(tvShowsList);
+                tvAdapter.notifyDataSetChanged();
+
                 actorNameTextView.setVisibility(View.VISIBLE);
                 biographyTextView.setVisibility(View.VISIBLE);
                 ageTextView.setVisibility(View.VISIBLE);
                 birthPlaceTextView.setVisibility(View.VISIBLE);
                 biography.setVisibility(View.VISIBLE);
                 movieCreditsTextView.setVisibility(View.VISIBLE);
+                movieCreditsRecyclerView.setVisibility(View.VISIBLE);
                 tvShowCredits.setVisibility(View.VISIBLE);
                 profileImageView.setVisibility(View.VISIBLE);
                 tvCreditsRecyclerView.setVisibility(View.VISIBLE);

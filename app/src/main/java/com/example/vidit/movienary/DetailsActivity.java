@@ -156,9 +156,6 @@ public class DetailsActivity extends AppCompatActivity
                 startActivity(intent1);
             }
         });
-        LinearLayoutManager layoutManager=new LinearLayoutManager(DetailsActivity.this,LinearLayoutManager.HORIZONTAL,false);
-        castRecyclerView.setLayoutManager(layoutManager);
-        castRecyclerView.setAdapter(adapter);
 
         movieAdapter=new MovieAdapter(DetailsActivity.this, similarMoviesList, new MovieClickListener() {
             @Override
@@ -177,9 +174,6 @@ public class DetailsActivity extends AppCompatActivity
                 startActivity(intent);
             }
         });
-        LinearLayoutManager layoutManager1=new LinearLayoutManager(DetailsActivity.this,LinearLayoutManager.HORIZONTAL,false);
-        similarMoviesRecyclerView.setLayoutManager(layoutManager1);
-        similarMoviesRecyclerView.setAdapter(movieAdapter);
 
         videoAdapter=new VideoAdapter(DetailsActivity.this, videoArrayList, new VideoClickListener() {
             @Override
@@ -191,6 +185,15 @@ public class DetailsActivity extends AppCompatActivity
                 startActivity(intent);
             }
         });
+
+        LinearLayoutManager layoutManager=new LinearLayoutManager(DetailsActivity.this,LinearLayoutManager.HORIZONTAL,false);
+        castRecyclerView.setLayoutManager(layoutManager);
+        castRecyclerView.setAdapter(adapter);
+
+        LinearLayoutManager layoutManager1=new LinearLayoutManager(DetailsActivity.this,LinearLayoutManager.HORIZONTAL,false);
+        similarMoviesRecyclerView.setLayoutManager(layoutManager1);
+        similarMoviesRecyclerView.setAdapter(movieAdapter);
+
         LinearLayoutManager layoutManager2=new LinearLayoutManager(DetailsActivity.this,LinearLayoutManager.HORIZONTAL,false);
         videoRecyclerView.setLayoutManager(layoutManager2);
         videoRecyclerView.setAdapter(videoAdapter);
@@ -337,6 +340,7 @@ public class DetailsActivity extends AppCompatActivity
                 VideoResponse videoResponse=response.body();
                 ArrayList<Video> videos=videoResponse.results;
                 videoArrayList.addAll(videos);
+                videoAdapter.notifyDataSetChanged();
             }
 
             @Override
@@ -353,6 +357,7 @@ public class DetailsActivity extends AppCompatActivity
                 ArrayList<Cast> castList=castResponse.cast;
                 actorsList.clear();
                 actorsList.addAll(castList);
+                adapter.notifyDataSetChanged();
             }
 
             @Override
@@ -369,6 +374,7 @@ public class DetailsActivity extends AppCompatActivity
                 ArrayList<Movie> movies=movieResponse.results;
                 similarMoviesList.clear();
                 similarMoviesList.addAll(movies);
+                movieAdapter.notifyDataSetChanged();
             }
 
             @Override

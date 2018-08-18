@@ -40,13 +40,13 @@
                 android:id="@+id/tabs">
 
                 <android.support.design.widget.TabItem
-                    android:layout_width="wrap_content"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:id="@+id/moviesTab"
                     android:text="Movies"/>
 
                 <android.support.design.widget.TabItem
-                    android:layout_width="wrap_content"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:id="@+id/tvShowsTab"
                     android:text="TV Shows"/>
