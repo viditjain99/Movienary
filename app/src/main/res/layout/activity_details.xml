@@ -164,191 +164,349 @@
         app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
         <RelativeLayout
+            android:id="@+id/relativeLayout"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:orientation="vertical"
-            android:id="@+id/relativeLayout">
+            android:orientation="vertical">
 
             <TextView
+                android:id="@+id/titleTextView"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textColor="#FFFFFF"
-                android:id="@+id/titleTextView"
-                android:textAppearance="@style/Base.TextAppearance.AppCompat.Large"
-                android:textStyle="bold"
+                android:layout_marginTop="15dp"
                 android:padding="10dp"
-                android:layout_marginTop="15dp"/>
+                android:textAppearance="@style/Base.TextAppearance.AppCompat.Large"
+                android:textColor="#FFFFFF"
+                android:textStyle="bold" />
 
             <com.example.vidit.movienary.ExpandableTextView
+                android:id="@+id/overviewTextView"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:id="@+id/overviewTextView"
-                android:textColor="#FFFFFF"
                 android:layout_below="@id/titleTextView"
+                android:background="#333333"
                 android:padding="10dp"
                 android:paddingTop="16dp"
-                android:background="#333333"/>
+                android:textColor="#FFFFFF" />
 
-            <LinearLayout
+            <TextView
+                android:id="@+id/ratingTextView"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:id="@+id/ratingLayout"
                 android:layout_below="@id/overviewTextView"
-                android:paddingLeft="5dp"
+                android:padding="10dp"
+                android:text="Ratings"
+                android:textAppearance="@style/Base.TextAppearance.AppCompat.Large"
+                android:textColor="#FFFFFF" />
+
+            <LinearLayout
+                android:id="@+id/tmdbRatingLayout"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/ratingTextView"
+                android:layout_marginBottom="5dp"
+                android:gravity="center_vertical"
                 android:orientation="horizontal"
-                android:gravity="center_vertical">
+                android:paddingLeft="15dp">
+
                 <ImageView
+                    android:id="@+id/tmdbImageView"
                     android:layout_width="40dp"
                     android:layout_height="40dp"
-                    android:id="@+id/starImageView" />
+                    android:src="@mipmap/tmdb_logo" />
 
                 <TextView
+                    android:id="@+id/tmdbRatingTextView"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:id="@+id/ratingTextView"
-                    android:textSize="20dp"
+                    android:layout_toRightOf="@id/tmdbImageView"
+                    android:padding="10dp"
                     android:textColor="#FFFFFF"
-                    android:layout_toRightOf="@id/starImageView"/>
+                    android:textSize="20dp" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/imdbRatingLayout"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/tmdbRatingLayout"
+                android:layout_marginBottom="5dp"
+                android:gravity="center_vertical"
+                android:orientation="horizontal"
+                android:paddingLeft="15dp">
+
+                <ImageView
+                    android:id="@+id/imdbImageView"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:src="@mipmap/imdb" />
+
+                <TextView
+                    android:id="@+id/imdbRatingTextView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_toRightOf="@id/imdbImageView"
+                    android:padding="10dp"
+                    android:textColor="#FFFFFF"
+                    android:textSize="20dp"
+                    android:textStyle="bold" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/rtRatingLayout"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/imdbRatingLayout"
+                android:layout_marginBottom="10dp"
+                android:gravity="center_vertical"
+                android:orientation="horizontal"
+                android:paddingLeft="15dp">
+
+                <ImageView
+                    android:id="@+id/rtImageView"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:src="@mipmap/rotten_logo" />
+
+                <TextView
+                    android:id="@+id/rtRatingTextView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_toRightOf="@id/rtImageView"
+                    android:padding="10dp"
+                    android:textColor="#FFFFFF"
+                    android:textSize="20dp"
+                    android:textStyle="bold" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/metaRatingLayout"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/rtRatingLayout"
+                android:layout_marginBottom="10dp"
+                android:gravity="center_vertical"
+                android:orientation="horizontal"
+                android:paddingLeft="15dp">
+
+                <ImageView
+                    android:id="@+id/metaImageView"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:src="@mipmap/metacritic_logo" />
+
+                <TextView
+                    android:id="@+id/metaRatingTextView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_toRightOf="@id/metaImageView"
+                    android:padding="10dp"
+                    android:textColor="#FFFFFF"
+                    android:textSize="20dp"
+                    android:textStyle="bold" />
 
             </LinearLayout>
 
             <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
                 android:id="@+id/runTimeTextView"
-                android:padding="10dp"
-                android:textSize="15dp"
-                android:textColor="#FFFFFF"
-                android:layout_below="@+id/releaseDateTextView"/>
-
-            <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_below="@+id/releaseDateTextView"
+                android:padding="10dp"
+                android:textColor="#FFFFFF"
+                android:textSize="15dp" />
+
+            <TextView
                 android:id="@+id/genreTextView"
-                android:padding="10dp"
-                android:textSize="15dp"
-                android:textColor="#FFFFFF"
-                android:layout_below="@+id/runTimeTextView"/>
-
-            <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:id="@+id/videoTextView"
+                android:layout_below="@+id/runTimeTextView"
                 android:padding="10dp"
                 android:textColor="#FFFFFF"
-                android:textAppearance="@style/TextAppearance.AppCompat.Large"
+                android:textSize="15dp" />
+
+            <TextView
+                android:id="@+id/videoTextView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/genreTextView"
+                android:padding="10dp"
                 android:text="Videos"
-                android:layout_below="@+id/genreTextView"/>
+                android:textAppearance="@style/TextAppearance.AppCompat.Large"
+                android:textColor="#FFFFFF" />
 
             <android.support.v7.widget.RecyclerView
+                android:id="@+id/videoRecyclerView"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:id="@+id/videoRecyclerView"
                 android:layout_below="@id/videoTextView"
                 android:background="#333333"
                 android:nestedScrollingEnabled="false"
-                app:layout_behavior="@string/appbar_scrolling_view_behavior"/>
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:id="@+id/castTextView"
-                android:textAppearance="@style/Base.TextAppearance.AppCompat.Large"
-                android:text="Cast"
-                android:textColor="#FFFFFF"
-                android:layout_below="@id/videoRecyclerView"
-                android:padding="10dp"/>
-
-            <android.support.v7.widget.RecyclerView
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:id="@+id/castRecyclerView"
-                android:nestedScrollingEnabled="false"
-                android:background="#333333"
-                android:layout_below="@+id/castTextView"
                 app:layout_behavior="@string/appbar_scrolling_view_behavior" />
 
             <TextView
+                android:id="@+id/castTextView"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_below="@id/videoRecyclerView"
+                android:padding="10dp"
+                android:text="Cast"
+                android:textAppearance="@style/Base.TextAppearance.AppCompat.Large"
+                android:textColor="#FFFFFF" />
+
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/castRecyclerView"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_below="@+id/castTextView"
+                android:background="#333333"
+                android:nestedScrollingEnabled="false"
+                app:layout_behavior="@string/appbar_scrolling_view_behavior" />
+
+            <TextView
+                android:id="@+id/plot"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/castRecyclerView"
+                android:padding="10dp"
+                android:text="Plot"
+                android:textAppearance="@style/Base.TextAppearance.AppCompat.Large"
+                android:textColor="#FFFFFF" />
+
+            <com.example.vidit.movienary.ExpandableTextView
+                android:id="@+id/plotTextView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/plot"
+                android:background="#333333"
+                android:paddingBottom="10dp"
+                android:paddingLeft="10dp"
+                android:paddingRight="10dp"
+                android:textColor="#FFFFFF" />
+
+            <TextView
+                android:id="@+id/directorTextView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/plotTextView"
+                android:padding="10dp"
+                android:textColor="#FFFFFF"
+                android:textSize="15dp" />
+
+            <TextView
+                android:id="@+id/productionTextView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/directorTextView"
+                android:padding="10dp"
+                android:textColor="#FFFFFF"
+                android:textSize="15dp" />
+
+            <TextView
+                android:id="@+id/awardsTextView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/productionTextView"
+                android:padding="10dp"
+                android:textColor="#FFFFFF"
+                android:textSize="15dp" />
+
+            <Button
+                android:id="@+id/showtimesButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/awardsTextView"
+                android:background="@android:color/transparent"
+                android:onClick="openShowtimes"
+                android:padding="10dp"
+                android:text="See Showtimes >"
+                android:textAppearance="@style/Base.TextAppearance.AppCompat.Medium"
+                android:textColor="#FFFFFF" />
+
+            <TextView
                 android:id="@+id/similarMoviesTextView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/showtimesButton"
+                android:padding="10dp"
                 android:text="Similar Movies"
                 android:textAppearance="@style/Base.TextAppearance.AppCompat.Large"
-                android:textColor="#FFFFFF"
-                android:layout_below="@+id/castRecyclerView"
-                android:padding="10dp"/>
+                android:textColor="#FFFFFF" />
 
             <android.support.v7.widget.RecyclerView
+                android:id="@+id/similarMoviesRecyclerView"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:id="@+id/similarMoviesRecyclerView"
-                android:nestedScrollingEnabled="false"
-                android:background="#333333"
                 android:layout_below="@+id/similarMoviesTextView"
+                android:background="#333333"
+                android:nestedScrollingEnabled="false"
                 app:layout_behavior="@string/appbar_scrolling_view_behavior" />
 
             <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/releaseDateTextView"
-            android:padding="10dp"
-            android:textSize="15dp"
-            android:textColor="#FFFFFF"
-            android:layout_below="@id/ratingLayout"/>
-
-            <TextView
+                android:id="@+id/releaseDateTextView"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:id="@+id/reviewsTextView"
+                android:layout_below="@id/metaRatingLayout"
                 android:padding="10dp"
-                android:textAppearance="@style/Base.TextAppearance.AppCompat.Large"
-                android:text="Reviews"
                 android:textColor="#FFFFFF"
-                android:layout_below="@id/similarMoviesRecyclerView"/>
+                android:textSize="15dp" />
+
+            <TextView
+                android:id="@+id/reviewsTextView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/similarMoviesRecyclerView"
+                android:padding="10dp"
+                android:text="Reviews"
+                android:textAppearance="@style/Base.TextAppearance.AppCompat.Large"
+                android:textColor="#FFFFFF" />
 
             <LinearLayout
+                android:id="@+id/reviewsLinearLayout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/reviewsTextView"
-                android:orientation="vertical"
                 android:background="#333333"
-                android:padding="5dp"
-                android:id="@+id/reviewsLinearLayout">
+                android:orientation="vertical"
+                android:padding="5dp">
 
                 <TextView
+                    android:id="@+id/authorTextView"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:id="@+id/authorTextView"
+                    android:padding="10dp"
                     android:text="author"
                     android:textColor="@color/colorAccent"
-                    android:textStyle="bold"
                     android:textSize="15dp"
-                    android:padding="10dp"/>
+                    android:textStyle="bold" />
 
                 <com.example.vidit.movienary.ExpandableTextView
+                    android:id="@+id/reviewBodyTextView"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:id="@+id/reviewBodyTextView"
-                    android:text="body"
-                    android:textColor="#FFFFFF"
-                    android:textSize="13dp"
+                    android:paddingBottom="10dp"
                     android:paddingLeft="10dp"
                     android:paddingRight="10dp"
-                    android:paddingBottom="10dp"/>
+                    android:text="body"
+                    android:textColor="#FFFFFF"
+                    android:textSize="13dp" />
             </LinearLayout>
 
             <Button
+                android:id="@+id/readAllReviewsButton"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Read All Reviews"
-                android:textStyle="bold"
                 android:layout_below="@+id/reviewsLinearLayout"
-                android:gravity="center"
                 android:layout_centerHorizontal="true"
+                android:background="@android:color/transparent"
+                android:gravity="center"
                 android:onClick="readAllReviews"
+                android:text="Read All Reviews"
                 android:textColor="#FFFFFF"
-                android:id="@+id/readAllReviewsButton"
-                android:background="@android:color/transparent"/>
+                android:textStyle="bold" />
 
         </RelativeLayout>
 

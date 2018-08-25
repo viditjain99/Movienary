@@ -316,7 +316,7 @@ public class ActorDetailsActivity extends AppCompatActivity
         imdb.setVisibility(View.VISIBLE);
         shareButton.setVisibility(View.VISIBLE);
 
-        menuButton.animate().rotationBy(180);
+        menuButton.animate().rotationBy(135);
         facebook.animate().translationY(-getResources().getDimension(R.dimen.standard_75));
         twitter.animate().translationY(-getResources().getDimension(R.dimen.standard_135));
         instagram.animate().translationY(-getResources().getDimension(R.dimen.standard_195));
@@ -326,7 +326,7 @@ public class ActorDetailsActivity extends AppCompatActivity
 
     private void closeFABMenu(){
         isFABOpen=false;
-        menuButton.animate().rotationBy(-180);
+        menuButton.animate().rotationBy(-135);
         facebook.animate().translationY(0);
         twitter.animate().translationY(0);
         instagram.animate().translationY(0);

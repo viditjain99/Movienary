@@ -177,27 +177,120 @@
                 android:paddingTop="16dp"
                 android:background="#333333"/>
 
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/ratingTextView"
+                android:textAppearance="@style/Base.TextAppearance.AppCompat.Large"
+                android:text="Ratings"
+                android:textColor="#FFFFFF"
+                android:layout_below="@id/overviewTextView"
+                android:padding="10dp"/>
+
             <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:id="@+id/ratingLayout"
-                android:layout_below="@id/overviewTextView"
-                android:paddingLeft="5dp"
+                android:paddingLeft="15dp"
+                android:layout_marginBottom="5dp"
+                android:id="@+id/tmdbRatingLayout"
                 android:orientation="horizontal"
-                android:gravity="center_vertical">
-
+                android:gravity="center_vertical"
+                android:layout_below="@id/ratingTextView">
                 <ImageView
                     android:layout_width="40dp"
                     android:layout_height="40dp"
-                    android:id="@+id/starImageView" />
+                    android:id="@+id/tmdbImageView"
+                    android:src="@mipmap/tmdb_logo"/>
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:id="@+id/ratingTextView"
+                    android:id="@+id/tmdbRatingTextView"
                     android:textSize="20dp"
+                    android:padding="10dp"
                     android:textColor="#FFFFFF"
-                    android:layout_toRightOf="@id/starImageView"/>
+                    android:layout_toRightOf="@id/tmdbImageView"/>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/imdbRatingLayout"
+                android:paddingLeft="15dp"
+                android:layout_marginBottom="5dp"
+                android:orientation="horizontal"
+                android:gravity="center_vertical"
+                android:layout_below="@id/tmdbRatingLayout">
+                <ImageView
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:id="@+id/imdbImageView"
+                    android:src="@mipmap/imdb"/>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/imdbRatingTextView"
+                    android:textSize="20dp"
+                    android:padding="10dp"
+                    android:textStyle="bold"
+                    android:textColor="#FFFFFF"
+                    android:layout_toRightOf="@id/imdbImageView"/>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingLeft="15dp"
+                android:layout_marginBottom="10dp"
+                android:id="@+id/rtRatingLayout"
+                android:layout_below="@id/imdbRatingLayout"
+                android:orientation="horizontal"
+                android:gravity="center_vertical">
+                <ImageView
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:id="@+id/rtImageView"
+                    android:src="@mipmap/rotten_logo"/>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/rtRatingTextView"
+                    android:textSize="20dp"
+                    android:padding="10dp"
+                    android:textStyle="bold"
+                    android:textColor="#FFFFFF"
+                    android:layout_toRightOf="@id/rtImageView"/>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/metaRatingLayout"
+                android:paddingLeft="15dp"
+                android:layout_marginBottom="10dp"
+                android:orientation="horizontal"
+                android:gravity="center_vertical"
+                android:layout_below="@id/rtRatingLayout">
+                <ImageView
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:id="@+id/metaImageView"
+                    android:src="@mipmap/metacritic_logo"/>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/metaRatingTextView"
+                    android:textSize="20dp"
+                    android:padding="10dp"
+                    android:textStyle="bold"
+                    android:textColor="#FFFFFF"
+                    android:layout_toRightOf="@id/metaImageView"/>
 
             </LinearLayout>
 
@@ -208,7 +301,7 @@
                 android:padding="10dp"
                 android:textSize="15dp"
                 android:textColor="#FFFFFF"
-                android:layout_below="@+id/ratingLayout"/>
+                android:layout_below="@+id/metaRatingLayout"/>
 
             <TextView
                 android:layout_width="wrap_content"
@@ -260,11 +353,59 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:id="@+id/plot"
+                android:textAppearance="@style/Base.TextAppearance.AppCompat.Large"
+                android:text="Plot"
+                android:textColor="#FFFFFF"
+                android:layout_below="@id/castRecyclerView"
+                android:padding="10dp"/>
+
+            <com.example.vidit.movienary.ExpandableTextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/plotTextView"
+                android:textColor="#FFFFFF"
+                android:layout_below="@id/plot"
+                android:paddingLeft="10dp"
+                android:paddingRight="10dp"
+                android:paddingBottom="10dp"
+                android:background="#333333"/>
+
+            <TextView
+                android:id="@+id/writerTextView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/plotTextView"
+                android:padding="10dp"
+                android:textColor="#FFFFFF"
+                android:textSize="15dp" />
+
+            <TextView
+                android:id="@+id/totalSeasonsTextView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/writerTextView"
+                android:padding="10dp"
+                android:textColor="#FFFFFF"
+                android:textSize="15dp" />
+
+            <TextView
+                android:id="@+id/awardsTextView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/totalSeasonsTextView"
+                android:padding="10dp"
+                android:textColor="#FFFFFF"
+                android:textSize="15dp" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
                 android:id="@+id/similarTvShowsTextView"
                 android:text="Similar TV Shows"
                 android:textAppearance="@style/Base.TextAppearance.AppCompat.Large"
                 android:textColor="#FFFFFF"
-                android:layout_below="@+id/castRecyclerView"
+                android:layout_below="@+id/awardsTextView"
                 android:padding="10dp"/>
 
             <android.support.v7.widget.RecyclerView

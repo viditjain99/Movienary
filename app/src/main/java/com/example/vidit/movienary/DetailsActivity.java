@@ -48,9 +48,9 @@ import retrofit2.Response;
 
 public class DetailsActivity extends AppCompatActivity
 {
-    TextView titleTextView,ratingTextView,runTimeTextView,genreTextView,castTextView,reviewsTextView,releaseDateTextView,authorTextView,similarMoviesTextView,videoTextView;
-    ExpandableTextView overviewTextView,bodyTextView;
-    ImageView backdropImageView,starImageView;
+    TextView titleTextView,directorTextView,productionTextView,awardsTextView,plot,ratingTextView,tmdbRatingTextView,imdbRatingTextView,rtRatingTextView,metaRatingTextView,runTimeTextView,genreTextView,castTextView,reviewsTextView,releaseDateTextView,authorTextView,similarMoviesTextView,videoTextView;
+    ExpandableTextView overviewTextView,bodyTextView,plotTextView;
+    ImageView backdropImageView,tmdbImageView,imdbImageView,rtImageView,metaImageView;
     Intent intent,intent1;
     RecyclerView castRecyclerView,similarMoviesRecyclerView,videoRecyclerView;
     CastAdapter adapter;
@@ -61,8 +61,9 @@ public class DetailsActivity extends AppCompatActivity
     ArrayList<Movie> similarMoviesList=new ArrayList<>();
     ArrayList<Video> videoArrayList=new ArrayList<>();
     LottieAnimationView loading;
-    Button readAllReviewsButton;
+    Button readAllReviewsButton,showtimes;
     ExternalIdResponse externalIdResponse;
+    OmdbResponse omdbResponse;
     //ImageButton watchlistButton;
     FloatingActionButton watchlistButton;
     ArrayList<Movie> watchlistMovies=new ArrayList<>();
@@ -101,11 +102,17 @@ public class DetailsActivity extends AppCompatActivity
         overviewTextView = findViewById(R.id.overviewTextView);
         reviewsTextView=findViewById(R.id.reviewsTextView);
         readAllReviewsButton=findViewById(R.id.readAllReviewsButton);
-        ratingTextView = findViewById(R.id.ratingTextView);
+        tmdbRatingTextView = findViewById(R.id.tmdbRatingTextView);
+        imdbRatingTextView = findViewById(R.id.imdbRatingTextView);
+        rtRatingTextView = findViewById(R.id.rtRatingTextView);
+        metaRatingTextView = findViewById(R.id.metaRatingTextView);
         backdropImageView = findViewById(R.id.backdropImageView);
         loading=findViewById(R.id.loading);
         genreTextView=findViewById(R.id.genreTextView);
-        starImageView = findViewById(R.id.starImageView);
+        tmdbImageView = findViewById(R.id.tmdbImageView);
+        imdbImageView = findViewById(R.id.imdbImageView);
+        rtImageView = findViewById(R.id.rtImageView);
+        metaImageView = findViewById(R.id.metaImageView);
         runTimeTextView=findViewById(R.id.runTimeTextView);
         castRecyclerView=findViewById(R.id.castRecyclerView);
         castTextView=findViewById(R.id.castTextView);
@@ -123,6 +130,13 @@ public class DetailsActivity extends AppCompatActivity
         twitter=findViewById(R.id.twitter);
         imdb=findViewById(R.id.imdb);
         shareButton=findViewById(R.id.shareButton);
+        ratingTextView=findViewById(R.id.ratingTextView);
+        plot=findViewById(R.id.plot);
+        plotTextView=findViewById(R.id.plotTextView);
+        directorTextView=findViewById(R.id.directorTextView);
+        productionTextView=findViewById(R.id.productionTextView);
+        awardsTextView=findViewById(R.id.awardsTextView);
+        showtimes=findViewById(R.id.showtimesButton);
         externalIdResponse=new ExternalIdResponse();
 
         watchlistButton.setOnClickListener(new View.OnClickListener() {
@@ -241,8 +255,15 @@ public class DetailsActivity extends AppCompatActivity
         titleTextView.setVisibility(View.GONE);
         backdropImageView.setVisibility(View.GONE);
         overviewTextView.setVisibility(View.GONE);
-        starImageView.setVisibility(View.GONE);
         ratingTextView.setVisibility(View.GONE);
+        tmdbImageView.setVisibility(View.GONE);
+        tmdbRatingTextView.setVisibility(View.GONE);
+        imdbImageView.setVisibility(View.GONE);
+        imdbRatingTextView.setVisibility(View.GONE);
+        rtImageView.setVisibility(View.GONE);
+        rtRatingTextView.setVisibility(View.GONE);
+        metaImageView.setVisibility(View.GONE);
+        metaRatingTextView.setVisibility(View.GONE);
         runTimeTextView.setVisibility(View.GONE);
         genreTextView.setVisibility(View.GONE);
         castTextView.setVisibility(View.GONE);
@@ -258,8 +279,14 @@ public class DetailsActivity extends AppCompatActivity
         videoRecyclerView.setVisibility(View.GONE);
         videoTextView.setVisibility(View.GONE);
         watchlistButton.setVisibility(View.GONE);
+        plot.setVisibility(View.GONE);
+        plotTextView.setVisibility(View.GONE);
         titleTextView.setText(movieName);
         menuButton.setVisibility(View.GONE);
+        showtimes.setVisibility(View.GONE);
+        directorTextView.setVisibility(View.GONE);
+        awardsTextView.setVisibility(View.GONE);
+        productionTextView.setVisibility(View.GONE);
 
         backdropImageView.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -276,16 +303,15 @@ public class DetailsActivity extends AppCompatActivity
 
         Picasso.get().load("http://image.tmdb.org/t/p/original//" + backdropPath).resize(1100, 618).into(backdropImageView);
         overviewTextView.setText(overview);
-        Picasso.get().load("https://cdn2.iconfinder.com/data/icons/modifiers-add-on-1-flat/48/Mod_Add-On_1-35-512.png").into(starImageView);
         if(Float.parseFloat(rating)==0)
         {
             String r="<b>"+"N/A"+"</b>";
-            ratingTextView.setText(Html.fromHtml(r));
+            tmdbRatingTextView.setText(Html.fromHtml(r));
         }
         else
         {
-            String r="<b>"+rating+"</b>";
-            ratingTextView.setText(Html.fromHtml(r));
+            String r="<b>"+rating+"/10"+"</b>";
+            tmdbRatingTextView.setText(Html.fromHtml(r));
         }
         if(releaseDate!=null)
         {
@@ -404,6 +430,66 @@ public class DetailsActivity extends AppCompatActivity
             }
         });
 
+        Call<OmdbResponse> call6=ApiClient.getMoviesService().getOmdbDetails(movieName);
+        call6.enqueue(new Callback<OmdbResponse>() {
+            @Override
+            public void onResponse(Call<OmdbResponse> call, Response<OmdbResponse> response) {
+                omdbResponse=response.body();
+                ArrayList<Ratings> ratings=omdbResponse.ratings;
+                imdbRatingTextView.setText("N/A");
+                rtRatingTextView.setText("N/A");
+                metaRatingTextView.setText("N/A");
+                for(int i=0;i<ratings.size();i++)
+                {
+                    if(ratings.get(i).source.equals("Internet Movie Database"))
+                    {
+                        imdbRatingTextView.setText(ratings.get(i).value);
+                    }
+                    else if(ratings.get(i).source.equals("Rotten Tomatoes"))
+                    {
+                        rtRatingTextView.setText(ratings.get(i).value);
+                    }
+                    else if(ratings.get(i).source.equals("Metacritic"))
+                    {
+                        metaRatingTextView.setText(ratings.get(i).value);
+                    }
+                }
+                plotTextView.setText(omdbResponse.plot);
+                String d=omdbResponse.director;
+                String p=omdbResponse.production;
+                String a=omdbResponse.awards;
+                if(d==null)
+                {
+                    directorTextView.setText("Director(s): N/A");
+                }
+                else
+                {
+                    directorTextView.setText("Director(s): "+omdbResponse.director);
+                }
+                if(p==null)
+                {
+                    productionTextView.setText("Production: N/A");
+                }
+                else
+                {
+                    productionTextView.setText("Production: "+omdbResponse.production);
+                }
+                if(a==null)
+                {
+                    awardsTextView.setText("Awards: N/A");
+                }
+                else
+                {
+                    awardsTextView.setText("Awards: "+omdbResponse.awards);
+                }
+            }
+
+            @Override
+            public void onFailure(Call<OmdbResponse> call, Throwable t) {
+
+            }
+        });
+
         Call<ReviewResponse> call2=ApiClient.getMoviesService().getReviews(movieId);
         call2.enqueue(new Callback<ReviewResponse>() {
             @Override
@@ -436,8 +522,15 @@ public class DetailsActivity extends AppCompatActivity
                 titleTextView.setVisibility(View.VISIBLE);
                 backdropImageView.setVisibility(View.VISIBLE);
                 overviewTextView.setVisibility(View.VISIBLE);
-                starImageView.setVisibility(View.VISIBLE);
                 ratingTextView.setVisibility(View.VISIBLE);
+                tmdbImageView.setVisibility(View.VISIBLE);
+                tmdbRatingTextView.setVisibility(View.VISIBLE);
+                imdbImageView.setVisibility(View.VISIBLE);
+                imdbRatingTextView.setVisibility(View.VISIBLE);
+                rtImageView.setVisibility(View.VISIBLE);
+                rtRatingTextView.setVisibility(View.VISIBLE);
+                metaImageView.setVisibility(View.VISIBLE);
+                metaRatingTextView.setVisibility(View.VISIBLE);
                 runTimeTextView.setVisibility(View.VISIBLE);
                 readAllReviewsButton.setVisibility(View.VISIBLE);
                 genreTextView.setVisibility(View.VISIBLE);
@@ -453,6 +546,12 @@ public class DetailsActivity extends AppCompatActivity
                 videoTextView.setVisibility(View.VISIBLE);
                 watchlistButton.setVisibility(View.VISIBLE);
                 menuButton.setVisibility(View.VISIBLE);
+                plot.setVisibility(View.VISIBLE);
+                plotTextView.setVisibility(View.VISIBLE);
+                directorTextView.setVisibility(View.VISIBLE);
+                productionTextView.setVisibility(View.VISIBLE);
+                awardsTextView.setVisibility(View.VISIBLE);
+                showtimes.setVisibility(View.VISIBLE);
                 loading.setVisibility(View.GONE);
             }
 
@@ -625,7 +724,7 @@ public class DetailsActivity extends AppCompatActivity
         imdb.setVisibility(View.VISIBLE);
         shareButton.setVisibility(View.VISIBLE);
 
-        menuButton.animate().rotationBy(180);
+        menuButton.animate().rotationBy(135);
         facebook.animate().translationY(-getResources().getDimension(R.dimen.standard_75));
         twitter.animate().translationY(-getResources().getDimension(R.dimen.standard_135));
         instagram.animate().translationY(-getResources().getDimension(R.dimen.standard_195));
@@ -635,7 +734,7 @@ public class DetailsActivity extends AppCompatActivity
 
     private void closeFABMenu(){
         isFABOpen=false;
-        menuButton.animate().rotationBy(-180);
+        menuButton.animate().rotationBy(-135);
         facebook.animate().translationY(0);
         twitter.animate().translationY(0);
         instagram.animate().translationY(0);
@@ -668,5 +767,12 @@ public class DetailsActivity extends AppCompatActivity
 
             }
         });
+    }
+
+    public void openShowtimes(View view)
+    {
+        Intent intent=new Intent(DetailsActivity.this,ShowtimesActivity.class);
+        intent.putExtra("movieId",movieId);
+        startActivity(intent);
     }
 }

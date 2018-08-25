@@ -3,6 +3,8 @@
     package="com.example.vidit.movienary">
 
     <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"/>
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
 
     <application
         android:allowBackup="true"
@@ -63,6 +65,10 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
+        <activity android:name=".ShowtimesActivity"
+            android:theme="@style/NoActionBar"
+            android:screenOrientation="portrait"/>
     </application>
 
 </manifest>

@@ -11,6 +11,7 @@ import android.os.Bundle;
 import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
+import android.support.v4.view.ViewCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -33,9 +34,9 @@ import retrofit2.Response;
 
 public class TvShowDetailsActivity extends AppCompatActivity
 {
-    TextView titleTextView,ratingTextView,genreTextView,castTextView,firstAirDateTextView,authorTextView,reviewsTextView,similarTvShowsTextView,videoTextView;
-    ExpandableTextView overviewTextView,bodyTextView ;
-    ImageView backdropImageView,starImageView;
+    TextView titleTextView,plot,writerTextView,totalSeasonsTextView,awardsTextView,ratingTextView,imdbRatingTextView,tmdbRatingTextView,rtRatingTextView,metaRatingTextView,genreTextView,castTextView,firstAirDateTextView,authorTextView,reviewsTextView,similarTvShowsTextView,videoTextView;
+    ExpandableTextView overviewTextView,bodyTextView,plotTextView;
+    ImageView backdropImageView,tmdbImageView,imdbImageView,rtImageView,metaImageView;
     RecyclerView castRecyclerView,similarTvShowsRecyclerView,videoRecyclerView;
     CastAdapter adapter;
     TvAdapter tvAdapter;
@@ -52,6 +53,7 @@ public class TvShowDetailsActivity extends AppCompatActivity
     FloatingActionButton watchlistButton;
     android.support.v7.widget.Toolbar toolbar;
     CollapsingToolbarLayout collapsingToolbarLayout;
+    OmdbResponse omdbResponse;
     boolean watchlistButtonClicked;
     String tvShowName;
     String posterPath;
@@ -86,11 +88,18 @@ public class TvShowDetailsActivity extends AppCompatActivity
         overviewTextView = findViewById(R.id.overviewTextView);
         reviewsTextView=findViewById(R.id.reviewsTextView);
         readAllReviewsButton=findViewById(R.id.readAllReviewsButton);
-        ratingTextView = findViewById(R.id.ratingTextView);
+        ratingTextView=findViewById(R.id.ratingTextView);
+        tmdbRatingTextView = findViewById(R.id.tmdbRatingTextView);
+        imdbRatingTextView=findViewById(R.id.imdbRatingTextView);
+        rtRatingTextView=findViewById(R.id.rtRatingTextView);
+        metaRatingTextView=findViewById(R.id.metaRatingTextView);
         backdropImageView = findViewById(R.id.backdropImageView);
         loading=findViewById(R.id.loading);
         genreTextView=findViewById(R.id.genreTextView);
-        starImageView = findViewById(R.id.starImageView);
+        tmdbImageView = findViewById(R.id.tmdbImageView);
+        imdbImageView=findViewById(R.id.imdbImageView);
+        rtImageView=findViewById(R.id.rtImageView);
+        metaImageView=findViewById(R.id.metaImageView);
         castRecyclerView=findViewById(R.id.castRecyclerView);
         castTextView=findViewById(R.id.castTextView);
         authorTextView=findViewById(R.id.authorTextView);
@@ -107,6 +116,11 @@ public class TvShowDetailsActivity extends AppCompatActivity
         twitter=findViewById(R.id.twitter);
         imdb=findViewById(R.id.imdb);
         shareButton=findViewById(R.id.shareButton);
+        plot=findViewById(R.id.plot);
+        plotTextView=findViewById(R.id.plotTextView);
+        writerTextView=findViewById(R.id.writerTextView);
+        totalSeasonsTextView=findViewById(R.id.totalSeasonsTextView);
+        awardsTextView=findViewById(R.id.awardsTextView);
         externalIdResponse=new ExternalIdResponse();
         watchlistButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -217,8 +231,15 @@ public class TvShowDetailsActivity extends AppCompatActivity
         titleTextView.setVisibility(View.GONE);
         backdropImageView.setVisibility(View.GONE);
         overviewTextView.setVisibility(View.GONE);
-        starImageView.setVisibility(View.GONE);
         ratingTextView.setVisibility(View.GONE);
+        tmdbImageView.setVisibility(View.GONE);
+        tmdbRatingTextView.setVisibility(View.GONE);
+        imdbImageView.setVisibility(View.GONE);
+        imdbRatingTextView.setVisibility(View.GONE);
+        rtImageView.setVisibility(View.GONE);
+        rtRatingTextView.setVisibility(View.GONE);
+        metaImageView.setVisibility(View.GONE);
+        metaRatingTextView.setVisibility(View.GONE);
         genreTextView.setVisibility(View.GONE);
         castTextView.setVisibility(View.GONE);
         loading.setVisibility(View.VISIBLE);
@@ -234,6 +255,11 @@ public class TvShowDetailsActivity extends AppCompatActivity
         videoTextView.setVisibility(View.GONE);
         watchlistButton.setVisibility(View.GONE);
         menuButton.setVisibility(View.GONE);
+        plot.setVisibility(View.GONE);
+        plotTextView.setVisibility(View.GONE);
+        writerTextView.setVisibility(View.GONE);
+        totalSeasonsTextView.setVisibility(View.GONE);
+        awardsTextView.setVisibility(View.GONE);
         titleTextView.setText(tvShowName);
 
         backdropImageView.setOnClickListener(new View.OnClickListener() {
@@ -251,16 +277,15 @@ public class TvShowDetailsActivity extends AppCompatActivity
 
         Picasso.get().load("http://image.tmdb.org/t/p/original//" + backdropPath).resize(1100, 618).into(backdropImageView);
         overviewTextView.setText(overview);
-        Picasso.get().load("https://cdn2.iconfinder.com/data/icons/modifiers-add-on-1-flat/48/Mod_Add-On_1-35-512.png").into(starImageView);
         if(Float.parseFloat(rating)==0)
         {
             String r="<b>"+"N/A"+"</b>";
-            ratingTextView.setText(Html.fromHtml(r));
+            tmdbRatingTextView.setText(Html.fromHtml(r));
         }
         else
         {
-            String r="<b>"+rating+"</b>";
-            ratingTextView.setText(Html.fromHtml(r));
+            String r="<b>"+rating+"/10"+"</b>";
+            tmdbRatingTextView.setText(Html.fromHtml(r));
         }
         if(firstAirDate!=null)
         {
@@ -357,6 +382,66 @@ public class TvShowDetailsActivity extends AppCompatActivity
             }
         });
 
+        Call<OmdbResponse> call6=ApiClient.getTvService().getOmdbDetails(tvShowName);
+        call6.enqueue(new Callback<OmdbResponse>() {
+            @Override
+            public void onResponse(Call<OmdbResponse> call, Response<OmdbResponse> response) {
+                omdbResponse=response.body();
+                ArrayList<Ratings> ratings=omdbResponse.ratings;
+                imdbRatingTextView.setText("N/A");
+                rtRatingTextView.setText("N/A");
+                metaRatingTextView.setText("N/A");
+                for(int i=0;i<ratings.size();i++)
+                {
+                    if(ratings.get(i).source.equals("Internet Movie Database"))
+                    {
+                        imdbRatingTextView.setText(ratings.get(i).value);
+                    }
+                    else if(ratings.get(i).source.equals("Rotten Tomatoes"))
+                    {
+                        rtRatingTextView.setText(ratings.get(i).value);
+                    }
+                    else if(ratings.get(i).source.equals("Metacritic"))
+                    {
+                        metaRatingTextView.setText(ratings.get(i).value);
+                    }
+                }
+                plotTextView.setText(omdbResponse.plot);
+                String w=omdbResponse.writer;
+                String a=omdbResponse.awards;
+                String t=omdbResponse.totalSeasons;
+                if(w==null)
+                {
+                    writerTextView.setText("Writer: N/A");
+                }
+                else
+                {
+                    writerTextView.setText("Writer: "+w);
+                }
+                if(a==null)
+                {
+                    awardsTextView.setText("Awards: N/A");
+                }
+                else
+                {
+                    awardsTextView.setText("Awards: "+a);
+                }
+                if(t==null)
+                {
+                    totalSeasonsTextView.setText("Total Seasons: N/A");
+                }
+                else
+                {
+                    totalSeasonsTextView.setText("Total Seasons: "+t);
+                }
+            }
+
+            @Override
+            public void onFailure(Call<OmdbResponse> call, Throwable t) {
+
+            }
+        });
+
         Call<TvResponse> call3=ApiClient.getTvService().getSimilarTvShows(tvShowId);
         call3.enqueue(new Callback<TvResponse>() {
             @Override
@@ -406,7 +491,14 @@ public class TvShowDetailsActivity extends AppCompatActivity
                 titleTextView.setVisibility(View.VISIBLE);
                 backdropImageView.setVisibility(View.VISIBLE);
                 overviewTextView.setVisibility(View.VISIBLE);
-                starImageView.setVisibility(View.VISIBLE);
+                tmdbImageView.setVisibility(View.VISIBLE);
+                tmdbRatingTextView.setVisibility(View.VISIBLE);
+                imdbImageView.setVisibility(View.VISIBLE);
+                imdbRatingTextView.setVisibility(View.VISIBLE);
+                rtImageView.setVisibility(View.VISIBLE);
+                rtRatingTextView.setVisibility(View.VISIBLE);
+                metaImageView.setVisibility(View.VISIBLE);
+                metaRatingTextView.setVisibility(View.VISIBLE);
                 ratingTextView.setVisibility(View.VISIBLE);
                 readAllReviewsButton.setVisibility(View.VISIBLE);
                 genreTextView.setVisibility(View.VISIBLE);
@@ -422,6 +514,11 @@ public class TvShowDetailsActivity extends AppCompatActivity
                 watchlistButton.setVisibility(View.VISIBLE);
                 menuButton.setVisibility(View.VISIBLE);
                 castRecyclerView.setVisibility(View.VISIBLE);
+                plot.setVisibility(View.VISIBLE);
+                plotTextView.setVisibility(View.VISIBLE);
+                writerTextView.setVisibility(View.VISIBLE);
+                awardsTextView.setVisibility(View.VISIBLE);
+                totalSeasonsTextView.setVisibility(View.VISIBLE);
                 loading.setVisibility(View.GONE);
             }
 
@@ -590,7 +687,7 @@ public class TvShowDetailsActivity extends AppCompatActivity
         imdb.setVisibility(View.VISIBLE);
         shareButton.setVisibility(View.VISIBLE);
 
-        menuButton.animate().rotationBy(180);
+        menuButton.animate().rotationBy(135);
         facebook.animate().translationY(-getResources().getDimension(R.dimen.standard_75));
         twitter.animate().translationY(-getResources().getDimension(R.dimen.standard_135));
         instagram.animate().translationY(-getResources().getDimension(R.dimen.standard_195));
@@ -600,7 +697,7 @@ public class TvShowDetailsActivity extends AppCompatActivity
 
     private void closeFABMenu(){
         isFABOpen=false;
-        menuButton.animate().rotationBy(-180);
+        menuButton.animate().rotationBy(-135);
         facebook.animate().translationY(0);
         twitter.animate().translationY(0);
         instagram.animate().translationY(0);
