@@ -6,6 +6,7 @@ public class Actor
 {
     String birthday;
     String name;
+    String id;
     String biography;
     @SerializedName("place_of_birth")
     String placeOfBirth;

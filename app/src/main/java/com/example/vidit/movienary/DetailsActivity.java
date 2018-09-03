@@ -61,7 +61,7 @@ public class DetailsActivity extends AppCompatActivity
     ArrayList<Movie> similarMoviesList=new ArrayList<>();
     ArrayList<Video> videoArrayList=new ArrayList<>();
     LottieAnimationView loading;
-    Button readAllReviewsButton,showtimes;
+    Button readAllReviewsButton;
     ExternalIdResponse externalIdResponse;
     OmdbResponse omdbResponse;
     //ImageButton watchlistButton;
@@ -136,7 +136,6 @@ public class DetailsActivity extends AppCompatActivity
         directorTextView=findViewById(R.id.directorTextView);
         productionTextView=findViewById(R.id.productionTextView);
         awardsTextView=findViewById(R.id.awardsTextView);
-        showtimes=findViewById(R.id.showtimesButton);
         externalIdResponse=new ExternalIdResponse();
 
         watchlistButton.setOnClickListener(new View.OnClickListener() {
@@ -283,7 +282,6 @@ public class DetailsActivity extends AppCompatActivity
         plotTextView.setVisibility(View.GONE);
         titleTextView.setText(movieName);
         menuButton.setVisibility(View.GONE);
-        showtimes.setVisibility(View.GONE);
         directorTextView.setVisibility(View.GONE);
         awardsTextView.setVisibility(View.GONE);
         productionTextView.setVisibility(View.GONE);
@@ -294,14 +292,20 @@ public class DetailsActivity extends AppCompatActivity
                 int id=view.getId();
                 if(id==R.id.backdropImageView)
                 {
+                    if(backdropPath==null)
+                    {
+                        Toast.makeText(DetailsActivity.this,"This image is not available",Toast.LENGTH_LONG).show();
+                        return;
+                    }
                     Intent intent=new Intent(DetailsActivity.this,ImageActivity.class);
                     intent.putExtra("BackdropPath",backdropPath);
                     startActivity(intent);
                 }
             }
         });
-
-        Picasso.get().load("http://image.tmdb.org/t/p/original//" + backdropPath).resize(1100, 618).into(backdropImageView);
+        {
+            Picasso.get().load("http://image.tmdb.org/t/p/original//" + backdropPath).resize(1100, 618).into(backdropImageView);
+        }
         overviewTextView.setText(overview);
         if(Float.parseFloat(rating)==0)
         {
@@ -335,8 +339,15 @@ public class DetailsActivity extends AppCompatActivity
                 ArrayList<Genre> genre=singleMovie.genres;
                 int hours=runtime/60;
                 int minutes=runtime%60;
-                String time=hours+" h "+minutes+" m";
-                runTimeTextView.setText("Runtime: "+time);
+                if(hours==0 && minutes==0)
+                {
+                    runTimeTextView.setText("Runtime: N/A");
+                }
+                else
+                {
+                    String time=hours+" h "+minutes+" m";
+                    runTimeTextView.setText("Runtime: "+time);
+                }
                 String genreString="";
                 for(int i=0;i<genre.size();i++)
                 {
@@ -436,6 +447,21 @@ public class DetailsActivity extends AppCompatActivity
             public void onResponse(Call<OmdbResponse> call, Response<OmdbResponse> response) {
                 omdbResponse=response.body();
                 ArrayList<Ratings> ratings=omdbResponse.ratings;
+                String flag=omdbResponse.response;
+                if(flag.equals("False"))
+                {
+                    imdbRatingTextView.setText("N/A");
+                    rtRatingTextView.setText("N/A");
+                    metaRatingTextView.setText("N/A");
+                    directorTextView.setText(directorTextView.getText()+"N/A");
+                    productionTextView.setText(productionTextView.getText()+"N/A");
+                    awardsTextView.setText(awardsTextView.getText()+"N/A");
+                    plotTextView.setTextColor(getResources().getColor(R.color.colorAccent));
+                    plotTextView.setTextSize(15);
+                    String b="<b>"+"Not Available"+"</b>";
+                    plotTextView.setText(Html.fromHtml(b));
+                    return;
+                }
                 imdbRatingTextView.setText("N/A");
                 rtRatingTextView.setText("N/A");
                 metaRatingTextView.setText("N/A");
@@ -458,29 +484,42 @@ public class DetailsActivity extends AppCompatActivity
                 String d=omdbResponse.director;
                 String p=omdbResponse.production;
                 String a=omdbResponse.awards;
+                for(int i=0;i<a.length();i++)
+                {
+                    if(a.charAt(i)=='.' && i!=a.length()-1)
+                    {
+                        String s1=a.substring(0,i);
+                        String s2=a.substring(i+1,a.length());
+                        a=s1+", "+s2;
+                    }
+                    if(a.charAt(i)=='.' && i==a.length()-1)
+                    {
+                        a=a.substring(0,a.length()-1);
+                    }
+                }
                 if(d==null)
                 {
-                    directorTextView.setText("Director(s): N/A");
+                    directorTextView.setText(directorTextView.getText()+"N/A");
                 }
                 else
                 {
-                    directorTextView.setText("Director(s): "+omdbResponse.director);
+                    directorTextView.setText(directorTextView.getText()+omdbResponse.director);
                 }
                 if(p==null)
                 {
-                    productionTextView.setText("Production: N/A");
+                    productionTextView.setText(productionTextView.getText()+"N/A");
                 }
                 else
                 {
-                    productionTextView.setText("Production: "+omdbResponse.production);
+                    productionTextView.setText(productionTextView.getText()+omdbResponse.production);
                 }
                 if(a==null)
                 {
-                    awardsTextView.setText("Awards: N/A");
+                    awardsTextView.setText(awardsTextView.getText()+"N/A");
                 }
                 else
                 {
-                    awardsTextView.setText("Awards: "+omdbResponse.awards);
+                    awardsTextView.setText(awardsTextView.getText()+a);
                 }
             }
 
@@ -551,7 +590,6 @@ public class DetailsActivity extends AppCompatActivity
                 directorTextView.setVisibility(View.VISIBLE);
                 productionTextView.setVisibility(View.VISIBLE);
                 awardsTextView.setVisibility(View.VISIBLE);
-                showtimes.setVisibility(View.VISIBLE);
                 loading.setVisibility(View.GONE);
             }
 
@@ -767,12 +805,5 @@ public class DetailsActivity extends AppCompatActivity
 
             }
         });
-    }
-
-    public void openShowtimes(View view)
-    {
-        Intent intent=new Intent(DetailsActivity.this,ShowtimesActivity.class);
-        intent.putExtra("movieId",movieId);
-        startActivity(intent);
     }
 }

@@ -311,22 +311,34 @@
             </LinearLayout>
 
             <TextView
+                android:id="@+id/releaseDateTextView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/metaRatingLayout"
+                android:padding="10dp"
+                android:textColor="#FFFFFF"
+                android:textSize="16dp"
+                android:textStyle="bold"/>
+
+            <TextView
                 android:id="@+id/runTimeTextView"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:textSize="16dp"
+                android:textStyle="bold"
                 android:layout_below="@+id/releaseDateTextView"
                 android:padding="10dp"
-                android:textColor="#FFFFFF"
-                android:textSize="15dp" />
+                android:textColor="#FFFFFF" />
 
             <TextView
                 android:id="@+id/genreTextView"
                 android:layout_width="wrap_content"
+                android:textSize="16dp"
+                android:textStyle="bold"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/runTimeTextView"
                 android:padding="10dp"
-                android:textColor="#FFFFFF"
-                android:textSize="15dp" />
+                android:textColor="#FFFFFF" />
 
             <TextView
                 android:id="@+id/videoTextView"
@@ -389,48 +401,42 @@
 
             <TextView
                 android:id="@+id/directorTextView"
+                android:text="Director(s): "
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/plotTextView"
                 android:padding="10dp"
                 android:textColor="#FFFFFF"
-                android:textSize="15dp" />
+                android:textSize="16dp"
+                android:textStyle="bold"/>
 
             <TextView
                 android:id="@+id/productionTextView"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:text="Production: "
                 android:layout_below="@+id/directorTextView"
                 android:padding="10dp"
                 android:textColor="#FFFFFF"
-                android:textSize="15dp" />
+                android:textSize="16dp"
+                android:textStyle="bold"/>
 
             <TextView
                 android:id="@+id/awardsTextView"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:text="Awards: "
                 android:layout_below="@+id/productionTextView"
                 android:padding="10dp"
                 android:textColor="#FFFFFF"
-                android:textSize="15dp" />
-
-            <Button
-                android:id="@+id/showtimesButton"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_below="@+id/awardsTextView"
-                android:background="@android:color/transparent"
-                android:onClick="openShowtimes"
-                android:padding="10dp"
-                android:text="See Showtimes >"
-                android:textAppearance="@style/Base.TextAppearance.AppCompat.Medium"
-                android:textColor="#FFFFFF" />
+                android:textSize="16dp"
+                android:textStyle="bold"/>
 
             <TextView
                 android:id="@+id/similarMoviesTextView"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_below="@+id/showtimesButton"
+                android:layout_below="@+id/awardsTextView"
                 android:padding="10dp"
                 android:text="Similar Movies"
                 android:textAppearance="@style/Base.TextAppearance.AppCompat.Large"
@@ -444,15 +450,6 @@
                 android:background="#333333"
                 android:nestedScrollingEnabled="false"
                 app:layout_behavior="@string/appbar_scrolling_view_behavior" />
-
-            <TextView
-                android:id="@+id/releaseDateTextView"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_below="@id/metaRatingLayout"
-                android:padding="10dp"
-                android:textColor="#FFFFFF"
-                android:textSize="15dp" />
 
             <TextView
                 android:id="@+id/reviewsTextView"

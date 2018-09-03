@@ -299,7 +299,8 @@
                 android:layout_height="wrap_content"
                 android:id="@+id/genreTextView"
                 android:padding="10dp"
-                android:textSize="15dp"
+                android:textSize="16dp"
+                android:textStyle="bold"
                 android:textColor="#FFFFFF"
                 android:layout_below="@+id/metaRatingLayout"/>
 
@@ -308,7 +309,8 @@
                 android:layout_height="wrap_content"
                 android:id="@+id/firstAirDateTextView"
                 android:padding="10dp"
-                android:textSize="15dp"
+                android:textSize="16dp"
+                android:textStyle="bold"
                 android:textColor="#FFFFFF"
                 android:layout_below="@id/genreTextView"/>
 
@@ -378,7 +380,8 @@
                 android:layout_below="@+id/plotTextView"
                 android:padding="10dp"
                 android:textColor="#FFFFFF"
-                android:textSize="15dp" />
+                android:textSize="16dp"
+                android:textStyle="bold"/>
 
             <TextView
                 android:id="@+id/totalSeasonsTextView"
@@ -387,7 +390,8 @@
                 android:layout_below="@+id/writerTextView"
                 android:padding="10dp"
                 android:textColor="#FFFFFF"
-                android:textSize="15dp" />
+                android:textSize="16dp"
+                android:textStyle="bold"/>
 
             <TextView
                 android:id="@+id/awardsTextView"
@@ -396,7 +400,8 @@
                 android:layout_below="@+id/totalSeasonsTextView"
                 android:padding="10dp"
                 android:textColor="#FFFFFF"
-                android:textSize="15dp" />
+                android:textSize="16dp"
+                android:textStyle="bold"/>
 
             <TextView
                 android:layout_width="wrap_content"
@@ -441,7 +446,7 @@
                     android:layout_height="wrap_content"
                     android:id="@+id/authorTextView"
                     android:text="author"
-                    android:textColor="#FFFFFF"
+                    android:textColor="@color/colorAccent"
                     android:textStyle="bold"
                     android:textSize="15dp"
                     android:padding="10dp"/>

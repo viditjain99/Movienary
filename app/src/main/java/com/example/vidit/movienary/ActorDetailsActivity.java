@@ -253,6 +253,11 @@ public class ActorDetailsActivity extends AppCompatActivity
                 int id=view.getId();
                 if(id==R.id.profileImageView)
                 {
+                    if(profilePath==null)
+                    {
+                        Toast.makeText(ActorDetailsActivity.this,"This image is not available",Toast.LENGTH_LONG).show();
+                        return;
+                    }
                     Intent intent=new Intent(ActorDetailsActivity.this,ImageActivity.class);
                     intent.putExtra("BackdropPath",profilePath);
                     startActivity(intent);

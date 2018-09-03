@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <item
+        android:id="@+id/navigation_trending_movie"
+        android:icon="@mipmap/movie"
+        android:title="Movies"
+        app:showAsAction="always|withText"
+        android:checked="false"
+        android:iconTint="@color/color_grey_700"/>
+
+    <item
+        android:id="@+id/navigation_trending_tv"
+        android:icon="@drawable/tv"
+        android:title="TV Shows"
+        app:showAsAction="always|withText"
+        android:checked="false"
+        android:iconTint="@color/color_grey_700"/>
+
+    <item
+        android:id="@+id/navigation_trending_people"
+        android:icon="@mipmap/people"
+        android:title="People"
+        app:showAsAction="always|withText"
+        android:checked="false"
+        android:iconTint="@color/color_grey_700"/>
+
+</menu>

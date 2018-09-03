@@ -42,9 +42,11 @@ import android.widget.Toast;
 import android.widget.VideoView;
 
 import com.airbnb.lottie.LottieAnimationView;
+import com.google.android.gms.common.api.Api;
 import com.miguelcatalan.materialsearchview.MaterialSearchView;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -60,8 +62,10 @@ public class MainActivity extends AppCompatActivity implements PopularMoviesFrag
     UpcomingMoviesFragment upcomingMoviesFragment;
     String tag="";
     LottieAnimationView loading;
+    ArrayList<String> actorIds;
     Toolbar toolbar;
     MenuItem searchItem;
+    int count=0;
     private static final int TIME_INTERVAL = 2000;
     private long mBackPressed;
     private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
@@ -126,6 +130,7 @@ public class MainActivity extends AppCompatActivity implements PopularMoviesFrag
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawer.addDrawerListener(toggle);
         toggle.syncState();
+        actorIds=new ArrayList<>();
         //searchEditText=findViewById(R.id.searchEditText);
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
@@ -142,6 +147,14 @@ public class MainActivity extends AppCompatActivity implements PopularMoviesFrag
         transaction.commit();
         loading.setVisibility(View.GONE);
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
+//        Thread t=new Thread(new Runnable() {
+//            @Override
+//            public void run() {
+//                findBirthdays();
+//            }
+//        });
+//        t.start();
+//        Toast.makeText(MainActivity.this,count+"",Toast.LENGTH_LONG).show();
     }
     @Override
     public void onMovieSelected(Movie movie)
@@ -246,6 +259,13 @@ public class MainActivity extends AppCompatActivity implements PopularMoviesFrag
             startActivity(intent);
             finish();
         }
+        else if(id==R.id.nav_trending)
+        {
+            toolbar.setTitle("Trending");
+            Intent intent=new Intent(MainActivity.this,TrendingActivity.class);
+            startActivity(intent);
+            finish();
+        }
         else if (id == R.id.nav_share)
         {
             Intent intent=new Intent();
@@ -268,4 +288,51 @@ public class MainActivity extends AppCompatActivity implements PopularMoviesFrag
         drawer.closeDrawer(GravityCompat.START);
         return true;
     }
+//    public void findBirthdays()
+//    {
+//        for(int i=1;i<=924;i++)
+//        {
+//            Call<ActorsResponse> call=ApiClient.getActorsService().getActors(i);
+//            call.enqueue(new Callback<ActorsResponse>() {
+//                @Override
+//                public void onResponse(Call<ActorsResponse> call, Response<ActorsResponse> response)
+//                {
+//                    ActorsResponse actorsResponse=response.body();
+//                    if(actorsResponse.results!=null)
+//                    {
+//                        ArrayList<Cast> cast = actorsResponse.results;
+//                        for (int j = 0; j < cast.size(); j++) {
+//                            actorIds.add(cast.get(j).id);
+//                        }
+//                    }
+//                }
+//                @Override
+//                public void onFailure(Call<ActorsResponse> call, Throwable t) {
+//
+//                }
+//            });
+//        }
+//        for(int i=0;i<actorIds.size();i++)
+//        {
+//            Call<Actor> call1= ApiClient.getActorsService().getDetails(actorIds.get(i));
+//            call1.enqueue(new Callback<Actor>() {
+//                @Override
+//                public void onResponse(Call<Actor> call, Response<Actor> response) {
+//                    Actor actor=response.body();
+//                    String birthday=actor.birthday;
+//                    String[] bd=birthday.split("-");
+//                    String month=bd[1];
+//                    String day=bd[2];
+//                    if(day.equals(Calendar.DAY_OF_MONTH) && month.equals(Calendar.MONTH))
+//                    {
+//                        count++;
+//                    }
+//                }
+//                @Override
+//                public void onFailure(Call<Actor> call, Throwable t) {
+//
+//                }
+//            });
+//        }
+//    }
 }

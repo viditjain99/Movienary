@@ -43,6 +43,6 @@ public interface MoviesService
     @GET("http://www.omdbapi.com/?apikey=fa4a9295&plot=full")
     Call<OmdbResponse> getOmdbDetails(@Query("t") String name);
 
-    @GET("https://api.internationalshowtimes.com/v4/showtimes?apikey=uhmuuY8MQNsWFT6rfPlBjNCHtdEatrBY&distance=10")
-    Call<ShowtimeResponse> getShowtimes(@Query("tmdb_id") String id,@Query("location") String location);
+    @GET("3/trending/movie/day?api_key=c8e098971d85941867217bb907834115")
+    Call<MovieResponse> getTrending(@Query("page") int page);
 }

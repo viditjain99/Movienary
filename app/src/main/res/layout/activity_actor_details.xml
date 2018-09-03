@@ -177,11 +177,15 @@
                 android:text="Age"
                 android:id="@+id/ageTextView"
                 android:padding="10dp"
+                android:textSize="16dp"
+                android:textStyle="bold"
                 android:layout_below="@+id/biographyTextView"/>
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Birth Place"
+                android:textSize="16dp"
+                android:textStyle="bold"
                 android:id="@+id/birthPlaceTextView"
                 android:textColor="#FFFFFF"
                 android:padding="10dp"

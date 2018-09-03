@@ -229,6 +229,13 @@ public class TvShowsActivity extends AppCompatActivity implements PopularTvShows
             startActivity(intent);
             finish();
         }
+        else if(id==R.id.nav_trending)
+        {
+            toolbar.setTitle("Trending");
+            Intent intent=new Intent(TvShowsActivity.this,TrendingActivity.class);
+            startActivity(intent);
+            finish();
+        }
         else if (id == R.id.nav_share)
         {
             Intent intent=new Intent();

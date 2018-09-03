@@ -268,6 +268,11 @@ public class TvShowDetailsActivity extends AppCompatActivity
                 int id=view.getId();
                 if(id==R.id.backdropImageView)
                 {
+                    if(backdropPath==null)
+                    {
+                        Toast.makeText(TvShowDetailsActivity.this,"This image is not available",Toast.LENGTH_LONG).show();
+                        return;
+                    }
                     Intent intent=new Intent(TvShowDetailsActivity.this,ImageActivity.class);
                     intent.putExtra("BackdropPath",backdropPath);
                     startActivity(intent);
@@ -388,6 +393,21 @@ public class TvShowDetailsActivity extends AppCompatActivity
             public void onResponse(Call<OmdbResponse> call, Response<OmdbResponse> response) {
                 omdbResponse=response.body();
                 ArrayList<Ratings> ratings=omdbResponse.ratings;
+                String flag=omdbResponse.response;
+                if(flag.equals("False"))
+                {
+                    imdbRatingTextView.setText("N/A");
+                    rtRatingTextView.setText("N/A");
+                    metaRatingTextView.setText("N/A");
+                    writerTextView.setText(writerTextView.getText()+"N/A");
+                    totalSeasonsTextView.setText(totalSeasonsTextView.getText()+"N/A");
+                    awardsTextView.setText(awardsTextView.getText()+"N/A");
+                    plotTextView.setTextColor(getResources().getColor(R.color.colorAccent));
+                    plotTextView.setTextSize(15);
+                    String b="<b>"+"Not Available"+"</b>";
+                    plotTextView.setText(Html.fromHtml(b));
+                    return;
+                }
                 imdbRatingTextView.setText("N/A");
                 rtRatingTextView.setText("N/A");
                 metaRatingTextView.setText("N/A");
@@ -410,6 +430,19 @@ public class TvShowDetailsActivity extends AppCompatActivity
                 String w=omdbResponse.writer;
                 String a=omdbResponse.awards;
                 String t=omdbResponse.totalSeasons;
+                for(int i=0;i<a.length();i++)
+                {
+                    if(a.charAt(i)=='.' && i!=a.length()-1)
+                    {
+                        String s1=a.substring(0,i);
+                        String s2=a.substring(i+1,a.length());
+                        a=s1+", "+s2;
+                    }
+                    if(a.charAt(i)=='.' && i==a.length()-1)
+                    {
+                        a=a.substring(0,a.length()-1);
+                    }
+                }
                 if(w==null)
                 {
                     writerTextView.setText("Writer: N/A");

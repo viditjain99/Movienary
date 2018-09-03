@@ -157,6 +157,13 @@ public class WatchListActivity extends AppCompatActivity implements NavigationVi
         {
 
         }
+        else if(id==R.id.nav_trending)
+        {
+            toolbar.setTitle("Trending");
+            Intent intent=new Intent(WatchListActivity.this,TrendingActivity.class);
+            startActivity(intent);
+            finish();
+        }
         else if (id == R.id.nav_share)
         {
             Intent intent=new Intent();

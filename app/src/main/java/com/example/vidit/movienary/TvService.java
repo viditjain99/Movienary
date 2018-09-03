@@ -39,4 +39,7 @@ public interface TvService
 
     @GET("http://www.omdbapi.com/?apikey=fa4a9295&plot=full")
     Call<OmdbResponse> getOmdbDetails(@Query("t") String name);
+
+    @GET("3/trending/tv/day?api_key=c8e098971d85941867217bb907834115")
+    Call<TvResponse> getTrending(@Query("page") int page);
 }

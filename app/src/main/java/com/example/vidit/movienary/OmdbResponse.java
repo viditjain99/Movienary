@@ -21,4 +21,6 @@ public class OmdbResponse
     String totalSeasons;
     @SerializedName("Writer")
     String writer;
+    @SerializedName("Response")
+    String response;
 }

@@ -3,8 +3,6 @@
     package="com.example.vidit.movienary">
 
     <uses-permission android:name="android.permission.INTERNET" />
-    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"/>
-    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
 
     <application
         android:allowBackup="true"
@@ -17,8 +15,11 @@
         <activity
             android:name=".MainActivity"
             android:theme="@style/NoActionBar"
-            android:screenOrientation="portrait">
-        </activity>
+            android:screenOrientation="portrait"/>
+        <activity
+            android:name=".TrendingActivity"
+            android:theme="@style/NoActionBar"
+            android:screenOrientation="portrait"/>
         <activity
             android:name=".SearchActivity"
             android:theme="@style/NoActionBar"
@@ -66,9 +67,6 @@
             </intent-filter>
         </activity>
 
-        <activity android:name=".ShowtimesActivity"
-            android:theme="@style/NoActionBar"
-            android:screenOrientation="portrait"/>
     </application>
 
 </manifest>

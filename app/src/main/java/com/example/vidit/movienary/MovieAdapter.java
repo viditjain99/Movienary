@@ -53,9 +53,13 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieViewHolder> {
         {
             Picasso.get().load("http://image.tmdb.org/t/p/w500/"+movie.posterPath).into(movieViewHolder.image);
         }
-        else if(width>1080 && width<=1440)
+        else if(width>1080 && width<=1536)
         {
             Picasso.get().load("http://image.tmdb.org/t/p/w780/"+movie.posterPath).into(movieViewHolder.image);
+        }
+        else if(width>=1536 && width<=1800)
+        {
+            Picasso.get().load("http://image.tmdb.org/t/p/original/"+movie.posterPath).into(movieViewHolder.image);
         }
         else
         {
