@@ -14,3 +14,6 @@ Features:
 • Search Movies and TV shows from a vast database
 • Read reviews given by various people
 • Easy access to social media pages of Movies, TV Shows and celebrities (if they exist)
+
+The app uses REST API to get data and then display it. 
+sqlLite database has been used to store movies and TV shows in the watchlist.
